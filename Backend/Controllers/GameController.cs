@@ -37,7 +37,7 @@ namespace backend.Controllers
 
             bool f = false;
             int amountBackup = 0;
-            if (amount != 54)
+            if (!(amount == 54 || amount == 0))
             {
                 f = true;
                 amountBackup = amount;
