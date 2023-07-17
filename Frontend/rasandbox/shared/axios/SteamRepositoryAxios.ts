@@ -11,6 +11,25 @@ export class SteamRepositoryAxios
   public loadGames() {
     return games;
   }
+  public filterGames(
+    genreFilter: string,
+    company: string,
+    minPrice: number,
+    maxPrice: number,
+    name: string,
+    minRealseDate: string
+  ) {
+    return this.sendGet<Game[]>(`${this.basePath}/GamesController/Games`, {
+      params: {
+        filter: name,
+        gFilter: genreFilter,
+        companyFilter: company,
+        priceMinFilter: minPrice,
+        priceMaxFilter: maxPrice,
+        minRDFilter: minRealseDate,
+      },
+    });
+  }
   public getGames(amount: number) {
     return this.sendGet<Game[]>(`${this.basePath}/GameController/Games`, {
       params: { amount: amount },

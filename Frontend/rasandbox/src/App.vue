@@ -1,5 +1,5 @@
 <template>
-  <div :class="themeClass">
+  <div class="betterSteam" :class="themeClass">
     <user-modal v-if="showModal" class="is-active" @close="showModal = false" />
     <filter-modal
       v-if="showFilter"
@@ -95,7 +95,17 @@ export default Vue.extend({
           : "light-theme";
       this.$store.dispatch("setTheme", newTheme);
     },
-    filterList(element: Game, index: number, array: Game[]) {
+    filterList() {
+      if (this.filter) {
+        repo.filterGames(
+          this.filter.genre,
+          this.filter.company,
+          this.filter.minPrice,
+          this.filter.maxPrice,
+          this.filter.name,
+          this.filter.releaseDate
+        );
+      }
       return true;
       // TODO filter im backend niklas hat das was safe
     },
@@ -127,11 +137,17 @@ export default Vue.extend({
 
 <style lang="scss">
 @import "../shared/themes.scss";
+html,
+body {
+  height: 100vh;
+}
+.betterSteam {
+  height: 100%;
+}
 .main-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin: 5px 5px 60px 5px;
 }
 .main-title {
   font-family: Avenir, Helvetica, Arial, sans-serif;
