@@ -19,7 +19,12 @@
       </span>
       <span>Filter</span>
     </button>
-    <div class="columns is-gapless is-multiline">
+    <i
+      v-if="isGamesLoading"
+      class="fa-solid fa-spinner fa-4x"
+      :class="{ 'loading-spinner': isGamesLoading }"
+    />
+    <div v-if="!isGamesLoading" class="columns is-gapless is-multiline">
       <div
         class="column is-one-third"
         v-for="game in filteredList"
@@ -68,6 +73,7 @@ export default Vue.extend({
       showFilter: false,
       filter: null as GameFilter | null,
       isFavorited: false,
+      isGamesLoading: false,
     };
   },
   methods: {
@@ -88,7 +94,9 @@ export default Vue.extend({
       return genres.includes(this.filter.genre);
     },
     async getGames(amount: number) {
+      this.isGamesLoading = true;
       this.gamesList = await repo.getGames(amount);
+      this.isGamesLoading = false;
     },
     filterList() {
       if (this.filter) {
@@ -125,7 +133,7 @@ export default Vue.extend({
     },
   },
   beforeMount() {
-    this.getGames(60);
+    this.getGames(0);
   },
 });
 </script>
@@ -158,6 +166,20 @@ body {
   color: #2c3e50;
   font-size: larger;
   font-weight: 600;
+}
+.loading-spinner {
+  animation: spin 2s linear infinite; // animation name duration speed and repeating
+  position: absolute;
+  top: 50%;
+  right: 50%;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 .gameBox {
   border: 1px solid black;
