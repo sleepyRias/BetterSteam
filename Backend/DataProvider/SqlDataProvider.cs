@@ -1,4 +1,5 @@
 ﻿using backend.Model;
+using backend.Model.Account;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -7,6 +8,7 @@ namespace backend.DataProvider
     public class SqlDataProvider : DbContext
     {
         public DbSet<Game> Games { get; set; }
+        public DbSet<Account> Accounts { get; set; } // Hinzugefügt für die Accounts-Tabelle
 
         public IConfiguration Configuration { get; }
 
@@ -17,29 +19,31 @@ namespace backend.DataProvider
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseSqlite(connectionString);
+            string gamesConnectionString = Configuration.GetConnectionString("GamesConnection");
+            optionsBuilder.UseSqlite(gamesConnectionString);
+
+            string accountsConnectionString = Configuration.GetConnectionString("AccountsConnection");
+            optionsBuilder.UseSqlite(accountsConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Game>(entity =>
             {
-                entity.Property(g => g.Name)
-                      .HasColumnName("gamename");
-
-                entity.Property(g => g.GenreId)
-                      .HasColumnName("genre");
-
-                entity.Property(g => g.Company)
-                      .HasColumnName("company");
-
-                entity.Property(g => g.Price)
-                      .HasColumnName("price");
-
-                entity.Property(g => g.ReleaseDate)
-                      .HasColumnName("release_date");
+                entity.Property(g => g.Name).HasColumnName("gamename");
+                entity.Property(g => g.GenreId).HasColumnName("genre");
+                entity.Property(g => g.Company).HasColumnName("company");
+                entity.Property(g => g.Price).HasColumnName("price");
+                entity.Property(g => g.ReleaseDate).HasColumnName("release_date");
             });
+
+            modelBuilder.Entity<FavouriteGame>()
+                .HasKey(fg => new { fg.AccountId, fg.GameId });
+
+            modelBuilder.Entity<Account>()
+                .HasMany(a => a.FavouriteGames)
+                .WithOne()
+                .HasForeignKey(fg => fg.AccountId);
             // Hier kannst du benutzerdefinierte Konfigurationen für deine Entitäten hinzufügen, falls erforderlich
         }
     }
