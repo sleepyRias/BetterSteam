@@ -1,13 +1,9 @@
 <template>
   <div :class="themeClass">
-    <user-modal
-      v-if="showModal"
-      :class="{ 'is-active': showModal }"
-      @close="showModal = false"
-    />
+    <user-modal v-if="showModal" class="is-active" @close="showModal = false" />
     <filter-modal
       v-if="showFilter"
-      :class="{ 'is-active': showFilter }"
+      class="is-active"
       @close="showFilter = false"
       @submit="updateFilter"
     />

@@ -6,9 +6,7 @@
         <slot name="main-content" />
       </div>
     </div>
-    <footer class="modal-card-foot" :class="themeClass">
-      <slot name="footer" />
-    </footer>
+    <button class="modal-close is-large" @click="$emit('close')">close</button>
   </div>
 </template>
 <script lang="ts">

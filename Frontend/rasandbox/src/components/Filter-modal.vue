@@ -1,5 +1,5 @@
 <template>
-  <modal-bert>
+  <modal-bert @close="$emit('close')">
     <template #main-content>
       <h1>Filters</h1>
       <div class="columns">
@@ -81,8 +81,7 @@
       >
         close
       </button>
-    </template>
-    <template #footer>
+
       <button class="button is-success" @click="$emit('submit', filter)">
         <!-- funktion nutzen um 2 events zu senden -->
         Submit
