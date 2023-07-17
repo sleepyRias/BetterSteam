@@ -22,7 +22,15 @@ namespace backend.Controllers
         //      this will introduce a bug when you filter for exactly 54 games (amount == 54)
         //      in this case the amount filter will not work and it returns all entries
         [HttpGet(Endpoints.GameController.GetGames, Name = "GetGames")]
-        public IEnumerable<Game> GetGames(int amount = 54, string filter = "", int gFilter = -1, float priceFilter = -1, string companyFilter = "", string minRDFilter = "", string maxRDFilter = "")
+        public IEnumerable<Game> GetGames(
+            int amount = 54,
+            string filter = "",
+            int gFilter = -1,
+            float priceMinFilter = -1,
+            float priceMaxFilter = -1,
+            string companyFilter = "",
+            string minRDFilter = "",
+            string maxRDFilter = "")
         {
             var games = _dataProvider.Games.AsQueryable();
 
@@ -46,9 +54,14 @@ namespace backend.Controllers
                 amount = 0;
             }
 
-            if (priceFilter != -1)
+            if (priceMinFilter != -1)
             {
-                games = games.Where(g => g.Price == priceFilter);
+                games = games.Where(g => g.Price >= priceMinFilter);
+                amount = 0;
+            }
+            if (priceMaxFilter != -1)
+            {
+                games = games.Where(g => g.Price <= priceMaxFilter);
                 amount = 0;
             }
 
