@@ -1,6 +1,6 @@
 <template>
   <div class="betterSteam" :class="themeClass">
-    <user-modal v-if="showModal" class="is-active" @close="showModal = false" />
+    <user-modal v-if="showUser" class="is-active" @close="showUser = false" />
     <filter-modal
       v-if="showFilter"
       class="is-active"
@@ -9,21 +9,16 @@
     />
     <div class="main-header">
       <h1 class="main-title">Sandbox Project</h1>
-      <button @click="showModal = true" class="button is-link">
-        <i class="fa-regular fa-user"></i>
+      <button @click="showUser = true" class="user-button">
+        <i class="fa-regular fa-user fa-2x" />
       </button>
     </div>
-    <div class="columns">
-      <div class="column">
-        <button class="button is-warning" @click="showFilter = !showFilter">
-          <span class="icon"><i class="fa-solid fa-filter"></i></span>
-          <span>Filter</span>
-        </button>
-      </div>
-      <div class="colum">
-        <button class="button" @click="getGames(10)">G A M E S</button>
-      </div>
-    </div>
+    <button class="button" @click="showFilter = !showFilter">
+      <span class="icon">
+        <i class="fa-solid fa-filter" />
+      </span>
+      <span>Filter</span>
+    </button>
     <div class="columns is-gapless is-multiline">
       <div
         class="column is-one-third"
@@ -42,7 +37,7 @@
               <i
                 :class="{ 'fa-regular': !isFavorited, 'fa-solid': isFavorited }"
                 class="fa-star fa-lg"
-              ></i>
+              />
             </span>
           </button>
         </div>
@@ -69,16 +64,13 @@ export default Vue.extend({
   data() {
     return {
       gamesList: [] as Game[],
-      showModal: false,
+      showUser: false,
       showFilter: false,
       filter: null as GameFilter | null,
       isFavorited: false,
     };
   },
   methods: {
-    requestGames() {
-      this.gamesList = repo.loadGames();
-    },
     // WEG
     updateFilter(filter: GameFilter) {
       this.filter = { ...this.filter, ...filter };
@@ -97,13 +89,6 @@ export default Vue.extend({
     },
     async getGames(amount: number) {
       this.gamesList = await repo.getGames(amount);
-    },
-    toggleTheme() {
-      const newTheme =
-        this.$store.getters.getTheme === "light-theme"
-          ? "dark-theme"
-          : "light-theme";
-      this.$store.dispatch("setTheme", newTheme);
     },
     filterList() {
       if (this.filter) {
@@ -140,7 +125,7 @@ export default Vue.extend({
     },
   },
   beforeMount() {
-    this.requestGames();
+    this.getGames(60);
   },
 });
 </script>
@@ -153,6 +138,12 @@ body {
 }
 .betterSteam {
   height: 100%;
+}
+.user-button {
+  border: none;
+  background: none;
+  color: #1b1d9e;
+  margin: 5px 5px 0 0;
 }
 .main-header {
   display: flex;
