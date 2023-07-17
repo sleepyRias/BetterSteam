@@ -28,7 +28,7 @@
       <div
         class="column is-one-third"
         v-for="game in filteredList"
-        :key="game.name"
+        :key="game.id"
       >
         <div class="gameBox">
           <ul>
@@ -94,9 +94,7 @@ export default Vue.extend({
       return genres.includes(this.filter.genre);
     },
     async getGames(amount: number) {
-      this.isGamesLoading = true;
       this.gamesList = await repo.getGames(amount);
-      this.isGamesLoading = false;
     },
     filterList() {
       if (this.filter) {
@@ -133,7 +131,9 @@ export default Vue.extend({
     },
   },
   beforeMount() {
+    this.isGamesLoading = true;
     this.getGames(0);
+    this.isGamesLoading = false;
   },
 });
 </script>
