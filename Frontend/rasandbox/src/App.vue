@@ -9,12 +9,15 @@
     />
     <div class="main-header">
       <h1 class="main-title">Sandbox Project</h1>
-      <button @click="showModal = true" class="button is-link">User</button>
+      <button @click="showModal = true" class="button is-link">
+        <i class="fa-regular fa-user"></i>
+      </button>
     </div>
     <div class="columns">
       <div class="column">
         <button class="button is-warning" @click="showFilter = !showFilter">
-          Filter
+          <span class="icon"><i class="fa-solid fa-filter"></i></span>
+          <span>Filter</span>
         </button>
       </div>
       <div class="colum">
@@ -34,8 +37,14 @@
             <li>{{ game.company }}</li>
             <li>{{ game.releaseDate }}</li>
           </ul>
-          <button class="favButton button is-warning">Favorite</button>
-          <!-- stern oben rechts font awesome -->
+          <button class="favButton" @click="isFavorited = !isFavorited">
+            <span class="icon">
+              <i
+                :class="{ 'fa-regular': !isFavorited, 'fa-solid': isFavorited }"
+                class="fa-star fa-lg"
+              ></i>
+            </span>
+          </button>
         </div>
       </div>
     </div>
@@ -63,6 +72,7 @@ export default Vue.extend({
       showModal: false,
       showFilter: false,
       filter: null as GameFilter | null,
+      isFavorited: false,
     };
   },
   methods: {
@@ -164,10 +174,15 @@ body {
   position: relative;
 }
 .favButton {
-  margin-left: 20px;
   position: absolute !important;
   top: 0;
   right: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 4px 6px;
+  color: #fcd303;
 }
 .light-theme {
   background-color: $background-light-theme-color;
