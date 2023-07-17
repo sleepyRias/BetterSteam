@@ -1,4 +1,5 @@
 using backend.DataProvider;
+using backend.Implementation;
 using backend.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,7 +51,7 @@ namespace backend.Controllers
 
             if (gFilter != -1)
             {
-                games = games.Where(g => g.Genre == gFilter);
+                games = games.Where(g => g.GenreId == gFilter);
                 amount = 0;
             }
 
@@ -91,22 +92,33 @@ namespace backend.Controllers
                 games = games.Take(amount);
             }
 
+            //Hier wird die Genre-Id in einen Genre-String umgewandelt
+           games = games.Select(g => new Game
+           {
+               Id = g.Id,
+               Name = g.Name,
+               Genre = Helpers.GetGenreString(g.GenreId),
+               Company = g.Company,
+               Price = g.Price,
+               ReleaseDate = g.ReleaseDate
+           });
+
             return games.ToList();
         }
 
 
-        [HttpPost("Games")]
+        [HttpPost("Games", Name = "CreateGame")]
         public IActionResult CreateGame([FromBody] Game game)
         {
             if (game == null)
             {
-                return BadRequest(); // Ungültige Anforderung
+                return BadRequest(); // UngÃ¼ltige Anforderung
             }
 
-            _dataProvider.Games.Add(game); // Spiel der Datenquelle hinzufügen
-            _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
+            _dataProvider.Games.Add(Helpers.ConvertToBackendGame(game)); // Spiel der Datenquelle hinzufÃ¼gen
+            _dataProvider.SaveChanges(); // Speichere die Ã„nderungen in der Datenbank
 
-            return CreatedAtRoute("GetGameById", new { id = game.Id }, game); // Erfolgreiches Erstellen mit 201 Created-Status und dem erstellten Spiel als Antwort
+            return CreatedAtRoute("CreateGame", new { id = game.Id }, game); // Erfolgreiches Erstellen mit 201 Created-Status und dem erstellten Spiel als Antwort
         }
 
 
@@ -120,9 +132,9 @@ namespace backend.Controllers
             }
 
             _dataProvider.Games.Remove(game); // Spiel aus der Datenquelle entfernen
-            _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
+            _dataProvider.SaveChanges(); // Speichere die Ã„nderungen in der Datenbank
 
-            return NoContent(); // Erfolgreiches Löschen (kein Inhalt zurückgegeben)
+            return NoContent(); // Erfolgreiches LÃ¶schen (kein Inhalt zurÃ¼ckgegeben)
         }
 
         [HttpPut("Games/{id}")]
@@ -136,12 +148,12 @@ namespace backend.Controllers
 
             // Aktualisiere die Eigenschaften des Spiels mit den Werten aus updatedGame
             game.Name = updatedGame.Name;
-            game.Genre = updatedGame.Genre;
+            game.GenreId = Helpers.GetGenreId(updatedGame.Genre);
             game.Company = updatedGame.Company;
             game.Price = updatedGame.Price;
             game.ReleaseDate = updatedGame.ReleaseDate;
 
-            // Speichere die Änderungen in der Datenbank
+            // Speichere die Ã„nderungen in der Datenbank
             _dataProvider.SaveChanges();
 
             return Ok(); // Erfolgreiche Aktualisierung
