@@ -112,6 +112,10 @@ export default Vue.extend({
           : "light-theme";
       this.$store.dispatch("setTheme", newTheme);
     },
+    filterList(element: Game, index: number, array: Game[]) {
+      return true;
+      // TODO filter im backend niklas hat das was safe
+    },
   },
   computed: {
     themeClass() {
@@ -127,15 +131,9 @@ export default Vue.extend({
           return "light-theme";
       }
     },
-    filteredList() {
+    filteredList(): Game[] {
       const list = this.gamesList;
-      return list.filter(
-        (game: Game) =>
-          !this.filter ||
-          (this.filter.company === game.company &&
-            this.filter.releaseDate === game.releaseDate &&
-            this.isInPricerange(game.price))
-      );
+      return list.filter(this.filterList);
     },
   },
   beforeMount() {
