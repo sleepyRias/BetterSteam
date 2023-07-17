@@ -26,7 +26,7 @@ namespace backend.Controllers
         public IEnumerable<Game> GetGames(
             int amount = 54,
             string filter = "",
-            int gFilter = -1,
+            string gFilter = "",
             float priceMinFilter = -1,
             float priceMaxFilter = -1,
             string companyFilter = "",
@@ -49,9 +49,9 @@ namespace backend.Controllers
                 amount = 0; 
             }
 
-            if (gFilter != -1)
+            if (!string.IsNullOrEmpty(gFilter))
             {
-                games = games.Where(g => g.GenreId == gFilter);
+                games = games.Where(g => g.GenreId == Helpers.GetGenreId(gFilter));
                 amount = 0;
             }
 
