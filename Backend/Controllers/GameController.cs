@@ -1,4 +1,5 @@
 using backend.DataProvider;
+using backend.Implementation;
 using backend.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,14 @@ namespace backend.Controllers
         //      this will introduce a bug when you filter for exactly 54 games (amount == 54)
         //      in this case the amount filter will not work and it returns all entries
         [HttpGet(Endpoints.GameController.GetGames, Name = "GetGames")]
-        public IEnumerable<Game> GetGames(int amount = 54, string filter = "", int gFilter = -1, float priceFilter = -1, string companyFilter = "", string minRDFilter = "", string maxRDFilter = "")
+        public IEnumerable<Game> GetGames(
+            int amount = 54,
+            string filter = "",
+            int gFilter = -1,
+            float priceFilter = -1,
+            string companyFilter = "",
+            string minRDFilter = "",
+            string maxRDFilter = "")
         {
             var games = _dataProvider.Games.AsQueryable();
 
@@ -42,7 +50,7 @@ namespace backend.Controllers
 
             if (gFilter != -1)
             {
-                games = games.Where(g => g.Genre == gFilter);
+                games = games.Where(g => g.GenreId == gFilter);
                 amount = 0;
             }
 
@@ -78,11 +86,22 @@ namespace backend.Controllers
                 games = games.Take(amount);
             }
 
+            //Hier wird die Genre-Id in einen Genre-String umgewandelt
+           games = games.Select(g => new Game
+           {
+               Id = g.Id,
+               Name = g.Name,
+               Genre = Helpers.GetGenreString(g.GenreId),
+               Company = g.Company,
+               Price = g.Price,
+               ReleaseDate = g.ReleaseDate
+           });
+
             return games.ToList();
         }
 
 
-        [HttpPost("Games")]
+        [HttpPost("Games", Name = "CreateGame")]
         public IActionResult CreateGame([FromBody] Game game)
         {
             if (game == null)
@@ -90,10 +109,10 @@ namespace backend.Controllers
                 return BadRequest(); // Ungültige Anforderung
             }
 
-            _dataProvider.Games.Add(game); // Spiel der Datenquelle hinzufügen
+            _dataProvider.Games.Add(Helpers.ConvertToBackendGame(game)); // Spiel der Datenquelle hinzufügen
             _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
 
-            return CreatedAtRoute("GetGameById", new { id = game.Id }, game); // Erfolgreiches Erstellen mit 201 Created-Status und dem erstellten Spiel als Antwort
+            return CreatedAtRoute("CreateGame", new { id = game.Id }, game); // Erfolgreiches Erstellen mit 201 Created-Status und dem erstellten Spiel als Antwort
         }
 
 
@@ -123,7 +142,7 @@ namespace backend.Controllers
 
             // Aktualisiere die Eigenschaften des Spiels mit den Werten aus updatedGame
             game.Name = updatedGame.Name;
-            game.Genre = updatedGame.Genre;
+            game.GenreId = Helpers.GetGenreId(updatedGame.Genre);
             game.Company = updatedGame.Company;
             game.Price = updatedGame.Price;
             game.ReleaseDate = updatedGame.ReleaseDate;

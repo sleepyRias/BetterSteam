@@ -28,7 +28,7 @@ namespace backend.DataProvider
                 entity.Property(g => g.Name)
                       .HasColumnName("gamename");
 
-                entity.Property(g => g.Genre)
+                entity.Property(g => g.GenreId)
                       .HasColumnName("genre");
 
                 entity.Property(g => g.Company)
