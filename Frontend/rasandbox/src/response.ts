@@ -1,4 +1,4 @@
-import { Game } from "./Game";
+import { Game } from "../shared/interfaces/Game";
 
 export const games: Game[] = [
   {

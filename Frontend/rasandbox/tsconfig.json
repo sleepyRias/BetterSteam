@@ -36,7 +36,13 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx",
-    "src/**/*.json"
+    "src/**/*.json",
+    "shared/axios/AxiosRepository.ts",
+    "shared/axios/SteamRepositoryAxios.ts",
+    "shared/repos/SteamRepository.ts",
+    "shared/interfaces/filters.ts",
+    "shared/interfaces/Game.ts",
+    "shared/interfaces/User.ts"
   ],
   "exclude": [
     "node_modules"

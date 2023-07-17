@@ -27,7 +27,8 @@ namespace backend.Controllers
             int amount = 54,
             string filter = "",
             string gFilter = "",
-            float priceFilter = -1,
+            float priceMinFilter = -1,
+            float priceMaxFilter = -1,
             string companyFilter = "",
             string minRDFilter = "",
             string maxRDFilter = "")
@@ -54,9 +55,14 @@ namespace backend.Controllers
                 amount = 0;
             }
 
-            if (priceFilter != -1)
+            if (priceMinFilter != -1)
             {
-                games = games.Where(g => g.Price == priceFilter);
+                games = games.Where(g => g.Price >= priceMinFilter);
+                amount = 0;
+            }
+            if (priceMaxFilter != -1)
+            {
+                games = games.Where(g => g.Price <= priceMaxFilter);
                 amount = 0;
             }
 
@@ -106,11 +112,11 @@ namespace backend.Controllers
         {
             if (game == null)
             {
-                return BadRequest(); // Ungültige Anforderung
+                return BadRequest(); // UngÃ¼ltige Anforderung
             }
 
-            _dataProvider.Games.Add(Helpers.ConvertToBackendGame(game)); // Spiel der Datenquelle hinzufügen
-            _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
+            _dataProvider.Games.Add(Helpers.ConvertToBackendGame(game)); // Spiel der Datenquelle hinzufÃ¼gen
+            _dataProvider.SaveChanges(); // Speichere die Ã„nderungen in der Datenbank
 
             return CreatedAtRoute("CreateGame", new { id = game.Id }, game); // Erfolgreiches Erstellen mit 201 Created-Status und dem erstellten Spiel als Antwort
         }
@@ -126,9 +132,9 @@ namespace backend.Controllers
             }
 
             _dataProvider.Games.Remove(game); // Spiel aus der Datenquelle entfernen
-            _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
+            _dataProvider.SaveChanges(); // Speichere die Ã„nderungen in der Datenbank
 
-            return NoContent(); // Erfolgreiches Löschen (kein Inhalt zurückgegeben)
+            return NoContent(); // Erfolgreiches LÃ¶schen (kein Inhalt zurÃ¼ckgegeben)
         }
 
         [HttpPut("Games/{id}")]
@@ -147,7 +153,7 @@ namespace backend.Controllers
             game.Price = updatedGame.Price;
             game.ReleaseDate = updatedGame.ReleaseDate;
 
-            // Speichere die Änderungen in der Datenbank
+            // Speichere die Ã„nderungen in der Datenbank
             _dataProvider.SaveChanges();
 
             return Ok(); // Erfolgreiche Aktualisierung
