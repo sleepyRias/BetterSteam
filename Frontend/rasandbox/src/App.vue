@@ -27,16 +27,7 @@
         v-for="game in filteredList"
         :key="game.name"
       >
-        <div
-          class="gameBox"
-          v-if="
-            !filter ||
-            (filter.company === game.company &&
-              filter.releaseDate === game.releaseDate &&
-              isInPricerange(game.price))
-          "
-        >
-          <!-- computed list FILTERN nicht EDITIEREN immer filter list benutzt -->
+        <div class="gameBox">
           <ul>
             <li>{{ game.name }}</li>
             <li>{{ game.price }}€</li>
