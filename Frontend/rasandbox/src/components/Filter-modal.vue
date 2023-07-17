@@ -82,11 +82,11 @@
         close
       </button>
 
-      <button class="button is-success" @click="$emit('submit', filter)">
+      <button class="button is-success" @click="submitFilter">
         <!-- funktion nutzen um 2 events zu senden -->
         Submit
       </button>
-      <button class="button is-danger" @click="$emit('submit', {})">
+      <button class="button is-danger" @click="submitFilter">
         Clear Filter
       </button>
     </template>
@@ -113,6 +113,12 @@ export default Vue.extend({
       releaseDate: "",
       filter: {} as GameFilter,
     };
+  },
+  methods: {
+    submitFilter() {
+      this.$emit("submit", this.filter);
+      this.$emit("close");
+    },
   },
   computed: {
     themeClass() {

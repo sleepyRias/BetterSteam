@@ -7,8 +7,6 @@
       @close="showFilter = false"
       @submit="updateFilter"
     />
-    <!-- Filter an modal übereben -->
-    <!-- modalbert hinzufügen modal auslagern -->
     <div class="main-header">
       <h1 class="main-title">Sandbox Project</h1>
       <button @click="showModal = true" class="button is-link">User</button>
@@ -82,9 +80,7 @@ export default Vue.extend({
     },
     // WEG
     updateFilter(filter: GameFilter) {
-      this.showFilter = false;
       this.filter = { ...this.filter, ...filter };
-      // modal anders ausmachen
     },
     isInPricerange(price: number): boolean {
       if (!this.filter) {
