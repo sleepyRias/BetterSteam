@@ -73,19 +73,7 @@
           />
         </div>
       </div>
-
-      <button
-        class="modal-close is-large"
-        aria-label="close"
-        @click="$emit('close')"
-      >
-        close
-      </button>
-
-      <button class="button is-success" @click="submitFilter">
-        <!-- funktion nutzen um 2 events zu senden -->
-        Submit
-      </button>
+      <button class="button is-success" @click="submitFilter">Submit</button>
       <button class="button is-danger" @click="submitFilter">
         Clear Filter
       </button>

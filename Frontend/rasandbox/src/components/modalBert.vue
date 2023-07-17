@@ -6,7 +6,9 @@
         <slot name="main-content" />
       </div>
     </div>
-    <button class="modal-close is-large" @click="$emit('close')">close</button>
+    <button class="close-modal-button" @click="$emit('close')">
+      <i class="fas fa-times fa-2x" />
+    </button>
   </div>
 </template>
 <script lang="ts">
@@ -33,5 +35,19 @@ export default Vue.extend({
 <style scoped>
 .modal-content {
   width: auto;
+}
+.close-modal-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: white;
+  background: none;
+  border: none;
+  margin: 5px 5px;
+  cursor: pointer;
+}
+
+.close-modal-button:hover {
+  color: darkred;
 }
 </style>
