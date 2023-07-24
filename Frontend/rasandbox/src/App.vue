@@ -58,10 +58,7 @@
           </ul>
           <button class="favButton" @click="isFavorited = !isFavorited">
             <span class="icon">
-              <i
-                :class="{ 'fa-regular': !isFavorited, 'fa-solid': isFavorited }"
-                class="fa-star fa-lg"
-              />
+              <i :class="favGameClass" class="fa-star fa-lg" />
             </span>
           </button>
         </div>
@@ -154,6 +151,9 @@ export default Vue.extend({
     },
     filteredList(): Game[] {
       return this.gamesList.filter(this.filterList);
+    },
+    favGameClass() {
+      return this.isFavorited ? "fa-solid" : "fa-regular";
     },
   },
   beforeMount() {
