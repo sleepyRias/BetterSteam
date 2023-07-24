@@ -46,7 +46,7 @@
     <div v-if="!isGamesLoading" class="columns is-gapless is-multiline">
       <div
         class="column is-one-quarter"
-        v-for="game in filteredList"
+        v-for="game in gamesList"
         :key="game.id"
       >
         <div class="gameBox">
@@ -120,12 +120,6 @@ export default Vue.extend({
     async getGames() {
       this.gamesList = await repo.getGames(this.filter);
     },
-    filterList() {
-      if (this.filter) {
-        repo.getGames(this.filter);
-      }
-      return true;
-    },
     nextPage() {
       this.filter.page++;
     },
@@ -137,17 +131,18 @@ export default Vue.extend({
     themeClass(): string {
       return this.$store.getters.getTheme;
     },
-    filteredList(): Game[] {
-      return this.gamesList.filter(this.filterList);
-    },
     favGameClass(): string {
       return this.isFavorited ? "fa-solid" : "fa-regular";
     },
   },
-  beforeMount() {
-    this.isGamesLoading = true;
-    this.getGames();
-    this.isGamesLoading = false;
+  watch: {
+    filter: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.getGames();
+      },
+    },
   },
 });
 </script>
