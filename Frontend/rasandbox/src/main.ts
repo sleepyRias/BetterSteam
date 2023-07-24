@@ -1,13 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import App from "./App.vue";
+import VueRouter from "vue-router";
 import { storeOptions } from "./store/store";
+import "@/assets/main.scss";
 
 Vue.use(Vuex);
-// store hier rein
+Vue.use(VueRouter);
 Vue.config.productionTip = false;
-require("@/assets/main.scss");
-// robert mag das nicht main erstmal verscheieben und dann "importieren"
 
 new Vue({
   render: (h) => h(App),
