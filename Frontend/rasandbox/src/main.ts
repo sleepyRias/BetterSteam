@@ -9,7 +9,17 @@ Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.config.productionTip = false;
 
+const routes = [
+  { path: "/", component: App },
+  // more routes hier
+];
+
+const router = new VueRouter({
+  routes,
+});
+
 new Vue({
+  router,
   render: (h) => h(App),
   store: new Vuex.Store(storeOptions),
 }).$mount("#app");
