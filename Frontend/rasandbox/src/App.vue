@@ -8,8 +8,7 @@
     />
     <div class="main-header">
       <h1 class="main-title">Sandbox Project</h1>
-      <button @click="showUser = true" class="user-button">
-        <!-- user button und fav button erben von button class -->
+      <button @click="showUser = true" class="betterSteamButton--user">
         <i class="fa-regular fa-user fa-2x" />
       </button>
     </div>
@@ -58,7 +57,10 @@
             <li>{{ game.company }}</li>
             <li>{{ game.releaseDate }}</li>
           </ul>
-          <button class="favButton" @click="isFavorited = !isFavorited">
+          <button
+            class="betterSteamButton--favorite"
+            @click="isFavorited = !isFavorited"
+          >
             <span class="icon">
               <i :class="favGameClass" class="fa-star fa-lg" />
             </span>
@@ -158,12 +160,24 @@ body {
 .betterSteam {
   height: 100%;
 }
-.user-button {
+.betterSteamButton {
   border: none;
   background: none;
-  color: #1b1d9e;
-  margin: 5px 5px 0 0;
   cursor: pointer;
+  &--user {
+    @extend .betterSteamButton;
+    color: #1b1d9e;
+    margin: 5px 5px 0 0;
+  }
+  &--favorite {
+    @extend .betterSteamButton;
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 4px 6px;
+    color: #fcd303;
+  }
 }
 .main-header {
   display: flex;
@@ -194,19 +208,9 @@ body {
   }
 }
 .gameBox {
+  // ONG das muss anders werden my eyes are bleeding
   border: 1px solid black;
   margin: 10px 5px 0px 5px;
   position: relative;
-}
-.favButton {
-  position: absolute !important;
-  top: 0;
-  right: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 0;
-  margin: 4px 6px;
-  color: #fcd303;
 }
 </style>
