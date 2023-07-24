@@ -133,13 +133,17 @@ export default Vue.extend({
       this.updateRoute();
     },
     updateRoute() {
-      this.$router.push({ path: "/page", query: { page: this.filter.page } });
+      this.$router.push({ path: "/items", query: this.filter });
     },
     updateCurrentPageFromRoute() {
-      const page = Number(this.$route.query.page);
-      if (!isNaN(page) && page > 0) {
-        this.filter.page = page;
-      }
+      this.filter.page = Number(this.$route.query.page);
+      this.filter.name = String(this.$route.query.name);
+      this.filter.company = String(this.$route.query.company);
+      this.filter.genre = String(this.$route.query.genre);
+      this.filter.maxPrice = Number(this.$route.query.maxPrice);
+      this.filter.minPrice = Number(this.$route.query.minPrice);
+      this.filter.releaseDate = String(this.$route.query.releaseDate);
+      console.log(this.filter);
     },
   },
   computed: {
