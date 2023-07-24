@@ -26,13 +26,12 @@
       <button class="button" @click="amountPerPage = 60">60 items</button>
     </div>
     <div class="field is-grouped">
-      <button class="button" @click="prevPage">
-        <!-- button disablen wenn page == 1 -->
+      <button class="button" @click="prevPage" :disabled="filter.page == 1">
         <span>
           <i class="fa-solid fa-arrow-left"></i>
         </span>
       </button>
-      <button class="button">
+      <button class="button is-static">
         {{ filter?.page }}
       </button>
       <button class="button">
