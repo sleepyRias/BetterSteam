@@ -6,35 +6,22 @@
         <div class="column is-one-fourth">
           <div class="select">
             <select name="Company" v-model="filter.company">
-              <option value="" selected disabled>Wähle einen Hersteller</option>
-              <option value="Valve">Valve</option>
-              <option value="Adobe">Adobe</option>
-              <option value="343 Studios">343 Studios</option>
-              <option value="Paradox Interactive">Paradox Interactive</option>
-              <option value="CD Projekt Red">CD Projekt Red</option>
-              <option value="RA Micro Software AG">RA Micro Software AG</option>
-              <option value="Respawn">Respawn</option>
+              <option
+                v-for="company in companies"
+                :key="company"
+                :value="company"
+              >
+                {{ company }}
+              </option>
             </select>
           </div>
         </div>
         <div class="column is-one-fourth">
           <div class="select">
             <select name="Genre" v-model="filter.genre">
-              <option value="" selected disabled>Wähle ein Genre</option>
-              <option value="Horror">Horror</option>
-              <option value="Abenteuer">Abenteuer</option>
-              <option value="Physik">Physik</option>
-              <option value="Survival">Survival</option>
-              <option value="Simulation">Simulation</option>
-              <option value="Aufbauspiel">Aufbauspiel</option>
-              <option value="Robert hat Spaß">Robert hat Spaß</option>
-              <option value="RPG">RPG</option>
-              <option value="MMO">MMO</option>
-              <option value="Krieg">Krieg</option>
-              <option value="Weltraum">Weltraum</option>
-              <option value="Story">Story</option>
-              <option value="Cyberpunk">Cyberpunk</option>
-              <option value="FPS">FPS</option>
+              <option v-for="genre in genres" :key="genre" :value="genre">
+                {{ genre }}
+              </option>
             </select>
           </div>
         </div>
@@ -100,6 +87,31 @@ export default Vue.extend({
       maxPrice: 0,
       releaseDate: "",
       filter: {} as GameFilter,
+      genres: [
+        "Horror",
+        "Abenteuer",
+        "Physik",
+        "Survival",
+        "Simulation",
+        "Aufbauspiel",
+        "Robert hat Spaß",
+        "RPG",
+        "MMO",
+        "Krieg",
+        "Weltraum",
+        "Story",
+        "Cyberpunk",
+        "FPS",
+      ],
+      companies: [
+        "Valve",
+        "Adobe",
+        "343 Studios",
+        "Paradox Interactive",
+        "CD Projekt Red",
+        "RA Micro Software AG",
+        "Respawn",
+      ],
     };
   },
   methods: {
