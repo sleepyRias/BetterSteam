@@ -45,7 +45,7 @@
     />
     <div v-if="!isGamesLoading" class="columns is-gapless is-multiline">
       <div
-        class="column is-one-third"
+        class="column is-one-quarter"
         v-for="game in filteredList"
         :key="game.id"
       >
@@ -223,17 +223,5 @@ body {
   padding: 0;
   margin: 4px 6px;
   color: #fcd303;
-}
-.light-theme {
-  background-color: $background-light-theme-color;
-  color: $primary-light-theme-color;
-}
-.dark-theme {
-  background-color: $background-dark-theme-color;
-  color: $primary-dark-theme-color;
-}
-.red-gradient-theme {
-  background: $background-red-gradient-color;
-  color: $primary-red-gradient-color;
 }
 </style>
