@@ -128,15 +128,7 @@ export default Vue.extend({
     },
     nextPage() {
       if (this.filter) {
-        repo.getGames({
-          page: 0,
-          name: "",
-          company: "",
-          genre: "",
-          minPrice: 0,
-          maxPrice: 0,
-          releaseDate: "",
-        });
+        repo.getGames(this.filter);
       }
     },
     prevPage() {
