@@ -1,9 +1,8 @@
 <template>
   <div class="betterSteam" :class="themeClass">
-    <user-modal v-if="showUser" class="is-active" @close="showUser = false" />
+    <user-modal v-if="showUser" @close="showUser = false" />
     <filter-modal
       v-if="showFilter"
-      class="is-active"
       @close="showFilter = false"
       @submit="updateFilter"
     />
@@ -189,6 +188,7 @@ body {
   background: none;
   color: #1b1d9e;
   margin: 5px 5px 0 0;
+  cursor: pointer;
 }
 .main-header {
   display: flex;
