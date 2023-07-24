@@ -19,9 +19,19 @@ namespace backend.Controllers
             _dataProvider = dataProvider;
         }
 
-        // by default returns 54 entries, if amount == 0, return all
-        //      this will introduce a bug when you filter for exactly 54 games (amount == 54)
-        //      in this case the amount filter will not work and it returns all entries
+        [HttpGet(Endpoints.GameController.GetGameById, Name = "GetGameById")]
+        public IActionResult GetGames(int id)
+        {
+            var game = _dataProvider.Games.FirstOrDefault(g => g.Id == id);
+            if (game == null)
+            {
+                return NotFound(); // Falls das Spiel mit der angegebenen ID nicht gefunden wurde
+            }
+
+            return Ok(game);
+        }
+        
+
         [HttpGet(Endpoints.GameController.GetGames, Name = "GetGames")]
         public IEnumerable<Game> GetGames(
             int page = 1,
@@ -99,7 +109,7 @@ namespace backend.Controllers
         }
 
 
-        [HttpPost("Games", Name = "CreateGame")]
+        [HttpPost(Endpoints.GameController.CreateGame, Name = "CreateGame")]
         public IActionResult CreateGame([FromBody] Game game)
         {
             if (game == null)
@@ -114,7 +124,7 @@ namespace backend.Controllers
         }
 
 
-        [HttpDelete("Games/{id}")]
+        [HttpDelete(Endpoints.GameController.DeleteGame)]
         public IActionResult DeleteGame(int id)
         {
             var game = _dataProvider.Games.FirstOrDefault(g => g.Id == id);
@@ -129,7 +139,7 @@ namespace backend.Controllers
             return NoContent(); // Erfolgreiches Löschen (kein Inhalt zurückgegeben)
         }
 
-        [HttpPut("Games/{id}")]
+        [HttpPut(Endpoints.GameController.UpdateGame)]
         public IActionResult UpdateGame(int id, [FromBody] Game updatedGame)
         {
             var game = _dataProvider.Games.FirstOrDefault(g => g.Id == id);
