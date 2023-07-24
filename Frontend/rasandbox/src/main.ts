@@ -13,8 +13,8 @@ const routes = [
   {
     path: "/",
     component: App,
-    props: (route: Route) => ({
-      page: route.query.page ? parseInt(route.query.page as string) : undefined,
+    props: (route: any) => ({
+      page: parseInt(route.query.page as string),
       name: route.query.name,
       company: route.query.company,
       genre: route.query.genre,

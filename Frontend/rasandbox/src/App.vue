@@ -135,13 +135,13 @@ export default Vue.extend({
       return {
         path: "/items",
         query: {
-          page: String(this.filter.page),
-          name: this.filter.name,
-          company: this.filter.company,
-          genre: this.filter.genre,
-          minPrice: String(this.filter.minPrice),
-          maxPrice: String(this.filter.maxPrice),
-          releaseDate: this.filter.releaseDate,
+          page: String(this.$route.query.page),
+          name: this.$route.query.name,
+          company: this.$route.query.company,
+          genre: this.$route.query.genre,
+          minPrice: String(this.$route.query.minPrice),
+          maxPrice: String(this.$route.query.maxPrice),
+          releaseDate: this.$route.query.releaseDate,
         },
       };
     },
