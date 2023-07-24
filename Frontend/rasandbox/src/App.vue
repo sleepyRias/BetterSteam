@@ -42,8 +42,7 @@
     </div>
     <i
       v-if="isGamesLoading"
-      class="fa-solid fa-spinner fa-4x"
-      :class="{ 'loading-spinner': isGamesLoading }"
+      class="fa-solid fa-spinner fa-4x loading-spinner"
     />
     <div v-if="!isGamesLoading" class="columns is-gapless is-multiline">
       <div
@@ -115,7 +114,15 @@ export default Vue.extend({
       return genres.includes(this.filter.genre);
     },
     async getGames() {
-      this.gamesList = await repo.getGames({});
+      this.gamesList = await repo.getGames({
+        page: 1,
+        name: "",
+        company: "",
+        genre: "",
+        minPrice: 20,
+        maxPrice: 100,
+        releaseDate: "",
+      });
     },
     filterList() {
       if (this.filter) {
@@ -125,7 +132,15 @@ export default Vue.extend({
     },
     nextPage() {
       if (this.filter) {
-        repo.getGames(this.filter);
+        repo.getGames({
+          page: 0,
+          name: "",
+          company: "",
+          genre: "",
+          minPrice: 0,
+          maxPrice: 0,
+          releaseDate: "",
+        });
       }
     },
     prevPage() {
