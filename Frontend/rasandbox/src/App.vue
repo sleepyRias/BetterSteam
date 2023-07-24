@@ -19,6 +19,12 @@
       </span>
       <span>Filter</span>
     </button>
+    <h3>show {{ filter?.page }} items per page</h3>
+    <div class="buttons has-addons">
+      <button class="button" @click="setPageAmountTo(20)">20 items</button>
+      <button class="button" @click="setPageAmountTo(40)">40 items</button>
+      <button class="button" @click="setPageAmountTo(60)">60 items</button>
+    </div>
     <i
       v-if="isGamesLoading"
       class="fa-solid fa-spinner fa-4x"
@@ -93,12 +99,18 @@ export default Vue.extend({
       }
       return genres.includes(this.filter.genre);
     },
-    async getGames(amount: number) {
-      this.gamesList = await repo.getGames(amount);
+    async getGames() {
+      this.gamesList = await repo.getGames();
+    },
+    setPageAmountTo(amount: number) {
+      if (this.filter) {
+        this.filter.page = amount;
+      }
     },
     filterList() {
       if (this.filter) {
-        repo.filterGames(
+        repo.getGames(
+          this.filter.page,
           this.filter.genre,
           this.filter.company,
           this.filter.minPrice,
@@ -108,7 +120,6 @@ export default Vue.extend({
         );
       }
       return true;
-      // TODO filter im backend niklas hat das was safe
     },
   },
   computed: {
@@ -132,7 +143,7 @@ export default Vue.extend({
   },
   beforeMount() {
     this.isGamesLoading = true;
-    this.getGames(0);
+    this.getGames();
     this.isGamesLoading = false;
   },
 });

@@ -1,6 +1,5 @@
 import { AxiosRepository } from "./AxiosRepository";
 import { Game } from "../interfaces/Game";
-import { games } from "../../src/response";
 import { SteamRepository } from "../repos/SteamRepository";
 
 export class SteamRepositoryAxios
@@ -8,19 +7,18 @@ export class SteamRepositoryAxios
   implements SteamRepository
 {
   private basePath = "https://localhost:7091/api";
-  public loadGames() {
-    return games;
-  }
-  public filterGames(
-    genreFilter: string,
-    company: string,
-    minPrice: number,
-    maxPrice: number,
-    name: string,
-    minRealseDate: string
+  public getGames(
+    page?: number,
+    genreFilter?: string,
+    company?: string,
+    minPrice?: number,
+    maxPrice?: number,
+    name?: string,
+    minRealseDate?: string
   ) {
-    return this.sendGet<Game[]>(`${this.basePath}/GamesController/Games`, {
+    return this.sendGet<Game[]>(`${this.basePath}/GameController/Games`, {
       params: {
+        page: page,
         filter: name,
         gFilter: genreFilter,
         companyFilter: company,
@@ -28,11 +26,6 @@ export class SteamRepositoryAxios
         priceMaxFilter: maxPrice,
         minRDFilter: minRealseDate,
       },
-    });
-  }
-  public getGames(amount: number) {
-    return this.sendGet<Game[]>(`${this.basePath}/GameController/Games`, {
-      params: { amount: amount },
     });
   }
 }
