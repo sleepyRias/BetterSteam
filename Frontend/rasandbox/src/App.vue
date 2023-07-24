@@ -9,6 +9,7 @@
     <div class="main-header">
       <h1 class="main-title">Sandbox Project</h1>
       <button @click="showUser = true" class="user-button">
+        <!-- user button und fav button erben von button class -->
         <i class="fa-regular fa-user fa-2x" />
       </button>
     </div>
@@ -26,6 +27,7 @@
     </div>
     <div class="field is-grouped">
       <button class="button" @click="prevPage">
+        <!-- button disablen wenn page == 1 -->
         <span>
           <i class="fa-solid fa-arrow-left"></i>
         </span>
@@ -51,6 +53,7 @@
       >
         <div class="gameBox">
           <ul>
+            <!-- digga was ist das mach das mal anders digga -->
             <li>{{ game.name }}</li>
             <li>{{ game.price }}€</li>
             <li>{{ game.company }}</li>
