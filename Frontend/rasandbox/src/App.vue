@@ -127,14 +127,10 @@ export default Vue.extend({
       return true;
     },
     nextPage() {
-      if (this.filter) {
-        repo.getGames(this.filter);
-      }
+      this.filter.page++;
     },
     prevPage() {
-      if (this.filter) {
-        repo.getGames(this.filter);
-      }
+      this.filter.page--;
     },
   },
   computed: {
