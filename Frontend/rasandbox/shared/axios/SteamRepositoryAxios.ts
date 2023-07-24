@@ -1,38 +1,24 @@
 import { AxiosRepository } from "./AxiosRepository";
 import { Game } from "../interfaces/Game";
-import { games } from "../../src/response";
 import { SteamRepository } from "../repos/SteamRepository";
+import { GameFilter } from "shared/interfaces/filters";
 
 export class SteamRepositoryAxios
   extends AxiosRepository
   implements SteamRepository
 {
   private basePath = "https://localhost:7091/api";
-  public loadGames() {
-    return games;
-  }
-  public filterGames(
-    genreFilter: string,
-    company: string,
-    minPrice: number,
-    maxPrice: number,
-    name: string,
-    minRealseDate: string
-  ) {
-    return this.sendGet<Game[]>(`${this.basePath}/GamesController/Games`, {
-      params: {
-        filter: name,
-        gFilter: genreFilter,
-        companyFilter: company,
-        priceMinFilter: minPrice,
-        priceMaxFilter: maxPrice,
-        minRDFilter: minRealseDate,
-      },
-    });
-  }
-  public getGames(amount: number) {
+  public getGames(filter: GameFilter) {
     return this.sendGet<Game[]>(`${this.basePath}/GameController/Games`, {
-      params: { amount: amount },
+      params: {
+        page: filter.page,
+        filter: filter.name,
+        gFilter: filter.genre,
+        companyFilter: filter.company,
+        priceMinFilter: filter.minPrice,
+        priceMaxFilter: filter.maxPrice,
+        minRDFilter: filter.releaseDate,
+      },
     });
   }
 }
