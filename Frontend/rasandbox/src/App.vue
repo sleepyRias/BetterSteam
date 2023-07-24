@@ -19,11 +19,26 @@
       </span>
       <span>Filter</span>
     </button>
-    <h3>show {{ filter?.page }} items per page</h3>
+    <h3>show {{ amountPerPage }} items per page</h3>
     <div class="buttons has-addons">
-      <button class="button" @click="setPageAmountTo(20)">20 items</button>
-      <button class="button" @click="setPageAmountTo(40)">40 items</button>
-      <button class="button" @click="setPageAmountTo(60)">60 items</button>
+      <button class="button" @click="amountPerPage = 20">20 items</button>
+      <button class="button" @click="amountPerPage = 40">40 items</button>
+      <button class="button" @click="amountPerPage = 60">60 items</button>
+    </div>
+    <div class="field is-grouped">
+      <button class="button" @click="prevPage">
+        <span>
+          <i class="fa-solid fa-arrow-left"></i>
+        </span>
+      </button>
+      <button class="button">
+        {{ filter?.page }}
+      </button>
+      <button class="button">
+        <span>
+          <i class="fa-solid fa-arrow-right" @click="nextPage"></i>
+        </span>
+      </button>
     </div>
     <i
       v-if="isGamesLoading"
@@ -74,6 +89,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      amountPerPage: 20,
       gamesList: [] as Game[],
       showUser: false,
       showFilter: false,
@@ -83,7 +99,6 @@ export default Vue.extend({
     };
   },
   methods: {
-    // WEG
     updateFilter(filter: GameFilter) {
       this.filter = { ...this.filter, ...filter };
     },
@@ -100,26 +115,23 @@ export default Vue.extend({
       return genres.includes(this.filter.genre);
     },
     async getGames() {
-      this.gamesList = await repo.getGames();
-    },
-    setPageAmountTo(amount: number) {
-      if (this.filter) {
-        this.filter.page = amount;
-      }
+      this.gamesList = await repo.getGames({});
     },
     filterList() {
       if (this.filter) {
-        repo.getGames(
-          this.filter.page,
-          this.filter.genre,
-          this.filter.company,
-          this.filter.minPrice,
-          this.filter.maxPrice,
-          this.filter.name,
-          this.filter.releaseDate
-        );
+        repo.getGames(this.filter);
       }
       return true;
+    },
+    nextPage() {
+      if (this.filter) {
+        repo.getGames(this.filter);
+      }
+    },
+    prevPage() {
+      if (this.filter) {
+        repo.getGames(this.filter);
+      }
     },
   },
   computed: {
@@ -137,8 +149,7 @@ export default Vue.extend({
       }
     },
     filteredList(): Game[] {
-      const list = this.gamesList;
-      return list.filter(this.filterList);
+      return this.gamesList.filter(this.filterList);
     },
   },
   beforeMount() {
