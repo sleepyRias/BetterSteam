@@ -88,7 +88,15 @@ export default Vue.extend({
       gamesList: [] as Game[],
       showUser: false,
       showFilter: false,
-      filter: null as GameFilter | null,
+      filter: {
+        page: 1,
+        name: "",
+        company: "",
+        genre: "",
+        minPrice: 0,
+        maxPrice: 100,
+        releaseDate: "",
+      } as GameFilter,
       isFavorited: false,
       isGamesLoading: false,
     };
@@ -110,15 +118,7 @@ export default Vue.extend({
       return genres.includes(this.filter.genre);
     },
     async getGames() {
-      this.gamesList = await repo.getGames({
-        page: 1,
-        name: "",
-        company: "",
-        genre: "",
-        minPrice: 20,
-        maxPrice: 100,
-        releaseDate: "",
-      });
+      this.gamesList = await repo.getGames(this.filter);
     },
     filterList() {
       if (this.filter) {
