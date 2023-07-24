@@ -150,17 +150,7 @@ export default Vue.extend({
   },
   computed: {
     themeClass() {
-      const theme = this.$store.getters.getTheme;
-      switch (theme) {
-        case "light-theme":
-          return "light-theme";
-        case "dark-theme":
-          return "dark-theme";
-        case "red-gradient-theme":
-          return "red-gradient-theme";
-        default:
-          return "light-theme";
-      }
+      return this.$store.getters.getTheme;
     },
     filteredList(): Game[] {
       return this.gamesList.filter(this.filterList);
