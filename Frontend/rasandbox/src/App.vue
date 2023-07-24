@@ -138,13 +138,13 @@ export default Vue.extend({
     },
   },
   computed: {
-    themeClass() {
+    themeClass(): string {
       return this.$store.getters.getTheme;
     },
     filteredList(): Game[] {
       return this.gamesList.filter(this.filterList);
     },
-    favGameClass() {
+    favGameClass(): string {
       return this.isFavorited ? "fa-solid" : "fa-regular";
     },
   },
