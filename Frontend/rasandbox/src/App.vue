@@ -31,7 +31,7 @@
         </span>
       </button>
       <button class="button is-static">
-        {{ filter?.page }}
+        {{ page }}
       </button>
       <button class="button">
         <span>
@@ -80,6 +80,7 @@ import { SteamRepositoryAxios } from "../shared/axios/SteamRepositoryAxios";
 import UserModal from "./components/User-modal.vue";
 import FilterModal from "./components/Filter-modal.vue";
 import { GameFilter } from "../shared/interfaces/filters";
+import { RawLocation } from "vue-router";
 export default Vue.extend({
   name: "App",
   components: {
@@ -92,15 +93,6 @@ export default Vue.extend({
       gamesList: [] as Game[],
       showUser: false,
       showFilter: false,
-      filter: {
-        page: 1,
-        name: "",
-        company: "",
-        genre: "",
-        minPrice: 0,
-        maxPrice: 100,
-        releaseDate: "",
-      } as GameFilter,
       isFavorited: false,
       isGamesLoading: false,
     };
@@ -110,13 +102,13 @@ export default Vue.extend({
       this.filter = { ...this.filter, ...filter };
     },
     isInPricerange(price: number): boolean {
-      if (!this.filter) {
+      if (!(this.filter.maxPrice && this.filter.minPrice)) {
         return true;
       }
       return price >= this.filter.minPrice && price <= this.filter.maxPrice;
     },
     isInGenre(genres: string[]): boolean {
-      if (!this.filter) {
+      if (!this.filter.genre) {
         return true;
       }
       return genres.includes(this.filter.genre);
@@ -125,25 +117,44 @@ export default Vue.extend({
       this.gamesList = await repo.getGames(this.filter);
     },
     nextPage() {
-      this.filter.page++;
-      this.updateRoute();
+      this.routeTo({
+        path: "/items",
+        query: { page: String(this.filter.page ?? 1 + 1) },
+      });
     },
     prevPage() {
-      this.filter.page--;
-      this.updateRoute();
+      this.routeTo({
+        path: "/items",
+        query: { page: String(this.filter.page ?? 1 - 1) },
+      });
     },
     updateRoute() {
-      this.$router.push({ path: "/items", query: this.filter });
+      this.routeTo(this.routeToItems());
     },
-    updateCurrentPageFromRoute() {
-      this.filter.page = Number(this.$route.query.page);
-      this.filter.name = String(this.$route.query.name);
-      this.filter.company = String(this.$route.query.company);
-      this.filter.genre = String(this.$route.query.genre);
-      this.filter.maxPrice = Number(this.$route.query.maxPrice);
-      this.filter.minPrice = Number(this.$route.query.minPrice);
-      this.filter.releaseDate = String(this.$route.query.releaseDate);
-      console.log(this.filter);
+    routeToItems(): RawLocation {
+      return {
+        path: "/items",
+        query: {
+          page: String(this.filter.page),
+          name: this.filter.name,
+          company: this.filter.company,
+          genre: this.filter.genre,
+          minPrice: String(this.filter.minPrice),
+          maxPrice: String(this.filter.maxPrice),
+          releaseDate: this.filter.releaseDate,
+        },
+      };
+    },
+    async routeTo(location: RawLocation) {
+      try {
+        await this.$router.push(location);
+      } catch (err) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (err?.name !== "NavigationDuplicated") {
+          throw err;
+        }
+      }
     },
   },
   computed: {
@@ -153,16 +164,38 @@ export default Vue.extend({
     favGameClass(): string {
       return this.isFavorited ? "fa-solid" : "fa-regular";
     },
+    filter(): GameFilter {
+      return {
+        page: this.page,
+        company: this.company,
+        name: this.name,
+        genre: this.genre,
+        maxPrice: this.maxPrice,
+        minPrice: this.minPrice,
+        releaseDate: this.releaseDate,
+      };
+    },
   },
   watch: {
     filter: {
       deep: true,
-      immediate: true,
       handler() {
         this.getGames();
+        this.updateRoute();
       },
     },
-    "$route.query.page": "updateCurrentPageFromRoute",
+  },
+  props: {
+    page: { type: Number, default: undefined },
+    name: { type: String, default: undefined },
+    company: { type: String, default: undefined },
+    genre: { type: String, default: undefined },
+    maxPrice: { type: Number, default: undefined },
+    minPrice: { type: Number, default: undefined },
+    releaseDate: { type: String, default: undefined },
+  },
+  mounted() {
+    this.getGames();
   },
 });
 </script>

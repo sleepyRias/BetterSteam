@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import App from "./App.vue";
-import VueRouter from "vue-router";
+import VueRouter, { Route } from "vue-router";
 import { storeOptions } from "./store/store";
 import "@/assets/main.scss";
 
@@ -10,7 +10,19 @@ Vue.use(VueRouter);
 Vue.config.productionTip = false;
 
 const routes = [
-  { path: "/items", component: App },
+  {
+    path: "/",
+    component: App,
+    props: (route: Route) => ({
+      page: route.query.page ? parseInt(route.query.page as string) : undefined,
+      name: route.query.name,
+      company: route.query.company,
+      genre: route.query.genre,
+      maxPrice: parseInt(route.query.maxPrice as string),
+      minPrice: parseInt(route.query.minPrice as string),
+      releaseDate: route.query.releaseDate,
+    }),
+  },
   // more routes hier
 ];
 
