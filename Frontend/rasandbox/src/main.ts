@@ -10,7 +10,7 @@ Vue.use(VueRouter);
 Vue.config.productionTip = false;
 
 const routes = [
-  { path: "/", component: App },
+  { path: "/items", component: App },
   // more routes hier
 ];
 

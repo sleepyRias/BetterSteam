@@ -126,9 +126,20 @@ export default Vue.extend({
     },
     nextPage() {
       this.filter.page++;
+      this.updateRoute();
     },
     prevPage() {
       this.filter.page--;
+      this.updateRoute();
+    },
+    updateRoute() {
+      this.$router.push({ path: "/page", query: { page: this.filter.page } });
+    },
+    updateCurrentPageFromRoute() {
+      const page = Number(this.$route.query.page);
+      if (!isNaN(page) && page > 0) {
+        this.filter.page = page;
+      }
     },
   },
   computed: {
@@ -147,6 +158,7 @@ export default Vue.extend({
         this.getGames();
       },
     },
+    "$route.query.page": "updateCurrentPageFromRoute",
   },
 });
 </script>
