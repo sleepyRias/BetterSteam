@@ -1,6 +1,6 @@
 # Game Management API
 
-![Project Logo](project-logo.png) <!-- Wenn du ein Logo hast -->
+![Project Logo](project-logo.jpeg)
 
 ## Beschreibung
 
