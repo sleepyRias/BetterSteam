@@ -134,6 +134,9 @@ export default Vue.extend({
       },
     },
   },
+  created() {
+    this.filter.page = Number(this.$route.query.page) || 1;
+  },
 });
 </script>
 
