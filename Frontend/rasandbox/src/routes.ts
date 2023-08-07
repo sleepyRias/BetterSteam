@@ -10,8 +10,13 @@ const routes = [
     name: "GameBox",
     component: GameBox,
     props: (route: any) => ({
-      page: route.query.page || "",
-      genre: route.query.company || "",
+      page: route.query.page || 1,
+      company: route.query.company || "",
+      genre: route.query.genre || "",
+      name: route.query.name || "",
+      releaseDate: route.query.releaseDate || "",
+      minPrice: route.query.minPrice || 0,
+      maxPrice: route.query.maxPrice || 100,
     }),
   },
 ];

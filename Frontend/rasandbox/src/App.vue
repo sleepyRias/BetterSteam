@@ -112,9 +112,14 @@ export default Vue.extend({
     },
     nextPage() {
       this.filter.page++;
+      this.updateRoute({ page: this.filter.page });
     },
     prevPage() {
       this.filter.page--;
+      this.updateRoute({ page: this.filter.page });
+    },
+    updateRoute(updatedRoute: any) {
+      this.$router.push({ path: "/games", query: updatedRoute });
     },
   },
   computed: {
@@ -135,8 +140,13 @@ export default Vue.extend({
     },
   },
   created() {
-    this.filter.page = Number(this.$route.query.page) || 1;
-    this.filter.company = String(this.$route.query.company) || "";
+    this.filter.page = Number(this.$route.query.page || 1);
+    this.filter.company = String(this.$route.query.company || "");
+    this.filter.genre = String(this.$route.query.genre || "");
+    this.filter.name = String(this.$route.query.name || "");
+    this.filter.releaseDate = String(this.$route.query.releaseDate || "");
+    this.filter.minPrice = Number(this.$route.query.minPrice || 1);
+    this.filter.maxPrice = Number(this.$route.query.maxPrice || 100);
   },
 });
 </script>
