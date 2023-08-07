@@ -77,8 +77,8 @@ export default Vue.extend({
     return {
       amountPerPage: 20,
       gamesList: [] as Game[],
-      showUser: false,
-      showFilter: false,
+      showUserOLD: false,
+      showFilterOLD: false,
       filter: {
         page: 1,
         name: "",
@@ -166,6 +166,26 @@ export default Vue.extend({
   computed: {
     themeClass(): string {
       return this.$store.getters.getTheme;
+    },
+    showUser: {
+      get() {
+        return this.$route.query.user === "true";
+      },
+      set(value) {
+        this.$router.push({
+          query: { ...this.$route.query, user: value ? "true" : undefined },
+        });
+      },
+    },
+    showFilter: {
+      get() {
+        return this.$route.query.filter === "true";
+      },
+      set(value) {
+        this.$router.push({
+          query: { ...this.$route.query, filter: value ? "true" : undefined },
+        });
+      },
     },
   },
   watch: {
