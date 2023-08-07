@@ -94,6 +94,7 @@ export default Vue.extend({
   methods: {
     updateFilter(filter: GameFilter) {
       this.filter = { ...this.filter, ...filter };
+      this.updateRoute();
     },
     isInPricerange(price: number): boolean {
       if (!this.filter) {
@@ -112,14 +113,23 @@ export default Vue.extend({
     },
     nextPage() {
       this.filter.page++;
-      this.updateRoute({ page: this.filter.page });
+      this.updateRoute();
     },
     prevPage() {
       this.filter.page--;
-      this.updateRoute({ page: this.filter.page });
+      this.updateRoute();
     },
-    updateRoute(updatedRoute: any) {
-      this.$router.push({ path: "/games", query: updatedRoute });
+    updateRoute() {
+      const queryParameters: any = {
+        page: this.filter.page,
+        genre: this.filter.genre,
+        name: this.filter.name,
+        company: this.filter.company,
+        minPrice: this.filter.minPrice,
+        maxPrice: this.filter.maxPrice,
+        releaseDate: this.filter.releaseDate,
+      };
+      this.$router.push({ path: "/games", query: queryParameters });
     },
   },
   computed: {
