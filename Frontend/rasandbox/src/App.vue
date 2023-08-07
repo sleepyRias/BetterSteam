@@ -217,6 +217,7 @@ body {
 }
 .betterSteam {
   height: 100%;
+  padding: 0 20px 0 20px;
 }
 .betterSteamButton {
   border: none;

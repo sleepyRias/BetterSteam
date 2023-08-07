@@ -1,5 +1,5 @@
 <template>
-  <div class="gameBox">
+  <div class="gameBox" :class="themeClass">
     <ul>
       <!-- digga was ist das mach das mal anders digga -->
       <li>{{ Game.name }}</li>
@@ -30,6 +30,9 @@ export default Vue.extend({
     };
   },
   computed: {
+    themeClass(): string {
+      return this.$store.getters.getTheme;
+    },
     favGameClass(): string {
       return this.isFavorited ? "fa-solid" : "fa-regular";
     },
@@ -37,10 +40,26 @@ export default Vue.extend({
 });
 </script>
 <style lang="scss" scoped>
+@import "../../shared/themes.scss";
 .gameBox {
   // ONG das muss anders werden my eyes are bleeding
-  border: 1px solid black;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   margin: 10px 5px 0px 5px;
   position: relative;
+  border-radius: 5px;
+  padding: 0px 5px 0px 10px;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.8);
+    transform: scale(1.08);
+    z-index: 1000;
+  }
+}
+.light-theme {
+  background-color: $secondary-light-theme-color;
+}
+.dark-theme {
+  background-color: $secondary-dark-theme-color;
 }
 </style>
