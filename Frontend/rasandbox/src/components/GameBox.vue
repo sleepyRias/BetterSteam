@@ -1,12 +1,18 @@
 <template>
   <div class="gameBox" :class="themeClass">
-    <ul>
-      <!-- digga was ist das mach das mal anders digga -->
-      <li>{{ Game.name }}</li>
-      <li>{{ Game.price }}€</li>
-      <li>{{ Game.company }}</li>
-      <li>{{ Game.releaseDate }}</li>
-    </ul>
+    <div class="columns">
+      <div class="column is-one-third">
+        <figure class="image is-128x128">
+          <img src="https://bulma.io/images/placeholders/128x128.png" />
+        </figure>
+      </div>
+      <div class="column is-two-third gameinfo">
+        <p class="gametitle">{{ Game.name }}</p>
+        <p class="gamecompany">{{ Game.company }}</p>
+        <span class="gameprice">{{ `${Game.price.toFixed(2)}€` }} </span>
+        <p class="gamedate">{{}}</p>
+      </div>
+    </div>
     <button
       class="betterSteamButton--favorite"
       @click="isFavorited = !isFavorited"
@@ -42,12 +48,11 @@ export default Vue.extend({
 <style lang="scss" scoped>
 @import "../../shared/themes.scss";
 .gameBox {
-  // ONG das muss anders werden my eyes are bleeding
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   margin: 10px 5px 0px 5px;
   position: relative;
   border-radius: 5px;
-  padding: 0px 5px 0px 10px;
+  padding: 6px;
   transition: transform 0.2s ease;
 
   &:hover {
@@ -55,6 +60,24 @@ export default Vue.extend({
     transform: scale(1.08);
     z-index: 1000;
   }
+}
+.gameprice {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: darkgreen;
+  font-size: 18pt;
+  font-weight: 600;
+}
+.gametitle {
+  font-size: 15pt;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+}
+.gamecompany {
+  font-size: small;
+}
+.gameinfo {
+  position: relative;
 }
 .light-theme {
   background-color: $secondary-light-theme-color;
