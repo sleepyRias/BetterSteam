@@ -11,7 +11,7 @@ const routes = [
     component: GameBox,
     props: (route: any) => ({
       page: route.query.page || "",
-      genre: route.query.genre || "",
+      genre: route.query.company || "",
     }),
   },
 ];
