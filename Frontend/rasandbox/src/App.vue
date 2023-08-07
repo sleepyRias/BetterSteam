@@ -49,23 +49,7 @@
         v-for="game in gamesList"
         :key="game.id"
       >
-        <div class="gameBox">
-          <ul>
-            <!-- digga was ist das mach das mal anders digga -->
-            <li>{{ game.name }}</li>
-            <li>{{ game.price }}€</li>
-            <li>{{ game.company }}</li>
-            <li>{{ game.releaseDate }}</li>
-          </ul>
-          <button
-            class="betterSteamButton--favorite"
-            @click="isFavorited = !isFavorited"
-          >
-            <span class="icon">
-              <i :class="favGameClass" class="fa-star fa-lg" />
-            </span>
-          </button>
-        </div>
+        <game-box :Game="game" />
       </div>
     </div>
   </div>
@@ -80,11 +64,13 @@ import { SteamRepositoryAxios } from "../shared/axios/SteamRepositoryAxios";
 import UserModal from "./components/User-modal.vue";
 import FilterModal from "./components/Filter-modal.vue";
 import { GameFilter } from "../shared/interfaces/filters";
+import GameBox from "./components/GameBox.vue";
 export default Vue.extend({
   name: "App",
   components: {
     UserModal,
     FilterModal,
+    GameBox,
   },
   data() {
     return {
@@ -206,11 +192,5 @@ body {
   100% {
     transform: rotate(360deg);
   }
-}
-.gameBox {
-  // ONG das muss anders werden my eyes are bleeding
-  border: 1px solid black;
-  margin: 10px 5px 0px 5px;
-  position: relative;
 }
 </style>
