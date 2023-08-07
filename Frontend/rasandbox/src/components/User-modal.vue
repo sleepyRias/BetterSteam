@@ -26,7 +26,9 @@
               <option :value="'light-theme'">Lightmode</option>
               <option :value="'red-gradient-theme'">Red Gradient</option>
             </select>
-            <button class="button is-info" @click="setTheme">Save</button>
+            <button class="button is-info" @click="saveUserWithKey(username)">
+              Save
+            </button>
           </div>
         </div>
         <div v-else-if="name === ''">
@@ -71,7 +73,7 @@ export default Vue.extend({
       username: "",
       name: "",
       favoriteGamesList: [] as Game[],
-      colorScheme: "",
+      colorScheme: "light-theme",
       newUser: {
         name: "",
         username: "",
@@ -85,6 +87,7 @@ export default Vue.extend({
         name: this.newUser.name,
         username: this.newUser.username,
         favoriteGamesList: this.newUser.favoriteGamesList,
+        colorScheme: this.colorScheme,
       };
       localStorage.setItem(user.username, JSON.stringify(user));
       this.loadUserWithKey(user.username);
@@ -98,10 +101,21 @@ export default Vue.extend({
       this.username = user.username;
       this.favoriteGamesList = user.favoriteGamesList;
       this.colorScheme = user.colorScheme;
-      this.$store.dispatch("setTheme", user.colorScheme);
+      this.$store.dispatch("setTheme", this.colorScheme);
     },
     setTheme() {
       this.$store.dispatch("setTheme", this.colorScheme);
+    },
+    saveUserWithKey(key: string) {
+      const user: User = {
+        id: 0,
+        name: this.name,
+        username: key,
+        favoriteGamesList: this.favoriteGamesList,
+        colorScheme: this.colorScheme,
+      };
+      localStorage.setItem(user.username, JSON.stringify(user));
+      this.setTheme();
     },
   },
   computed: {

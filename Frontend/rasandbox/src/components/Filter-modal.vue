@@ -61,7 +61,7 @@
         </div>
       </div>
       <button class="button is-success" @click="submitFilter">Submit</button>
-      <button class="button is-danger" @click="submitFilter">
+      <button class="button is-danger" @click="clearFilter">
         Clear Filter
       </button>
     </template>
@@ -117,6 +117,20 @@ export default Vue.extend({
   methods: {
     submitFilter() {
       this.$emit("submit", this.filter);
+      this.$emit("close");
+    },
+    clearFilter() {
+      const defaultFilter = {
+        page: 1,
+        name: "",
+        company: "",
+        genre: "",
+        minPrice: 0,
+        maxPrice: 100,
+        releaseDate: "",
+      };
+      this.filter = { ...defaultFilter };
+      this.$emit("clearFilter");
       this.$emit("close");
     },
   },
