@@ -10,7 +10,7 @@
         <p class="gametitle">{{ Game.name }}</p>
         <p class="gamecompany">{{ Game.company }}</p>
         <span class="gameprice">{{ `${Game.price.toFixed(2)}€` }} </span>
-        <p class="gamedate">{{}}</p>
+        <p class="gamedate">{{ formattedDate }}</p>
       </div>
     </div>
     <button
@@ -25,6 +25,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import moment from "moment";
 export default Vue.extend({
   name: "GameBox",
   props: {
@@ -33,6 +34,7 @@ export default Vue.extend({
   data() {
     return {
       isFavorited: false,
+      formattedDate: "",
     };
   },
   computed: {
@@ -42,6 +44,9 @@ export default Vue.extend({
     favGameClass(): string {
       return this.isFavorited ? "fa-solid" : "fa-regular";
     },
+  },
+  mounted() {
+    this.formattedDate = moment(this.Game.releaseDate).format("DD.MM.YYYY");
   },
 });
 </script>
@@ -78,6 +83,10 @@ export default Vue.extend({
 }
 .gameinfo {
   position: relative;
+}
+.gamedate {
+  position: absolute;
+  bottom: 0;
 }
 .light-theme {
   background-color: $secondary-light-theme-color;
