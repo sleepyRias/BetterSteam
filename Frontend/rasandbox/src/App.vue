@@ -5,6 +5,7 @@
       v-if="showFilter"
       @close="showFilter = false"
       @submit="updateFilter"
+      @clearFilter="clearFilter"
     />
     <div class="main-header">
       <h1 class="main-title">Sandbox Project</h1>
@@ -122,24 +123,49 @@ export default Vue.extend({
     updateRoute() {
       // basically stfu eslint and dont worry i dont know what im doings
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const queryParameters: any = {
-        page: this.filter.page,
-        genre: this.filter.genre,
-        name: this.filter.name,
-        company: this.filter.company,
-        minPrice: this.filter.minPrice,
-        maxPrice: this.filter.maxPrice,
-        releaseDate: this.filter.releaseDate,
+      const queryParameters: any = {};
+
+      // Add the parameters to the queryParameters object if they have non-empty values (GPT did this)
+      if (this.filter.page !== 1) queryParameters.page = this.filter.page;
+      if (this.filter.genre !== "") queryParameters.genre = this.filter.genre;
+      if (this.filter.name !== "") queryParameters.name = this.filter.name;
+      if (this.filter.company !== "")
+        queryParameters.company = this.filter.company;
+      if (this.filter.minPrice !== 0)
+        queryParameters.minPrice = this.filter.minPrice;
+      if (this.filter.maxPrice !== 100)
+        queryParameters.maxPrice = this.filter.maxPrice;
+      if (this.filter.releaseDate !== "")
+        queryParameters.releaseDate = this.filter.releaseDate;
+
+      // Check if the new query parameters are different from the current ones
+      const currentQuery = this.$route.query;
+      const isDifferent = Object.keys(queryParameters).some((key) => {
+        return queryParameters[key] !== currentQuery[key];
+      });
+
+      // Perform the navigation only if the query parameters are different
+      if (isDifferent) {
+        this.$router.push({ path: "/games", query: queryParameters });
+      }
+    },
+    clearFilter() {
+      const defaultFilter = {
+        page: 1,
+        name: "",
+        company: "",
+        genre: "",
+        minPrice: 0,
+        maxPrice: 100,
+        releaseDate: "",
       };
-      this.$router.push({ path: "/games", query: queryParameters });
+      this.filter = { ...defaultFilter };
+      this.$router.push({ path: "/games", query: {} });
     },
   },
   computed: {
     themeClass(): string {
       return this.$store.getters.getTheme;
-    },
-    favGameClass(): string {
-      return this.isFavorited ? "fa-solid" : "fa-regular";
     },
   },
   watch: {
@@ -157,7 +183,7 @@ export default Vue.extend({
     this.filter.genre = String(this.$route.query.genre || "");
     this.filter.name = String(this.$route.query.name || "");
     this.filter.releaseDate = String(this.$route.query.releaseDate || "");
-    this.filter.minPrice = Number(this.$route.query.minPrice || 1);
+    this.filter.minPrice = Number(this.$route.query.minPrice || 0);
     this.filter.maxPrice = Number(this.$route.query.maxPrice || 100);
   },
 });
