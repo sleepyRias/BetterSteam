@@ -1,6 +1,7 @@
 using backend.DataProvider;
 using backend.Implementation;
 using backend.Model;
+using backend.Model.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -160,6 +161,27 @@ namespace backend.Controllers
 
             return Ok(); // Erfolgreiche Aktualisierung
         }
+
+        // Get multiple games based on their ID
+        [HttpPost(Endpoints.GameController.GameIdsRequest, Name = "GetGamesById")]
+        public IActionResult GetGames([FromBody] GameIdsDto request)
+        {
+            if (request == null || request.Ids == null || !request.Ids.Any())
+            {
+                return BadRequest("No game IDs provided.");
+            }
+
+            var games = _dataProvider.Games.Where(g => request.Ids.Contains(g.Id)).ToList();
+
+            if (games == null || games.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(games);
+        }
+
+
 
     }
 }
