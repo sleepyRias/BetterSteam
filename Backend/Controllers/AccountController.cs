@@ -31,10 +31,10 @@ namespace backend.Controllers
         }
 
         // Login Method
-        [HttpGet(Endpoints.AccountController.Login, Name = "Login")]
-        public bool GetHash(string username, string password)
+        [HttpPost(Endpoints.AccountController.Login, Name = "Login")]
+        public bool Login(LoginDTO login)
         {
-            var user = _dataProvider.Accounts.FirstOrDefault(a => a.Name == username);
+            var user = _dataProvider.Accounts.FirstOrDefault(a => a.Name == login.Username);
 
             // Überprüfe, ob der Benutzer in der Datenbank existiert
             if (user == null)
@@ -47,7 +47,7 @@ namespace backend.Controllers
 
             // Verwende den PasswordHasher, um das eingegebene Passwort mit dem gespeicherten Hash zu vergleichen
             var passwordHasher = new PasswordHasher<Account>();
-            var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password + Convert.ToBase64String(salt));
+            var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, login.Password + Convert.ToBase64String(salt));
 
             // Rückgabe des Ergebnisses
             return result == PasswordVerificationResult.Success;
@@ -120,7 +120,7 @@ namespace backend.Controllers
             // Wenn das Passwort im Request angegeben wurde, hash es und aktualisiere es
             if (!string.IsNullOrEmpty(updatedAccount.Password))
             {
-                updatedAccount.Password = _passwordHasher.HashPassword(account, updatedAccount.Password);
+                account.PasswordHash = _passwordHasher.HashPassword(account, updatedAccount.Password + account.PasswordSalt);
             }
 
             // Speichere die Änderungen in der Datenbank
