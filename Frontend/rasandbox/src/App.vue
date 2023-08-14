@@ -317,7 +317,7 @@ body {
 }
 .up-button {
   position: fixed;
-  bottom: 20px; /* Adjust the distance from the bottom as needed */
+  bottom: 35px; /* Adjust the distance from the bottom as needed */
   right: 20px; /* Adjust the distance from the right as needed */
   z-index: 9999; /* Make sure it's above other elements */
   display: flex;
