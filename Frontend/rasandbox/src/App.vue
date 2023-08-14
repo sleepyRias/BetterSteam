@@ -325,10 +325,16 @@ body {
   justify-content: center;
   width: 40px;
   height: 40px;
-  background-color: #333;
-  color: #fff;
-  border: none;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #333;
   border-radius: 50%;
   cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+    background-color: #333;
+    color: #fff;
+  }
 }
 </style>
