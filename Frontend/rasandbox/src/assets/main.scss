@@ -1,4 +1,5 @@
 @import '~bulma';
+@import "../../shared/themes.scss";
 
 .column {
     padding: 0 !important;
@@ -6,4 +7,19 @@
 
 .columns {
     margin: 0 !important;
+}
+
+.light-theme {
+    background-color: $background-light-theme-color;
+    color: $primary-light-theme-color;
+}
+
+.dark-theme {
+    background-color: $background-dark-theme-color;
+    color: $primary-dark-theme-color;
+}
+
+.red-gradient-theme {
+    background: $background-red-gradient-color;
+    color: $primary-red-gradient-color;
 }

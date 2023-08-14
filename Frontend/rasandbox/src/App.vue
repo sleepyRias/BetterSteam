@@ -1,41 +1,70 @@
 <template>
   <div class="betterSteam" :class="themeClass">
-    <user-modal v-if="showModal" class="is-active" @close="showModal = false" />
+    <user-modal v-if="showUser" @close="showUser = false" />
     <filter-modal
       v-if="showFilter"
-      class="is-active"
       @close="showFilter = false"
       @submit="updateFilter"
     />
     <div class="main-header">
       <h1 class="main-title">Sandbox Project</h1>
-      <button @click="showModal = true" class="button is-link">User</button>
+      <button @click="showUser = true" class="betterSteamButton--user">
+        <i class="fa-regular fa-user fa-2x" />
+      </button>
     </div>
-    <div class="columns">
-      <div class="column">
-        <button class="button is-warning" @click="showFilter = !showFilter">
-          Filter
-        </button>
-      </div>
-      <div class="colum">
-        <button class="button" @click="getGames(10)">G A M E S</button>
-      </div>
+    <button class="button" @click="showFilter = !showFilter">
+      <span class="icon">
+        <i class="fa-solid fa-filter" />
+      </span>
+      <span>Filter</span>
+    </button>
+    <h3>show {{ amountPerPage }} items per page</h3>
+    <div class="buttons has-addons">
+      <button class="button" @click="amountPerPage = 20">20 items</button>
+      <button class="button" @click="amountPerPage = 40">40 items</button>
+      <button class="button" @click="amountPerPage = 60">60 items</button>
     </div>
-    <div class="columns is-gapless is-multiline">
+    <div class="field is-grouped">
+      <button class="button" @click="prevPage" :disabled="filter.page == 1">
+        <span>
+          <i class="fa-solid fa-arrow-left"></i>
+        </span>
+      </button>
+      <button class="button is-static">
+        {{ filter?.page }}
+      </button>
+      <button class="button">
+        <span>
+          <i class="fa-solid fa-arrow-right" @click="nextPage"></i>
+        </span>
+      </button>
+    </div>
+    <i
+      v-if="isGamesLoading"
+      class="fa-solid fa-spinner fa-4x loading-spinner"
+    />
+    <div v-if="!isGamesLoading" class="columns is-gapless is-multiline">
       <div
-        class="column is-one-third"
-        v-for="game in filteredList"
-        :key="game.name"
+        class="column is-one-quarter"
+        v-for="game in gamesList"
+        :key="game.id"
       >
         <div class="gameBox">
           <ul>
+            <!-- digga was ist das mach das mal anders digga -->
             <li>{{ game.name }}</li>
             <li>{{ game.price }}€</li>
             <li>{{ game.company }}</li>
             <li>{{ game.releaseDate }}</li>
           </ul>
-          <button class="favButton button is-warning">Favorite</button>
-          <!-- stern oben rechts font awesome -->
+          <button
+            class="betterSteamButton--favorite"
+            @click="isFavorited = !isFavorited"
+          >
+            <span class="icon">
+              <i :class="favGameClass" class="fa-star fa-lg" />
+            </span>
+          </button>
         </div>
       </div>
     </div>
@@ -59,17 +88,24 @@ export default Vue.extend({
   },
   data() {
     return {
+      amountPerPage: 20,
       gamesList: [] as Game[],
-      showModal: false,
+      showUser: false,
       showFilter: false,
-      filter: null as GameFilter | null,
+      filter: {
+        page: 1,
+        name: "",
+        company: "",
+        genre: "",
+        minPrice: 0,
+        maxPrice: 100,
+        releaseDate: "",
+      } as GameFilter,
+      isFavorited: false,
+      isGamesLoading: false,
     };
   },
   methods: {
-    requestGames() {
-      this.gamesList = repo.loadGames();
-    },
-    // WEG
     updateFilter(filter: GameFilter) {
       this.filter = { ...this.filter, ...filter };
     },
@@ -85,52 +121,32 @@ export default Vue.extend({
       }
       return genres.includes(this.filter.genre);
     },
-    async getGames(amount: number) {
-      this.gamesList = await repo.getGames(amount);
+    async getGames() {
+      this.gamesList = await repo.getGames(this.filter);
     },
-    toggleTheme() {
-      const newTheme =
-        this.$store.getters.getTheme === "light-theme"
-          ? "dark-theme"
-          : "light-theme";
-      this.$store.dispatch("setTheme", newTheme);
+    nextPage() {
+      this.filter.page++;
     },
-    filterList() {
-      if (this.filter) {
-        repo.filterGames(
-          this.filter.genre,
-          this.filter.company,
-          this.filter.minPrice,
-          this.filter.maxPrice,
-          this.filter.name,
-          this.filter.releaseDate
-        );
-      }
-      return true;
-      // TODO filter im backend niklas hat das was safe
+    prevPage() {
+      this.filter.page--;
     },
   },
   computed: {
-    themeClass() {
-      const theme = this.$store.getters.getTheme;
-      switch (theme) {
-        case "light-theme":
-          return "light-theme";
-        case "dark-theme":
-          return "dark-theme";
-        case "red-gradient-theme":
-          return "red-gradient-theme";
-        default:
-          return "light-theme";
-      }
+    themeClass(): string {
+      return this.$store.getters.getTheme;
     },
-    filteredList(): Game[] {
-      const list = this.gamesList;
-      return list.filter(this.filterList);
+    favGameClass(): string {
+      return this.isFavorited ? "fa-solid" : "fa-regular";
     },
   },
-  beforeMount() {
-    this.requestGames();
+  watch: {
+    filter: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.getGames();
+      },
+    },
   },
 });
 </script>
@@ -143,6 +159,25 @@ body {
 }
 .betterSteam {
   height: 100%;
+}
+.betterSteamButton {
+  border: none;
+  background: none;
+  cursor: pointer;
+  &--user {
+    @extend .betterSteamButton;
+    color: #1b1d9e;
+    margin: 5px 5px 0 0;
+  }
+  &--favorite {
+    @extend .betterSteamButton;
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 4px 6px;
+    color: #fcd303;
+  }
 }
 .main-header {
   display: flex;
@@ -158,27 +193,24 @@ body {
   font-size: larger;
   font-weight: 600;
 }
+.loading-spinner {
+  animation: spin 2s linear infinite; // animation name duration speed and repeating
+  position: absolute;
+  top: 50%;
+  right: 50%;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .gameBox {
+  // ONG das muss anders werden my eyes are bleeding
   border: 1px solid black;
   margin: 10px 5px 0px 5px;
   position: relative;
-}
-.favButton {
-  margin-left: 20px;
-  position: absolute !important;
-  top: 0;
-  right: 0;
-}
-.light-theme {
-  background-color: $background-light-theme-color;
-  color: $primary-light-theme-color;
-}
-.dark-theme {
-  background-color: $background-dark-theme-color;
-  color: $primary-dark-theme-color;
-}
-.red-gradient-theme {
-  background: $background-red-gradient-color;
-  color: $primary-red-gradient-color;
 }
 </style>

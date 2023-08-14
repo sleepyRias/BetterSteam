@@ -1,4 +1,5 @@
 export interface GameFilter {
+  page: number;
   name: string;
   company: string;
   genre: string;

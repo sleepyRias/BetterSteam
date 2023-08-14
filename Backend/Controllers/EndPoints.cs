@@ -10,6 +10,12 @@
 
             // Game Routes
             public const string GetGames = ControllerBase + "/Games";
+            public const string GetGameById = ControllerBase + "/GameById";
+            public const string CreateGame = ControllerBase + "/Create";
+            public const string DeleteGame = ControllerBase + "/Delete";
+            public const string UpdateGame = ControllerBase + "/Update";
+            public const string GameIdsRequest = ControllerBase + "/GamesbyId";
+
         }
         public static class AccountController
         {

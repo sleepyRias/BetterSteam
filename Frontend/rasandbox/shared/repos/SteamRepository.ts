@@ -1,7 +1,7 @@
+import { GameFilter } from "shared/interfaces/filters";
 import { Game } from "../interfaces/Game";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface SteamRepository {
-  loadGames(): any;
-  getGames(amount: number): Promise<Game[]>;
+  getGames(filter: GameFilter): Promise<Game[]>;
 }

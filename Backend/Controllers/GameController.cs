@@ -1,6 +1,7 @@
 using backend.DataProvider;
 using backend.Implementation;
 using backend.Model;
+using backend.Model.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -19,81 +20,83 @@ namespace backend.Controllers
             _dataProvider = dataProvider;
         }
 
-        // by default returns 54 entries, if amount == 0, return all
-        //      this will introduce a bug when you filter for exactly 54 games (amount == 54)
-        //      in this case the amount filter will not work and it returns all entries
+        [HttpGet(Endpoints.GameController.GetGameById, Name = "GetGameById")]
+        public IActionResult GetGames(int id)
+        {
+            var game = _dataProvider.Games.FirstOrDefault(g => g.Id == id);
+            if (game == null)
+            {
+                return NotFound(); // Falls das Spiel mit der angegebenen ID nicht gefunden wurde
+            }
+
+            return Ok(game);
+        }
+        
+
         [HttpGet(Endpoints.GameController.GetGames, Name = "GetGames")]
         public IEnumerable<Game> GetGames(
-            int amount = 54,
+            int page = 1,
             string filter = "",
             string gFilter = "",
-            float priceMinFilter = -1,
-            float priceMaxFilter = -1,
+            float priceMinFilter = -1.0f,
+            float priceMaxFilter = -1.0f,
             string companyFilter = "",
             string minRDFilter = "",
             string maxRDFilter = "")
         {
+            const int pageSize = 20; // standard batch size per page request
             var games = _dataProvider.Games.AsQueryable();
-
-            bool f = false;
-            int amountBackup = 0;
-            if (!(amount == 54 || amount == 0))
-            {
-                f = true;
-                amountBackup = amount;
-            }
 
             if (!string.IsNullOrEmpty(filter))
             {
                 games = games.Where(g => g.Name.Contains(filter));
-                amount = 0; 
             }
 
             if (!string.IsNullOrEmpty(gFilter))
             {
                 games = games.Where(g => g.GenreId == Helpers.GetGenreId(gFilter));
-                amount = 0;
             }
 
             if (priceMinFilter != -1)
             {
                 games = games.Where(g => g.Price >= priceMinFilter);
-                amount = 0;
             }
             if (priceMaxFilter != -1)
             {
                 games = games.Where(g => g.Price <= priceMaxFilter);
-                amount = 0;
             }
 
             if (!string.IsNullOrEmpty(companyFilter))
             {
                 games = games.Where(g => g.Company.Contains(companyFilter));
-                amount = 0;
             }
 
             if (!string.IsNullOrEmpty(minRDFilter))
             {
                 games = games.Where(g => string.Compare(g.ReleaseDate, minRDFilter) >= 0);
-                amount = 0;
             }
 
             if (!string.IsNullOrEmpty(maxRDFilter))
             {
                 games = games.Where(g => string.Compare(g.ReleaseDate, maxRDFilter) <= 0);
-                amount = 0;
-            }
-            if(f)
-            {
-                games = games.Take(amountBackup);
-            }
-            if (amount > 0 && !f)
-            {
-                games = games.Take(amount);
             }
 
+            int totalItems = games.Count();
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+            if (page < 1)
+            {
+                page = 1;
+            }
+            else if (page > totalPages)
+            {
+                page = totalPages;
+            }
+
+            games = games.Skip((page - 1) * pageSize).Take(pageSize);
+
             //Hier wird die Genre-Id in einen Genre-String umgewandelt
-           games = games.Select(g => new Game
+            games = games.Select(g => new Game
            {
                Id = g.Id,
                Name = g.Name,
@@ -107,7 +110,7 @@ namespace backend.Controllers
         }
 
 
-        [HttpPost("Games", Name = "CreateGame")]
+        [HttpPost(Endpoints.GameController.CreateGame, Name = "CreateGame")]
         public IActionResult CreateGame([FromBody] Game game)
         {
             if (game == null)
@@ -122,7 +125,7 @@ namespace backend.Controllers
         }
 
 
-        [HttpDelete("Games/{id}")]
+        [HttpDelete(Endpoints.GameController.DeleteGame)]
         public IActionResult DeleteGame(int id)
         {
             var game = _dataProvider.Games.FirstOrDefault(g => g.Id == id);
@@ -137,7 +140,7 @@ namespace backend.Controllers
             return NoContent(); // Erfolgreiches Löschen (kein Inhalt zurückgegeben)
         }
 
-        [HttpPut("Games/{id}")]
+        [HttpPut(Endpoints.GameController.UpdateGame)]
         public IActionResult UpdateGame(int id, [FromBody] Game updatedGame)
         {
             var game = _dataProvider.Games.FirstOrDefault(g => g.Id == id);
@@ -158,6 +161,27 @@ namespace backend.Controllers
 
             return Ok(); // Erfolgreiche Aktualisierung
         }
+
+        // Get multiple games based on their ID
+        [HttpPost(Endpoints.GameController.GameIdsRequest, Name = "GetGamesById")]
+        public IActionResult GetGames([FromBody] GameIdsDto request)
+        {
+            if (request == null || request.Ids == null || !request.Ids.Any())
+            {
+                return BadRequest("No game IDs provided.");
+            }
+
+            var games = _dataProvider.Games.Where(g => request.Ids.Contains(g.Id)).ToList();
+
+            if (games == null || games.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(games);
+        }
+
+
 
     }
 }
