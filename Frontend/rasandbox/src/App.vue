@@ -179,12 +179,14 @@ export default Vue.extend({
     },
     showFilter: {
       get() {
-        return this.$route.query.filter === "true";
+        return this.$route.path === "/filter"; // Check if the route is '/filter'
       },
       set(value) {
-        this.$router.push({
-          query: { ...this.$route.query, filter: value ? "true" : undefined },
-        });
+        if (value) {
+          this.$router.push("/filter"); // Set the route to '/filter'
+        } else {
+          this.$router.push("/games"); // Set the route back to '/games'
+        }
       },
     },
   },
