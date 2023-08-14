@@ -76,6 +76,7 @@ export default Vue.extend({
   data() {
     return {
       amountPerPage: 20,
+      totalGamesCount: 0,
       gamesList: [] as Game[],
       showUserOLD: false,
       showFilterOLD: false,
@@ -110,7 +111,9 @@ export default Vue.extend({
       return genres.includes(this.filter.genre);
     },
     async getGames() {
-      this.gamesList = await repo.getGames(this.filter);
+      const result = await repo.getGames(this.filter);
+      this.gamesList = result.games;
+      this.totalGamesCount = result.totalCount;
     },
     nextPage() {
       this.filter.page++;
