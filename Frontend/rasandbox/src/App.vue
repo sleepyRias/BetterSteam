@@ -130,7 +130,7 @@ export default Vue.extend({
       const queryParameters: any = {};
 
       // Add the parameters to the queryParameters object if they have non-empty values (GPT did this)
-      if (this.filter.page !== 1) queryParameters.page = this.filter.page;
+      if (this.filter.page !== 0) queryParameters.page = this.filter.page;
       if (this.filter.genre !== "") queryParameters.genre = this.filter.genre;
       if (this.filter.name !== "") queryParameters.name = this.filter.name;
       if (this.filter.company !== "")
