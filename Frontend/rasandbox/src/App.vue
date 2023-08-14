@@ -160,7 +160,6 @@ export default Vue.extend({
         releaseDate: "",
       };
       this.filter = { ...defaultFilter };
-      this.$router.push({ path: "/games", query: {} });
     },
   },
   computed: {
@@ -169,22 +168,26 @@ export default Vue.extend({
     },
     showUser: {
       get() {
-        return this.$route.query.user === "true";
+        return this.$route.path === "/user"; // Check if the route is '/user'
       },
       set(value) {
-        this.$router.push({
-          query: { ...this.$route.query, user: value ? "true" : undefined },
-        });
+        if (value) {
+          this.$router.push("/user"); // Set the route to '/user'
+        } else {
+          this.$router.push("/games"); // Set the route back to '/games'
+        }
       },
     },
     showFilter: {
       get() {
-        return this.$route.query.filter === "true";
+        return this.$route.path === "/filter"; // Check if the route is '/filter'
       },
       set(value) {
-        this.$router.push({
-          query: { ...this.$route.query, filter: value ? "true" : undefined },
-        });
+        if (value) {
+          this.$router.push("/filter"); // Set the route to '/filter'
+        } else {
+          this.$router.push("/games"); // Set the route back to '/games'
+        }
       },
     },
   },
