@@ -168,12 +168,14 @@ export default Vue.extend({
     },
     showUser: {
       get() {
-        return this.$route.query.user === "true";
+        return this.$route.path === "/user"; // Check if the route is '/user'
       },
       set(value) {
-        this.$router.push({
-          query: { ...this.$route.query, user: value ? "true" : undefined },
-        });
+        if (value) {
+          this.$router.push("/user"); // Set the route to '/user'
+        } else {
+          this.$router.push("/games"); // Set the route back to '/games'
+        }
       },
     },
     showFilter: {
