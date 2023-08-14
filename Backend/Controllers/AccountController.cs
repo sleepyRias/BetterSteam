@@ -29,10 +29,9 @@ namespace backend.Controllers
         }
 
         [HttpGet("GetHash")]
-        public bool GetHash(string password)
+        public bool GetHash(string username, string password)
         {
-            int userId = 8; // Hier solltest du die ID des gewünschten Benutzers angeben
-            var user = _dataProvider.Accounts.FirstOrDefault(a => a.Id == userId);
+            var user = _dataProvider.Accounts.FirstOrDefault(a => a.Name == username);
 
             // Überprüfe, ob der Benutzer in der Datenbank existiert
             if (user == null)
@@ -140,6 +139,15 @@ namespace backend.Controllers
             _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
 
             return NoContent(); // Erfolgreiches Löschen (kein Inhalt zurückgegeben)
+        }
+
+        // True -> Available
+        [HttpGet(Endpoints.AccountController.CheckUserNameAvailability, Name = "CheckUserNameAvailability")]
+        public bool CheckUserNameAvailability(string username)
+        {
+            var user = _dataProvider.Accounts.FirstOrDefault(a => a.Name == username);
+            if (user != null) { return false; }
+            return true;
         }
     }
 }

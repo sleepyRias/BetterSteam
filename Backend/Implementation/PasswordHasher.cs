@@ -1,4 +1,4 @@
-﻿namespace backend.Model.Account;
+﻿namespace backend.Implementation;
 
 using System.Security.Cryptography;
 using System.Text;

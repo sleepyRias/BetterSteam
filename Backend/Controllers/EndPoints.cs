@@ -23,6 +23,7 @@
 
             //Account Routes
             public const string GetAccounts = ControllerBase + "/GetAccounts";
+            public const string CheckUserNameAvailability = ControllerBase + "/CheckUserNameAvailability";
         }
     }
 }
