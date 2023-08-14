@@ -132,7 +132,6 @@ export default Vue.extend({
       this.updateRoute();
     },
     updateRoute() {
-      // basically stfu eslint and dont worry i dont know what im doings
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const queryParameters: any = {};
 
