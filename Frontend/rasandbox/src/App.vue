@@ -160,7 +160,6 @@ export default Vue.extend({
         releaseDate: "",
       };
       this.filter = { ...defaultFilter };
-      this.$router.push({ path: "/games", query: {} });
     },
   },
   computed: {
