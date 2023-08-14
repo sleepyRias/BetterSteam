@@ -76,7 +76,7 @@ export default Vue.extend({
     return {
       showDropDown: false,
       company: "",
-      sliderValues: [20, 80],
+      sliderValues: [0, 100],
       genre: "",
       releaseDate: "",
       filter: {} as GameFilter,
