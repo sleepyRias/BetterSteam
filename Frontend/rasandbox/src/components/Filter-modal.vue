@@ -26,26 +26,17 @@
           </div>
         </div>
         <div class="column is-one-fourth">
-          <span>Minimum Preis</span>
-          <input
-            type="range"
-            name="minPrice"
-            min="0"
-            max="20"
-            step="1"
-            v-model="filter.minPrice"
+          <vue-slider
+            v-model="sliderValues"
+            :min="0"
+            :max="100"
+            :interval="1"
+            @dragging="handleSliderDragging"
           />
-          {{ filter.minPrice }} €
-          <span>Maximal Preis</span>
-          <input
-            type="range"
-            name="minPrice"
-            min="30"
-            max="100"
-            step="1"
-            v-model="filter.maxPrice"
-          />
-          {{ filter.maxPrice }} €
+          <div class="slider-lables">
+            <span>{{ sliderValues[0] }}€</span>
+            <span> {{ sliderValues[1] }}€ </span>
+          </div>
         </div>
         <div class="column is-one-fourth">
           <label for="start">Release date:</label>
@@ -72,16 +63,20 @@
 import Vue from "vue";
 import { GameFilter } from "../../shared/interfaces/filters";
 import modalBert from "./modalBert.vue";
+import VueSlider from "vue-slider-component";
+import "vue-slider-component/theme/default.css";
 
 export default Vue.extend({
   name: "FilterModal",
   components: {
     modalBert,
+    VueSlider,
   },
   data() {
     return {
       showDropDown: false,
       company: "",
+      sliderValues: [20, 80],
       genre: "",
       minPrice: 0,
       maxPrice: 0,
@@ -148,10 +143,32 @@ export default Vue.extend({
       this.$emit("clearFilter");
       this.$emit("close");
     },
+    handlePriceRange() {
+      this.minPrice = this.sliderValues[0];
+      this.maxPrice = this.sliderValues[1];
+    },
+    handleSliderDragging() {
+      if (this.sliderValues[0] > this.sliderValues[1]) {
+        // If the first slider is dragged past the second slider, adjust the values
+        this.sliderValues[0] = this.sliderValues[1];
+      } else if (this.sliderValues[1] < this.sliderValues[0]) {
+        // If the second slider is dragged past the first slider, adjust the values
+        this.sliderValues[1] = this.sliderValues[0];
+      }
+    },
   },
   computed: {
     themeClass() {
       return this.$store.getters.getTheme;
+    },
+  },
+  watch: {
+    sliderValues: {
+      deep: false,
+      immediate: true,
+      handler() {
+        this.handlePriceRange();
+      },
     },
   },
 });
@@ -159,5 +176,10 @@ export default Vue.extend({
 <style scoped>
 .modal-content {
   width: auto;
+}
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 </style>
