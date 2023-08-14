@@ -63,7 +63,7 @@ export default Vue.extend({
   &:hover {
     box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.8);
     transform: scale(1.08);
-    z-index: 1000;
+    z-index: 500;
   }
 }
 .gameprice {

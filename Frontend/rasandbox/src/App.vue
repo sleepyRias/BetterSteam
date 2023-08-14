@@ -19,13 +19,18 @@
       </span>
       <span>Filter</span>
     </button>
-    <h3>show {{ filter.pageSize }} items per page</h3>
-    <div class="buttons has-addons">
-      <button class="button" @click="filter.pageSize = 20">20 items</button>
-      <button class="button" @click="filter.pageSize = 40">40 items</button>
-      <button class="button" @click="filter.pageSize = 60">60 items</button>
+    <div class="items-per-page">
+      show
+      <div class="select-container">
+        <select v-model="filter.pageSize" class="selecter">
+          <option value="20">20 items</option>
+          <option value="40">40 items</option>
+          <option value="60">60 items</option>
+        </select>
+      </div>
+      items per page
     </div>
-    <h3>found {{ totalGamesCount }} Games</h3>
+
     <div class="field is-grouped">
       <button class="button" @click="prevPage" :disabled="filter.page == 1">
         <span>
@@ -41,6 +46,7 @@
         </span>
       </button>
     </div>
+    <div>found {{ totalGamesCount }} Games</div>
     <i
       v-if="isGamesLoading"
       class="fa-solid fa-spinner fa-4x loading-spinner"
@@ -54,6 +60,9 @@
         <game-box :Game="game" />
       </div>
     </div>
+    <button v-if="showUpButton" @click="scrollToTop" class="up-button">
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
   </div>
 </template>
 
@@ -77,6 +86,7 @@ export default Vue.extend({
   data() {
     return {
       totalGamesCount: 0,
+      showUpButton: false,
       gamesList: [] as Game[],
       showUserOLD: false,
       showFilterOLD: false,
@@ -130,7 +140,7 @@ export default Vue.extend({
       const queryParameters: any = {};
 
       // Add the parameters to the queryParameters object if they have non-empty values (GPT did this)
-      if (this.filter.page !== 1) queryParameters.page = this.filter.page;
+      if (this.filter.page !== 0) queryParameters.page = this.filter.page;
       if (this.filter.genre !== "") queryParameters.genre = this.filter.genre;
       if (this.filter.name !== "") queryParameters.name = this.filter.name;
       if (this.filter.company !== "")
@@ -165,6 +175,13 @@ export default Vue.extend({
         pageSize: 20,
       };
       this.filter = { ...defaultFilter };
+    },
+    checkScroll() {
+      this.showUpButton = window.scrollY > 300; // Adjust the threshold as needed
+    },
+
+    scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     },
   },
   computed: {
@@ -214,6 +231,13 @@ export default Vue.extend({
     this.filter.minPrice = Number(this.$route.query.minPrice || 0);
     this.filter.maxPrice = Number(this.$route.query.maxPrice || 100);
   },
+  mounted() {
+    window.addEventListener("scroll", this.checkScroll);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.checkScroll);
+  },
 });
 </script>
 
@@ -260,6 +284,23 @@ body {
   font-size: larger;
   font-weight: 600;
 }
+.items-per-page {
+  display: flex;
+  align-items: center; /* Center vertically */
+  margin: 8px 0 8px 0;
+  font-size: 12pt;
+}
+
+.select-container {
+  margin: 0 8px 0 8px; /* Add spacing between "show" and the dropdown */
+}
+.selecter {
+  border: 1px solid lightgray;
+  font-size: inherit;
+  border-radius: 5px;
+  padding: 3px;
+  background-color: white;
+}
 .loading-spinner {
   animation: spin 2s linear infinite; // animation name duration speed and repeating
   position: absolute;
@@ -272,6 +313,28 @@ body {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+.up-button {
+  position: fixed;
+  bottom: 35px; /* Adjust the distance from the bottom as needed */
+  right: 20px; /* Adjust the distance from the right as needed */
+  z-index: 9999; /* Make sure it's above other elements */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #333;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+    background-color: #333;
+    color: #fff;
   }
 }
 </style>
