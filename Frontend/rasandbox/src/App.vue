@@ -25,6 +25,7 @@
       <button class="button" @click="filter.pageSize = 40">40 items</button>
       <button class="button" @click="filter.pageSize = 60">60 items</button>
     </div>
+    <h3>found {{ totalGamesCount }} Games</h3>
     <div class="field is-grouped">
       <button class="button" @click="prevPage" :disabled="filter.page == 1">
         <span>
