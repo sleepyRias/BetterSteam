@@ -5,6 +5,8 @@ using backend.DataProvider;
 using backend.Model.Account;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
+using backend.Model.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers
 {
@@ -28,7 +30,8 @@ namespace backend.Controllers
             return _dataProvider.Accounts.ToList();
         }
 
-        [HttpGet("GetHash")]
+        // Login Method
+        [HttpGet(Endpoints.AccountController.Login, Name = "Login")]
         public bool GetHash(string username, string password)
         {
             var user = _dataProvider.Accounts.FirstOrDefault(a => a.Name == username);
@@ -51,7 +54,7 @@ namespace backend.Controllers
         }
 
         // GET: /Account/5
-        [HttpGet("{id}", Name = "GetAccountById")]
+        [HttpGet(Endpoints.AccountController.GetAccountById, Name = "GetAccountById")]
         public IActionResult GetAccountById(int id)
         {
             var account = _dataProvider.Accounts.FirstOrDefault(a => a.Id == id);
@@ -64,10 +67,10 @@ namespace backend.Controllers
         }
 
         // POST: /Account
-        [HttpPost("Accounts", Name = "CreateAccount")]
-        public IActionResult CreateAccount([FromBody] Account account)
+        [HttpPost(Endpoints.AccountController.CreateAccount, Name = "CreateAccount")]
+        public IActionResult CreateAccount([FromBody] LoginDTO dto)
         {
-            if (account == null)
+            if (dto == null)
             {
                 return BadRequest(); // Ungültige Anforderung
             }
@@ -80,13 +83,18 @@ namespace backend.Controllers
             }
             string salt = Convert.ToBase64String(saltBytes);
 
+            //Erstelle Account für die DB
+            Account account = new() { Name = dto.Username};
+
             // Hash das Passwort unter Verwendung des Salts
             var passwordHasher = new PasswordHasher<Account>();
-            string hashedPassword = passwordHasher.HashPassword(account, account.Password + salt);
+            string hashedPassword = passwordHasher.HashPassword(account, dto.Password + salt);
 
             // Speichere das Salt und den Hash in den entsprechenden Spalten der Datenbank
             account.PasswordSalt = salt;
             account.PasswordHash = hashedPassword;
+
+            // Entferne
 
             _dataProvider.Accounts.Add(account); // Account der Datenquelle hinzufügen
             _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
@@ -96,8 +104,8 @@ namespace backend.Controllers
 
 
         // PUT: /Account/5
-        [HttpPut("{id}")]
-        public IActionResult UpdateAccount(int id, [FromBody] Account updatedAccount)
+        [HttpPut(Endpoints.AccountController.UpdateAccount, Name = "UpdateAccount")]
+        public IActionResult UpdateAccount(int id, [FromBody] AccountUpdateDTO updatedAccount)
         {
             var account = _dataProvider.Accounts.FirstOrDefault(a => a.Id == id);
             if (account == null)
@@ -106,40 +114,39 @@ namespace backend.Controllers
             }
 
             // Aktualisiere die Eigenschaften des Accounts mit den Werten aus updatedAccount
-            account.Name = updatedAccount.Name;
-            account.Theme = updatedAccount.Theme;
-            account.FavouriteGames = updatedAccount.FavouriteGames;
+            if (!string.IsNullOrEmpty(updatedAccount.Name)) { account.Name = updatedAccount.Name; }
+            if (!string.IsNullOrEmpty(updatedAccount.Theme)) { account.Theme = updatedAccount.Theme; }
 
             // Wenn das Passwort im Request angegeben wurde, hash es und aktualisiere es
             if (!string.IsNullOrEmpty(updatedAccount.Password))
             {
-                account.Password = _passwordHasher.HashPassword(account, updatedAccount.Password);
+                updatedAccount.Password = _passwordHasher.HashPassword(account, updatedAccount.Password);
             }
 
             // Speichere die Änderungen in der Datenbank
             _dataProvider.SaveChanges();
 
-            // Lösche das gehashte Passwort, bevor es in der Antwort zurückgegeben wird
-            account.Password = null;
-
             return Ok(); // Erfolgreiche Aktualisierung
         }
 
         // DELETE: /Account/5
-        [HttpDelete("{id}")]
-        public IActionResult DeleteAccount(int id)
-        {
-            var account = _dataProvider.Accounts.FirstOrDefault(a => a.Id == id);
-            if (account == null)
-            {
-                return NotFound(); // Falls der Account mit der angegebenen ID nicht gefunden wurde
-            }
+        //[HttpDelete(Endpoints.AccountController.DeleteAccount, Name = "Delete Account")]
+        //public IActionResult DeleteAccount(int id)
+        //{
+        //    var account = _dataProvider.Accounts.Include(a => a.FavouriteGames).FirstOrDefault(a => a.Id == id);
+        //    if (account == null)
+        //    {
+        //        return NotFound(); // Falls der Account mit der angegebenen ID nicht gefunden wurde
+        //    }
 
-            _dataProvider.Accounts.Remove(account); // Account aus der Datenquelle entfernen
-            _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
+        //    // Lösche zuerst die FavouriteGames-Einträge, die mit diesem Account verknüpft sind
+        //    _dataProvider.FavouriteGames.RemoveRange(account.FavouriteGames);
 
-            return NoContent(); // Erfolgreiches Löschen (kein Inhalt zurückgegeben)
-        }
+        //    _dataProvider.Accounts.Remove(account); // Account aus der Datenquelle entfernen
+        //    _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
+
+        //    return NoContent(); // Erfolgreiches Löschen (kein Inhalt zurückgegeben)
+        //}
 
         // True -> Available
         [HttpGet(Endpoints.AccountController.CheckUserNameAvailability, Name = "CheckUserNameAvailability")]

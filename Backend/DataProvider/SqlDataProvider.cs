@@ -9,6 +9,7 @@ namespace backend.DataProvider
     {
         public DbSet<Game> Games { get; set; }
         public DbSet<Account> Accounts { get; set; } // Hinzugefügt für die Accounts-Tabelle
+        public DbSet<FavouriteGame> FavouriteGames{ get; set; }
 
         public IConfiguration Configuration { get; }
 
@@ -40,11 +41,16 @@ namespace backend.DataProvider
             modelBuilder.Entity<FavouriteGame>()
                 .HasKey(fg => new { fg.AccountId, fg.GameId });
 
+            modelBuilder.Entity<FavouriteGame>()
+                .HasOne(fg => fg.Account) // Navigationseigenschaft zu Account
+                .WithMany(a => a.FavouriteGames) // Navigationseigenschaft zu FavouriteGames in Account
+                .HasForeignKey(fg => fg.AccountId);
+
+
             modelBuilder.Entity<Account>()
                 .HasMany(a => a.FavouriteGames)
                 .WithOne()
                 .HasForeignKey(fg => fg.AccountId);
-            // Hier kannst du benutzerdefinierte Konfigurationen für deine Entitäten hinzufügen, falls erforderlich
         }
     }
 }
