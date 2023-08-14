@@ -23,3 +23,7 @@
     background: $background-red-gradient-color;
     color: $primary-red-gradient-color;
 }
+
+.field:not(:last-child) {
+    margin-bottom: 8px !important;
+}

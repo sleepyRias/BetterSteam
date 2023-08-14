@@ -19,13 +19,18 @@
       </span>
       <span>Filter</span>
     </button>
-    <h3>show {{ filter.pageSize }} items per page</h3>
-    <div class="buttons has-addons">
-      <button class="button" @click="filter.pageSize = 20">20 items</button>
-      <button class="button" @click="filter.pageSize = 40">40 items</button>
-      <button class="button" @click="filter.pageSize = 60">60 items</button>
+    <div class="items-per-page">
+      show
+      <div class="select-container">
+        <select v-model="filter.pageSize" class="selecter">
+          <option value="20">20 items</option>
+          <option value="40">40 items</option>
+          <option value="60">60 items</option>
+        </select>
+      </div>
+      items per page
     </div>
-    <h3>found {{ totalGamesCount }} Games</h3>
+
     <div class="field is-grouped">
       <button class="button" @click="prevPage" :disabled="filter.page == 1">
         <span>
@@ -41,6 +46,7 @@
         </span>
       </button>
     </div>
+    <div>found {{ totalGamesCount }} Games</div>
     <i
       v-if="isGamesLoading"
       class="fa-solid fa-spinner fa-4x loading-spinner"
@@ -259,6 +265,23 @@ body {
   color: #2c3e50;
   font-size: larger;
   font-weight: 600;
+}
+.items-per-page {
+  display: flex;
+  align-items: center; /* Center vertically */
+  margin: 8px 0 8px 0;
+  font-size: 12pt;
+}
+
+.select-container {
+  margin: 0 8px 0 8px; /* Add spacing between "show" and the dropdown */
+}
+.selecter {
+  border: 1px solid lightgray;
+  font-size: inherit;
+  border-radius: 5px;
+  padding: 3px;
+  background-color: white;
 }
 .loading-spinner {
   animation: spin 2s linear infinite; // animation name duration speed and repeating
