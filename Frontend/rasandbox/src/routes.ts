@@ -1,4 +1,5 @@
 import GameBox from "./components/GameBox.vue";
+import FilterModalVue from "./components/Filter-modal.vue";
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
       minPrice: route.query.minPrice || 0,
       maxPrice: route.query.maxPrice || 100,
     }),
+  },
+  {
+    path: "/filter", // Add a route for the filter page
+    name: "FilterModal",
+    component: FilterModalVue, // Make sure to import the FilterModal component
   },
 ];
 

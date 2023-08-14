@@ -117,8 +117,21 @@ export default Vue.extend({
   methods: {
     submitFilter() {
       this.$emit("submit", this.filter);
+
+      const queryParams = {
+        page: this.filter.page.toString(),
+        company: this.filter.company,
+        genre: this.filter.genre,
+        name: this.filter.name,
+        releaseDate: this.filter.releaseDate,
+        minPrice: this.filter.minPrice.toString(),
+        maxPrice: this.filter.maxPrice.toString(),
+      };
+
+      this.$router.push({ path: "/games", query: queryParams });
       this.$emit("close");
     },
+
     clearFilter() {
       const defaultFilter = {
         page: 1,
@@ -131,6 +144,7 @@ export default Vue.extend({
         pageSize: 20,
       };
       this.filter = { ...defaultFilter };
+      this.$router.push({ path: "/games", query: {} }); // Clear URL parameters
       this.$emit("clearFilter");
       this.$emit("close");
     },
