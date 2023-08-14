@@ -88,8 +88,6 @@ export default Vue.extend({
       totalGamesCount: 0,
       showUpButton: false,
       gamesList: [] as Game[],
-      showUserOLD: false,
-      showFilterOLD: false,
       filter: {
         page: 1,
         name: "",
@@ -100,7 +98,6 @@ export default Vue.extend({
         releaseDate: "",
         pageSize: 20,
       } as GameFilter,
-      isFavorited: false,
       isGamesLoading: false,
     };
   },
