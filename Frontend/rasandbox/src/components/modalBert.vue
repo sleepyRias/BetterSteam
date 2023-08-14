@@ -32,9 +32,11 @@ export default Vue.extend({
   },
 });
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import "../../shared/themes.scss";
 .modal-content {
   width: auto;
+  max-width: 80%;
 }
 .close-modal-button {
   position: absolute;
@@ -49,5 +51,9 @@ export default Vue.extend({
 
 .close-modal-button:hover {
   color: darkred;
+}
+.box {
+  padding: 2rem;
+  background-color: $secondary-light-theme-color;
 }
 </style>

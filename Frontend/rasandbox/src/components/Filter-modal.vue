@@ -1,11 +1,16 @@
 <template>
   <modal-bert @close="$emit('close')">
     <template #main-content>
-      <h1>Filters</h1>
+      <div class="filter-title">Filters</div>
       <div class="columns">
         <div class="column is-one-fourth">
           <div class="select">
-            <select name="Company" v-model="filter.company">
+            <select
+              name="Company"
+              :value="filter.company"
+              @update="handleGenreChange(filter.company)"
+            >
+              <option value="" disabled selected>Select a company...</option>
               <option
                 v-for="company in companies"
                 :key="company"
@@ -18,7 +23,12 @@
         </div>
         <div class="column is-one-fourth">
           <div class="select">
-            <select name="Genre" v-model="filter.genre">
+            <select
+              name="Genre"
+              :value="filter.genre"
+              @change="handleGenreChange(filter.genre)"
+            >
+              <option value="" disabled selected>Select a genre...</option>
               <option v-for="genre in genres" :key="genre" :value="genre">
                 {{ genre }}
               </option>
@@ -27,24 +37,24 @@
         </div>
         <div class="column is-one-fourth">
           <vue-slider
+            class="vue-slider"
             v-model="sliderValues"
             :min="0"
             :max="100"
             :interval="1"
             @dragging="handleSliderDragging"
             @change="handlePriceRangeInput"
-          />
-          <div class="slider-lables">
-            <span>{{ sliderValues[0] }}€</span>
-            <span> {{ sliderValues[1] }}€ </span>
-          </div>
+          >
+            <template #tooltip="{ value }">
+              <div class="custom-tooltip">{{ value }}€</div>
+            </template>
+          </vue-slider>
         </div>
         <div class="column is-one-fourth">
-          <label for="start">Release date:</label>
+          <span>Release date:</span>
           <input
             type="date"
-            id="start"
-            name="trip-start"
+            class="releaseDatePicker"
             value="2023-06-12"
             min="1999-01-01"
             max="2100-12-31"
@@ -153,6 +163,21 @@ export default Vue.extend({
       this.filter.minPrice = this.sliderValues[0];
       this.filter.maxPrice = this.sliderValues[1];
     },
+    handleCompanyChange(val: any) {
+      console.log(val);
+      if (val === "") {
+        this.filter.company = "";
+      } else {
+        this.filter.company = val;
+      }
+    },
+    handleGenreChange(val: any) {
+      if (val === "") {
+        this.filter.genre = "";
+      } else {
+        this.filter.genre = val;
+      }
+    },
   },
   computed: {
     themeClass() {
@@ -161,13 +186,47 @@ export default Vue.extend({
   },
 });
 </script>
-<style scoped>
-.modal-content {
-  width: auto;
+<style lang="scss" scoped>
+@import "../../shared/themes.scss";
+.column.is-one-fourth {
+  margin: 0 1rem 0 1rem;
+
+  &:first-child {
+    margin: 0 1rem 0 0;
+  }
+  &:last-child {
+    margin: 0 0 0 1rem;
+  }
 }
 .slider-labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+.select,
+.vue-slider {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+@media (max-width: 768px) {
+  /* Adjust column widths for smaller screens */
+  .column.is-one-fourth {
+    flex: none;
+    width: 100%;
+  }
+}
+.button.is-success {
+  margin-right: 8px;
+}
+.filter-title {
+  font-size: 20pt;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+.releaseDatePicker {
+  border: 1px solid grey;
+  padding: 8px;
+  border-radius: 5px;
 }
 </style>
