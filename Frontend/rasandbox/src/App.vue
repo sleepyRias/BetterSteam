@@ -60,6 +60,9 @@
         <game-box :Game="game" />
       </div>
     </div>
+    <button v-if="showUpButton" @click="scrollToTop" class="up-button">
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
   </div>
 </template>
 
@@ -83,6 +86,7 @@ export default Vue.extend({
   data() {
     return {
       totalGamesCount: 0,
+      showUpButton: false,
       gamesList: [] as Game[],
       showUserOLD: false,
       showFilterOLD: false,
@@ -172,6 +176,13 @@ export default Vue.extend({
       };
       this.filter = { ...defaultFilter };
     },
+    checkScroll() {
+      this.showUpButton = window.scrollY > 300; // Adjust the threshold as needed
+    },
+
+    scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
   },
   computed: {
     themeClass(): string {
@@ -219,6 +230,13 @@ export default Vue.extend({
     this.filter.releaseDate = String(this.$route.query.releaseDate || "");
     this.filter.minPrice = Number(this.$route.query.minPrice || 0);
     this.filter.maxPrice = Number(this.$route.query.maxPrice || 100);
+  },
+  mounted() {
+    window.addEventListener("scroll", this.checkScroll);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.checkScroll);
   },
 });
 </script>
@@ -296,5 +314,21 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+.up-button {
+  position: fixed;
+  bottom: 20px; /* Adjust the distance from the bottom as needed */
+  right: 20px; /* Adjust the distance from the right as needed */
+  z-index: 9999; /* Make sure it's above other elements */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
 }
 </style>
