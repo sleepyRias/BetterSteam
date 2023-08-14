@@ -1,7 +1,7 @@
 import { GameFilter } from "shared/interfaces/filters";
-import { Game } from "../interfaces/Game";
+import { BetterSteamResponse } from "../interfaces/BetterSteamResponse";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface SteamRepository {
-  getGames(filter: GameFilter): Promise<Game[]>;
+  getGames(filter: GameFilter): Promise<BetterSteamResponse>;
 }

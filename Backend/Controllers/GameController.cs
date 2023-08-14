@@ -31,11 +31,12 @@ namespace backend.Controllers
 
             return Ok(game);
         }
-        
+
 
         [HttpGet(Endpoints.GameController.GetGames, Name = "GetGames")]
-        public IEnumerable<Game> GetGames(
+        public GetGamesResult GetGames(
             int page = 1,
+            int pageSize = 20,
             string filter = "",
             string gFilter = "",
             float priceMinFilter = -1.0f,
@@ -44,7 +45,6 @@ namespace backend.Controllers
             string minRDFilter = "",
             string maxRDFilter = "")
         {
-            const int pageSize = 20; // standard batch size per page request
             var games = _dataProvider.Games.AsQueryable();
 
             if (!string.IsNullOrEmpty(filter))
@@ -106,7 +106,13 @@ namespace backend.Controllers
                ReleaseDate = g.ReleaseDate
            });
 
-            return games.ToList();
+            var result = new GetGamesResult
+            {
+                Games = games.ToList(),
+                TotalCount = totalItems
+            };
+
+            return result;
         }
 
 
