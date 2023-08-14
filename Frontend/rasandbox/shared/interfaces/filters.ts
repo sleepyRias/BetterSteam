@@ -6,4 +6,5 @@ export interface GameFilter {
   minPrice: number;
   maxPrice: number;
   releaseDate: string;
+  pageSize: number;
 }

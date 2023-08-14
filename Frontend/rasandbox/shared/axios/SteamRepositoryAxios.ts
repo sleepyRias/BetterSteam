@@ -20,6 +20,7 @@ export class SteamRepositoryAxios
           priceMinFilter: filter.minPrice,
           priceMaxFilter: filter.maxPrice,
           minRDFilter: filter.releaseDate,
+          pageSize: filter.pageSize,
         },
       }
     );

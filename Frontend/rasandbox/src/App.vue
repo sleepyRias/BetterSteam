@@ -19,11 +19,11 @@
       </span>
       <span>Filter</span>
     </button>
-    <h3>show {{ amountPerPage }} items per page</h3>
+    <h3>show {{ filter.pageSize }} items per page</h3>
     <div class="buttons has-addons">
-      <button class="button" @click="amountPerPage = 20">20 items</button>
-      <button class="button" @click="amountPerPage = 40">40 items</button>
-      <button class="button" @click="amountPerPage = 60">60 items</button>
+      <button class="button" @click="filter.pageSize = 20">20 items</button>
+      <button class="button" @click="filter.pageSize = 40">40 items</button>
+      <button class="button" @click="filter.pageSize = 60">60 items</button>
     </div>
     <div class="field is-grouped">
       <button class="button" @click="prevPage" :disabled="filter.page == 1">
@@ -75,7 +75,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      amountPerPage: 20,
       totalGamesCount: 0,
       gamesList: [] as Game[],
       showUserOLD: false,
@@ -88,6 +87,7 @@ export default Vue.extend({
         minPrice: 0,
         maxPrice: 100,
         releaseDate: "",
+        pageSize: 20,
       } as GameFilter,
       isFavorited: false,
       isGamesLoading: false,
@@ -161,6 +161,7 @@ export default Vue.extend({
         minPrice: 0,
         maxPrice: 100,
         releaseDate: "",
+        pageSize: 20,
       };
       this.filter = { ...defaultFilter };
       this.$router.push({ path: "/games", query: {} });
