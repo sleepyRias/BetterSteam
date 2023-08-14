@@ -32,6 +32,7 @@
             :max="100"
             :interval="1"
             @dragging="handleSliderDragging"
+            @change="handlePriceRangeInput"
           />
           <div class="slider-lables">
             <span>{{ sliderValues[0] }}€</span>
@@ -75,10 +76,7 @@ export default Vue.extend({
   data() {
     return {
       showDropDown: false,
-      company: "",
       sliderValues: [0, 100],
-      genre: "",
-      releaseDate: "",
       filter: {} as GameFilter,
       genres: [
         "Horror",
@@ -109,6 +107,8 @@ export default Vue.extend({
   },
   methods: {
     submitFilter() {
+      this.filter.minPrice = this.sliderValues[0];
+      this.filter.maxPrice = this.sliderValues[1];
       this.$emit("submit", this.filter);
 
       const queryParams = {
@@ -124,7 +124,6 @@ export default Vue.extend({
       this.$router.push({ path: "/games", query: queryParams });
       this.$emit("close");
     },
-
     clearFilter() {
       const defaultFilter = {
         page: 1,
@@ -141,10 +140,6 @@ export default Vue.extend({
       this.$emit("clearFilter");
       this.$emit("close");
     },
-    handlePriceRange() {
-      this.filter.minPrice = this.sliderValues[0];
-      this.filter.maxPrice = this.sliderValues[1];
-    },
     handleSliderDragging() {
       if (this.sliderValues[0] > this.sliderValues[1]) {
         // If the first slider is dragged past the second slider, adjust the values
@@ -154,19 +149,14 @@ export default Vue.extend({
         this.sliderValues[1] = this.sliderValues[0];
       }
     },
+    handlePriceRangeInput() {
+      this.filter.minPrice = this.sliderValues[0];
+      this.filter.maxPrice = this.sliderValues[1];
+    },
   },
   computed: {
     themeClass() {
       return this.$store.getters.getTheme;
-    },
-  },
-  watch: {
-    sliderValues: {
-      deep: false,
-      immediate: true,
-      handler() {
-        this.handlePriceRange();
-      },
     },
   },
 });

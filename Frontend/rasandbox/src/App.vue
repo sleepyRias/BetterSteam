@@ -132,12 +132,29 @@ export default Vue.extend({
       this.updateRoute();
     },
     updateRoute() {
-      const queryParameters: any = { ...this.filter }; // Copy filter object
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const queryParameters: any = {};
 
-      // Remove properties with default values to keep the URL clean
-      if (queryParameters.page === 1) delete queryParameters.page;
-      if (queryParameters.minPrice === 0) delete queryParameters.minPrice;
-      if (queryParameters.maxPrice === 100) delete queryParameters.maxPrice;
+      // Add the parameters to the queryParameters object if they have non-empty values (GPT did this)
+      queryParameters.page = this.filter.page;
+      if (this.filter.genre !== "") {
+        queryParameters.genre = this.filter.genre;
+      }
+      if (this.filter.name !== "") {
+        queryParameters.name = this.filter.name;
+      }
+      if (this.filter.company !== "") {
+        queryParameters.company = this.filter.company;
+      }
+      if (this.filter.minPrice !== 0) {
+        queryParameters.minPrice = this.filter.minPrice;
+      }
+      if (this.filter.maxPrice !== 100) {
+        queryParameters.maxPrice = this.filter.maxPrice;
+      }
+      if (this.filter.releaseDate !== "") {
+        queryParameters.releaseDate = this.filter.releaseDate;
+      }
 
       this.$router.push({ path: "/games", query: queryParameters });
     },
@@ -210,24 +227,6 @@ export default Vue.extend({
     this.filter.releaseDate = String(this.$route.query.releaseDate || "");
     this.filter.minPrice = Number(this.$route.query.minPrice || 0);
     this.filter.maxPrice = Number(this.$route.query.maxPrice || 100);
-
-    // Watch for changes in route query parameters
-    this.$watch(
-      () => this.$route.query,
-      () => {
-        this.filter.page = Number(this.$route.query.page || 1);
-        this.filter.company = String(this.$route.query.company || "");
-        this.filter.genre = String(this.$route.query.genre || "");
-        this.filter.name = String(this.$route.query.name || "");
-        this.filter.releaseDate = String(this.$route.query.releaseDate || "");
-        this.filter.minPrice = Number(this.$route.query.minPrice || 0);
-        this.filter.maxPrice = Number(this.$route.query.maxPrice || 100);
-
-        // Fetch games with the updated filter
-        this.getGames();
-      },
-      { immediate: true } // Trigger the watcher immediately when the component is created
-    );
   },
   mounted() {
     window.addEventListener("scroll", this.checkScroll);
