@@ -17,5 +17,18 @@
             public const string GameIdsRequest = ControllerBase + "/GamesbyId";
 
         }
+        public static class AccountController
+        {
+            private const string ControllerBase = Base + "/AccountController";
+
+            //Account Routes
+            public const string GetAccounts = ControllerBase + "/GetAccounts";
+            public const string GetAccountById = ControllerBase + "/GetAccountById";
+            public const string Login = ControllerBase + "/Login";
+            public const string CreateAccount = ControllerBase + "/CreateAccount";
+            public const string UpdateAccount = ControllerBase + "/UpdateAccount";
+            //public const string DeleteAccount = ControllerBase + "/DeleteAccount";
+            public const string CheckUserNameAvailability = ControllerBase + "/CheckUserNameAvailability";
+        }
     }
 }
