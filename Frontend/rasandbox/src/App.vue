@@ -13,12 +13,26 @@
         <i class="fa-regular fa-user fa-2x" />
       </button>
     </div>
-    <button class="button" @click="showFilter = !showFilter">
-      <span class="icon">
-        <i class="fa-solid fa-filter" />
-      </span>
-      <span>Filter</span>
-    </button>
+    <div class="search-with-filters is-rounded">
+      <div class="control has-icons-right">
+        <input
+          class="input"
+          type="text"
+          placeholder="Search any Game"
+          v-model="filter.name"
+        />
+        <!-- arme API aber egal ist niklas problem net meins -->
+        <span class="icon is-small is-right">
+          <i class="fa-solid fa-magnifying-glass" />
+        </span>
+      </div>
+      <button class="button" @click="showFilter = !showFilter">
+        <span class="icon">
+          <i class="fa-solid fa-filter" />
+        </span>
+        <span>Filter</span>
+      </button>
+    </div>
     <div class="items-per-page">
       show
       <div class="select-container">
@@ -30,7 +44,6 @@
       </div>
       items per page
     </div>
-
     <div class="field is-grouped">
       <button class="button" @click="prevPage" :disabled="filter.page == 1">
         <span>
@@ -336,5 +349,9 @@ body {
     background-color: #333;
     color: #fff;
   }
+}
+.search-with-filters {
+  display: flex;
+  justify-content: center;
 }
 </style>
