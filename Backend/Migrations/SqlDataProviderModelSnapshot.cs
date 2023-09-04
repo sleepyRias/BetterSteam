@@ -9,7 +9,7 @@ using backend.DataProvider;
 
 namespace backend.Migrations
 {
-    [DbContext(typeof(SqlDataProvider))]
+    [DbContext(typeof(GameDataProvider))]
     partial class SqlDataProviderModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

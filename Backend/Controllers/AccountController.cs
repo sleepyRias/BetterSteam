@@ -14,10 +14,10 @@ namespace backend.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly SqlDataProvider _dataProvider;
+        private readonly AccountDataProvider _dataProvider;
         private readonly PasswordHasher<Account> _passwordHasher;
 
-        public AccountController(SqlDataProvider dataProvider)
+        public AccountController(AccountDataProvider dataProvider)
         {
             _dataProvider = dataProvider;
             _passwordHasher = new PasswordHasher<Account>();

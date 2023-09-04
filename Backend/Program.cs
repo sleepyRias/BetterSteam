@@ -23,7 +23,9 @@ namespace backend
                            .AllowAnyHeader();
                 });
             });
-            builder.Services.AddScoped<SqlDataProvider>();
+            builder.Services.AddScoped<GameDataProvider>();
+            builder.Services.AddScoped<AccountDataProvider>();
+
 
             var app = builder.Build();
 

@@ -10,7 +10,7 @@ using backend.DataProvider;
 
 namespace backend.Migrations
 {
-    [DbContext(typeof(SqlDataProvider))]
+    [DbContext(typeof(GameDataProvider))]
     [Migration("20230814130438_InitialCreate")]
     partial class InitialCreate
     {

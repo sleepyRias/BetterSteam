@@ -12,9 +12,9 @@ namespace backend.Controllers
     {
 
         private readonly ILogger<GameController> _logger;
-        private readonly SqlDataProvider _dataProvider;
+        private readonly GameDataProvider _dataProvider;
 
-        public GameController(ILogger<GameController> logger, SqlDataProvider dataProvider)
+        public GameController(ILogger<GameController> logger, GameDataProvider dataProvider)
         {
             _logger = logger;
             _dataProvider = dataProvider;
