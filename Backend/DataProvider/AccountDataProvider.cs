@@ -5,38 +5,26 @@ using Microsoft.Extensions.Configuration;
 
 namespace backend.DataProvider
 {
-    public class SqlDataProvider : DbContext
+    public class AccountDataProvider : DbContext
     {
-        public DbSet<Game> Games { get; set; }
-        public DbSet<Account> Accounts { get; set; } // Hinzugefügt für die Accounts-Tabelle
-        public DbSet<FavouriteGame> FavouriteGames{ get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<FavouriteGame> FavouriteGames { get; set; }
 
         public IConfiguration Configuration { get; }
 
-        public SqlDataProvider(IConfiguration configuration)
+        public AccountDataProvider(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string gamesConnectionString = Configuration.GetConnectionString("GamesConnection");
-            optionsBuilder.UseSqlite(gamesConnectionString);
-
             string accountsConnectionString = Configuration.GetConnectionString("AccountsConnection");
             optionsBuilder.UseSqlite(accountsConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Game>(entity =>
-            {
-                entity.Property(g => g.Name).HasColumnName("gamename");
-                entity.Property(g => g.GenreId).HasColumnName("genre");
-                entity.Property(g => g.Company).HasColumnName("company");
-                entity.Property(g => g.Price).HasColumnName("price");
-                entity.Property(g => g.ReleaseDate).HasColumnName("release_date");
-            });
 
             modelBuilder.Entity<FavouriteGame>()
                 .HasKey(fg => new { fg.AccountId, fg.GameId });
