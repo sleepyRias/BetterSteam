@@ -17,6 +17,8 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import VueCookies from "vue-cookies";
+Vue.use(VueCookies);
 import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
 import axios from "axios";
 const repo = new SteamRepositoryAxios(axios);
@@ -35,15 +37,18 @@ export default Vue.extend({
         localStorage.setItem("token", response.token);
         this.$store.dispatch("setToken", response.token);
       } catch (error) {
-        alert("Username / Password was incorrect");
+        alert("Invalid credentials");
       }
       this.verify();
+      if (this.$store.state.isAuthenticated === true) {
+        this.$cookies.set("token", this.$store.state.token, "7d");
+        this.$router.push("/ss");
+      }
     },
     async verify() {
       const response = await repo.verify(this.$store.state.token);
       if (response.isValid) {
         this.$store.state.isAuthenticated = true;
-        this.$router.push({ path: "/games" });
       }
     },
   },
