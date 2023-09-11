@@ -35,7 +35,15 @@ export default Vue.extend({
         localStorage.setItem("token", response.token);
         this.$store.dispatch("setToken", response.token);
       } catch (error) {
-        console.error("login failed:", error);
+        alert("Username / Password was incorrect");
+      }
+      this.verify();
+    },
+    async verify() {
+      const response = await repo.verify(this.$store.state.token);
+      if (response.isValid) {
+        this.$store.state.isAuthenticated = true;
+        this.$router.push({ path: "/games" });
       }
     },
   },

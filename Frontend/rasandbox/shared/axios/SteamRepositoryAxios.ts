@@ -1,5 +1,9 @@
 import { AxiosRepository } from "./AxiosRepository";
-import { BetterSteamResponse, Token } from "../interfaces/BetterSteamResponse";
+import {
+  BetterSteamResponse,
+  Token,
+  isValid,
+} from "../interfaces/BetterSteamResponse";
 import { SteamRepository } from "../repos/SteamRepository";
 import { GameFilter } from "shared/interfaces/filters";
 
@@ -34,5 +38,10 @@ export class SteamRepositoryAxios
       `${this.basePath}/AccountController/Login`,
       query
     );
+  }
+  public verify(token: string) {
+    return this.sendPost<isValid>(`${this.basePath}/AccountController/Verify`, {
+      token: token,
+    });
   }
 }

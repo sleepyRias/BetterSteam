@@ -6,3 +6,6 @@ export interface BetterSteamResponse {
 export interface Token {
   token: string;
 }
+export interface isValid {
+  isValid: boolean;
+}

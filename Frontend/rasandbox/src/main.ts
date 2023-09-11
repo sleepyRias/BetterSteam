@@ -17,8 +17,9 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log(storeOptions.state.isAuthenticated);
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!storeOptions.getters.isAuthenticated) {
+    if (storeOptions.state.isAuthenticated === false) {
       // Redirect to login page if not authenticated
       next("/login");
     } else {
