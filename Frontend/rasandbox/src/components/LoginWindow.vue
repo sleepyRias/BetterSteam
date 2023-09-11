@@ -1,25 +1,25 @@
 <template>
   <div>
-    <form @submit="login">
-      <input
-        v-model="username"
-        type="text"
-        placeholder="Username"
-        class="input"
-      />
-      <input
-        v-model="password"
-        type="password"
-        placeholder="Password"
-        class="input"
-      />
-      <button type="submit" class="button">Login</button>
-    </form>
+    <input
+      v-model="username"
+      type="text"
+      placeholder="Username"
+      class="input"
+    />
+    <input
+      v-model="password"
+      type="password"
+      placeholder="Password"
+      class="input"
+    />
+    <button type="submit" class="button" @click="login">Login</button>
   </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
-
+import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
+import axios from "axios";
+const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({
   name: "LoginWindow",
   data() {
@@ -29,11 +29,10 @@ export default Vue.extend({
     };
   },
   methods: {
-    login(event: any) {
-      event.preventDefault();
-      // Send a login request to your server and handle the response.
-      // If authentication is successful, store a token or session on the client side.
-      // You can use Vuex, local storage, or cookies to store this information.
+    async login() {
+      const response = await repo.login(this.username, this.password);
+      localStorage.setItem("token", response.token);
+      this.$store.dispatch("setToken", response.token);
     },
   },
 });

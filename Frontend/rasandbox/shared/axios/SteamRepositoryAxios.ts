@@ -1,5 +1,5 @@
 import { AxiosRepository } from "./AxiosRepository";
-import { BetterSteamResponse } from "../interfaces/BetterSteamResponse";
+import { BetterSteamResponse, Token } from "../interfaces/BetterSteamResponse";
 import { SteamRepository } from "../repos/SteamRepository";
 import { GameFilter } from "shared/interfaces/filters";
 
@@ -25,12 +25,14 @@ export class SteamRepositoryAxios
       }
     );
   }
-  public login(username: string, password: string): Promise<string> {
-    return this.sendGet<string>(`${this.basePath}/login`, {
-      params: {
-        username: username,
-        password: password,
-      },
-    });
+  public login(username: string, password: string) {
+    const query = {
+      username: username,
+      password: password,
+    };
+    return this.sendPost<Token>(
+      `${this.basePath}/AccountController/Login`,
+      query
+    );
   }
 }

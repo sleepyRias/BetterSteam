@@ -5,8 +5,6 @@ interface State {
   token: string;
 }
 
-import AuthService from "../../shared/api/AuthService";
-
 export const storeOptions = {
   state: {
     theme: "light-theme",
@@ -34,16 +32,8 @@ export const storeOptions = {
     setAuthentication(context: any, authentication: boolean) {
       context.commit("setAuthentication", authentication);
     },
-    async checkAuthentication(context: any) {
-      try {
-        // ... (some asynchronous operation, e.g., making an API request)
-        const isAuthenticated = await AuthService.checkAuthentication();
-
-        // Committing a mutation to update the state
-        context.commit("setAuthentication", isAuthenticated);
-      } catch (error) {
-        console.error("Authentication check failed:", error);
-      }
+    async checkAuthentication() {
+      return;
     },
   },
   getters: {
