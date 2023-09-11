@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using backend.DataProvider;
-using backend.Model.Account;
-using Microsoft.AspNetCore.Identity;
+using System.Text;
 using System.Security.Cryptography;
-using backend.Model.DTO;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using Microsoft.Extensions.Configuration;
-using System.Security.Claims;
+
+using backend.DataProvider;
+using backend.Model;
+using backend.Model.Account;
+using backend.Model.DTO;
 
 namespace backend.Controllers
 {
@@ -30,7 +33,7 @@ namespace backend.Controllers
             _configuration = configuration;
         }
 
-        // GET: /Account
+        // POST: /Account
         [HttpPost(Endpoints.AccountController.Login, Name = "Login")]
         public IActionResult Login(LoginDTO login)
         {
@@ -175,6 +178,18 @@ namespace backend.Controllers
             var user = _dataProvider.Accounts.FirstOrDefault(a => a.Name == username);
             if (user != null) { return false; }
             return true;
+        }
+
+        [HttpPost(Endpoints.AccountController.Verify, Name = "Verify")]
+        public IActionResult VerifyToken([FromBody] TokenRequest request)
+        {
+            var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
+
+            if (jwtHelper.VerifyToken(request.Token))
+            {
+                return Ok(new { IsValid = true });
+            }
+            return Ok(new { IsValid = false });
         }
     }
 }

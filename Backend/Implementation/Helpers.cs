@@ -1,5 +1,8 @@
 ﻿using backend.Model;
 using System;
+using backend.DataProvider;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace backend.Implementation
 {
@@ -61,5 +64,7 @@ namespace backend.Implementation
             };
             return newG;
         }
+
+
     }
 }
