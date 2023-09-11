@@ -25,4 +25,12 @@ export class SteamRepositoryAxios
       }
     );
   }
+  public login(username: string, password: string): Promise<string> {
+    return this.sendGet<string>(`${this.basePath}/login`, {
+      params: {
+        username: username,
+        password: password,
+      },
+    });
+  }
 }

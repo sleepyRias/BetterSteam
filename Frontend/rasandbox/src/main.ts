@@ -16,6 +16,19 @@ const router = new VueRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!storeOptions.getters.isAuthenticated) {
+      // Redirect to login page if not authenticated
+      next("/login");
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
 new Vue({
   router,
   render: (h) => h(App),
