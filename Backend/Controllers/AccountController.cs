@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
 using backend.Model.DTO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
 
 namespace backend.Controllers
 {
@@ -14,32 +19,27 @@ namespace backend.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
         private readonly AccountDataProvider _dataProvider;
         private readonly PasswordHasher<Account> _passwordHasher;
 
-        public AccountController(AccountDataProvider dataProvider)
+        public AccountController(AccountDataProvider dataProvider, IConfiguration configuration)
         {
             _dataProvider = dataProvider;
             _passwordHasher = new PasswordHasher<Account>();
+            _configuration = configuration;
         }
 
         // GET: /Account
-        [HttpGet(Endpoints.AccountController.GetAccounts, Name = "GetAccounts")]
-        public IEnumerable<Account> GetAccounts()
-        {
-            return _dataProvider.Accounts.ToList();
-        }
-
-        // Login Method
         [HttpPost(Endpoints.AccountController.Login, Name = "Login")]
-        public bool Login(LoginDTO login)
+        public IActionResult Login(LoginDTO login)
         {
             var user = _dataProvider.Accounts.FirstOrDefault(a => a.Name == login.Username);
 
             // Überprüfe, ob der Benutzer in der Datenbank existiert
             if (user == null)
             {
-                return false;
+                return BadRequest(new { message = "Benutzer nicht gefunden" });
             }
 
             // Das gespeicherte Salt aus der Datenbank abrufen
@@ -49,9 +49,29 @@ namespace backend.Controllers
             var passwordHasher = new PasswordHasher<Account>();
             var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, login.Password + Convert.ToBase64String(salt));
 
-            // Rückgabe des Ergebnisses
-            return result == PasswordVerificationResult.Success;
+            if (result != PasswordVerificationResult.Success)
+            {
+                return Unauthorized(new { message = "Falsches Passwort" });
+            }
+
+            var claims = new[] {
+        new Claim(ClaimTypes.Name, user.Name)
+        // Sie können hier zusätzliche Claims hinzufügen, falls nötig
+    };
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])), SecurityAlgorithms.HmacSha256)
+            );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return Ok(new { token = tokenString });
         }
+
 
         // GET: /Account/5
         [HttpGet(Endpoints.AccountController.GetAccountById, Name = "GetAccountById")]
