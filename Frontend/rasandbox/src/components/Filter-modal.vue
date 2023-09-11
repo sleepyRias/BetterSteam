@@ -118,20 +118,25 @@ export default Vue.extend({
     submitFilter() {
       this.$emit("submit", this.filter);
 
-      const queryParams = {
-        page: this.filter.page.toString(),
-        company: this.filter.company,
-        genre: this.filter.genre,
-        name: this.filter.name,
-        releaseDate: this.filter.releaseDate,
-        minPrice: this.filter.minPrice.toString(),
-        maxPrice: this.filter.maxPrice.toString(),
-      };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const queryParameters: any = {};
 
-      this.$router.push({ path: "/games", query: queryParams });
+      // Add the parameters to the queryParameters object if they have non-empty values (GPT did this)
+      if (this.filter.page !== 0) queryParameters.page = this.filter.page;
+      if (this.filter.genre !== "") queryParameters.genre = this.filter.genre;
+      if (this.filter.name !== "") queryParameters.name = this.filter.name;
+      if (this.filter.company !== "")
+        queryParameters.company = this.filter.company;
+      if (this.filter.minPrice !== 0)
+        queryParameters.minPrice = this.filter.minPrice;
+      if (this.filter.maxPrice !== 100)
+        queryParameters.maxPrice = this.filter.maxPrice;
+      if (this.filter.releaseDate !== "")
+        queryParameters.releaseDate = this.filter.releaseDate;
+      this.$router.push({ path: "/games", query: queryParameters });
+
       this.$emit("close");
     },
-
     clearFilter() {
       const defaultFilter = {
         page: 1,
