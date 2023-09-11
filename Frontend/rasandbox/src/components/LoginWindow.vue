@@ -17,6 +17,8 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
 import Cookies from "js-cookie";
 import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
 import axios from "axios";
