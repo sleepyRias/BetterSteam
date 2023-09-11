@@ -30,9 +30,13 @@ export default Vue.extend({
   },
   methods: {
     async login() {
-      const response = await repo.login(this.username, this.password);
-      localStorage.setItem("token", response.token);
-      this.$store.dispatch("setToken", response.token);
+      try {
+        const response = await repo.login(this.username, this.password);
+        localStorage.setItem("token", response.token);
+        this.$store.dispatch("setToken", response.token);
+      } catch (error) {
+        console.error("login failed:", error);
+      }
     },
   },
 });
