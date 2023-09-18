@@ -13,6 +13,11 @@
         placeholder="Username"
         class="input"
       />
+      <span v-if="username !== ''" :class="usernameAvailable">{{
+        usernameAvailability
+          ? "Username is Available"
+          : "Username is NOT Available"
+      }}</span>
       <input
         v-model="password"
         type="password"
@@ -31,6 +36,9 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import axios from "axios";
+import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
+const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({
   name: "CreateNewUser",
   data() {
@@ -38,11 +46,40 @@ export default Vue.extend({
       username: "",
       password: "",
       password2: "",
+      usernameAvailability: false,
     };
   },
   methods: {
     backToHome() {
       this.$router.push("/games");
+    },
+    async checkUsernameAvailability(username: string) {
+      var response = false;
+      try {
+        response = await repo.CheckUserNameAvailability(username);
+      } catch (error) {
+        return false;
+      }
+      if (response) {
+        this.usernameAvailability = true;
+      }
+    },
+  },
+  computed: {
+    usernameAvailable(): string {
+      if (this.usernameAvailability) {
+        return "UsernameAvailable";
+      }
+      return "UsernameNotAvailable";
+    },
+  },
+  watch: {
+    username: {
+      deep: true,
+      immediate: false,
+      handler() {
+        this.checkUsernameAvailability(this.username);
+      },
     },
   },
 });
@@ -64,5 +101,11 @@ export default Vue.extend({
 .button:focus:not(:active),
 .button.is-focused:not(:active) {
   box-shadow: none !important;
+}
+.UsernameNotAvailable {
+  color: darkred;
+}
+.UsernameAvailable {
+  color: darkgreen;
 }
 </style>

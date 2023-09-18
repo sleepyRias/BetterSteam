@@ -10,4 +10,5 @@ export interface SteamRepository {
   getGames(filter: GameFilter): Promise<BetterSteamResponse>;
   login(username: string, password: string): Promise<Token>;
   verify(token: string): Promise<isValid>;
+  CheckUserNameAvailability(username: string): Promise<boolean>;
 }
