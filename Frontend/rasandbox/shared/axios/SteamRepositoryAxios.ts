@@ -1,5 +1,9 @@
 import { AxiosRepository } from "./AxiosRepository";
-import { BetterSteamResponse } from "../interfaces/BetterSteamResponse";
+import {
+  BetterSteamResponse,
+  Token,
+  isValid,
+} from "../interfaces/BetterSteamResponse";
 import { SteamRepository } from "../repos/SteamRepository";
 import { GameFilter } from "shared/interfaces/filters";
 
@@ -24,5 +28,20 @@ export class SteamRepositoryAxios
         },
       }
     );
+  }
+  public login(username: string, password: string) {
+    const query = {
+      username: username,
+      password: password,
+    };
+    return this.sendPost<Token>(
+      `${this.basePath}/AccountController/Login`,
+      query
+    );
+  }
+  public verify(token: string) {
+    return this.sendPost<isValid>(`${this.basePath}/AccountController/Verify`, {
+      token: token,
+    });
   }
 }
