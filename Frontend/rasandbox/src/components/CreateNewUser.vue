@@ -30,7 +30,14 @@
         placeholder="Repeat Password"
         class="input"
       />
-      <button class="button is-success">Create User</button>
+      <div class="button-group">
+        <button type="submit" class="button is-success" @click="CreateNewUser">
+          Create User
+        </button>
+        <span class="login-Account" @click="goToLogin"
+          >Already have an Account? Click here to Login</span
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -58,11 +65,34 @@ export default Vue.extend({
       try {
         response = await repo.CheckUserNameAvailability(username);
       } catch (error) {
+        this.usernameAvailability = false;
         return false;
       }
-      if (response) {
-        this.usernameAvailability = true;
+      this.usernameAvailability = response;
+    },
+    async CreateNewUser() {
+      if (this.password !== this.password2) {
+        alert("Passwords do not match");
+        return;
       }
+      if (
+        this.username === "" ||
+        this.password === "" ||
+        this.password2 === ""
+      ) {
+        alert("Fields need to be filled out");
+        return;
+      }
+      if (!this.usernameAvailability) {
+        alert("this Username has been taken");
+        return;
+      }
+      const response = await repo.CreateNewUser(this.username, this.password);
+      console.log(response);
+      this.$router.push("/login");
+    },
+    goToLogin() {
+      this.$router.push("/login");
     },
   },
   computed: {
@@ -107,5 +137,14 @@ export default Vue.extend({
 }
 .UsernameAvailable {
   color: darkgreen;
+}
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+.login-Account {
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 10pt;
 }
 </style>

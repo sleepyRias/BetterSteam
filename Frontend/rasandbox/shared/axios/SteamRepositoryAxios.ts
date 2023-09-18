@@ -54,4 +54,14 @@ export class SteamRepositoryAxios
       }
     );
   }
+  public CreateNewUser(username: string, password: string) {
+    const query = {
+      username: username,
+      password: password,
+    };
+    return this.sendPost<string>(
+      `${this.basePath}/AccountController/CreateAccount`,
+      query
+    );
+  }
 }

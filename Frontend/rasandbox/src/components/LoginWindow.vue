@@ -23,7 +23,7 @@
         <button type="submit" class="button is-success" @click="login">
           Login
         </button>
-        <span class="create-Account"
+        <span class="create-Account" @click="goToCreateNewUser"
           >Don't have an Account? Create one here</span
         >
       </div>
@@ -70,6 +70,9 @@ export default Vue.extend({
     },
     backToHome() {
       this.$router.push("/games");
+    },
+    goToCreateNewUser() {
+      this.$router.push("/newUser");
     },
   },
 });
