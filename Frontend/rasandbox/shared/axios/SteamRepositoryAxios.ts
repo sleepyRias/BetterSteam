@@ -44,4 +44,24 @@ export class SteamRepositoryAxios
       token: token,
     });
   }
+  public CheckUserNameAvailability(username: string) {
+    return this.sendGet<boolean>(
+      `${this.basePath}/AccountController/CheckUserNameAvailability`,
+      {
+        params: {
+          username: username,
+        },
+      }
+    );
+  }
+  public CreateNewUser(username: string, password: string) {
+    const query = {
+      username: username,
+      password: password,
+    };
+    return this.sendPost<string>(
+      `${this.basePath}/AccountController/CreateAccount`,
+      query
+    );
+  }
 }
