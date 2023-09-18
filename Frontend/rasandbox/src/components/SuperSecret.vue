@@ -15,7 +15,6 @@ export default Vue.extend({
     async verify() {
       const response = await repo.verify(this.$store.state.token);
       if (response.isValid) {
-        this.$store.state.isAuthenticated = true;
         return true;
       }
       return false;

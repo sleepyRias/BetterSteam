@@ -9,7 +9,7 @@
     />
     <div class="main-header">
       <h1 class="main-title">Sandbox Project</h1>
-      <button @click="showUser = true" class="betterSteamButton--user">
+      <button @click="goToProfile" class="betterSteamButton--user">
         <i class="fa-regular fa-user fa-2x" />
       </button>
     </div>
@@ -89,6 +89,7 @@ import UserModal from "./components/User-modal.vue";
 import FilterModal from "./components/Filter-modal.vue";
 import { GameFilter } from "../shared/interfaces/filters";
 import GameBox from "./components/GameBox.vue";
+import Cookies from "js-cookie";
 export default Vue.extend({
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Main",
@@ -198,6 +199,19 @@ export default Vue.extend({
 
     scrollToTop() {
       window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    async goToProfile() {
+      const token = Cookies.get("token");
+      if (token === undefined) {
+        this.$router.push("/login");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const response = await repo.verify(token!);
+      if (response.isValid) {
+        this.$router.push("/ss");
+      } else {
+        this.$router.push("/login");
+      }
     },
   },
   computed: {

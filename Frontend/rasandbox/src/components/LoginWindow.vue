@@ -1,18 +1,33 @@
 <template>
   <div>
-    <input
-      v-model="username"
-      type="text"
-      placeholder="Username"
-      class="input"
-    />
-    <input
-      v-model="password"
-      type="password"
-      placeholder="Password"
-      class="input"
-    />
-    <button type="submit" class="button" @click="login">Login</button>
+    <button class="button back-home" @click="backToHome">
+      <span class="icon">
+        <i class="fa-solid fa-arrow-left" />
+      </span>
+      <span>Back to Home</span>
+    </button>
+    <div class="main-login-form">
+      <input
+        v-model="username"
+        type="text"
+        placeholder="Username"
+        class="input"
+      />
+      <input
+        v-model="password"
+        type="password"
+        placeholder="Password"
+        class="input"
+      />
+      <div class="button-group">
+        <button type="submit" class="button is-success" @click="login">
+          Login
+        </button>
+        <span class="create-Account"
+          >Don't have an Account? Create one here</span
+        >
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -22,6 +37,7 @@ import Vue from "vue";
 import Cookies from "js-cookie";
 import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
 import axios from "axios";
+import { Token } from "../../shared/interfaces/BetterSteamResponse";
 const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({
   name: "LoginWindow",
@@ -33,27 +49,56 @@ export default Vue.extend({
   },
   methods: {
     async login() {
+      var response = {} as Token;
+      // i shouldnt do this but i am doin this
       try {
-        const response = await repo.login(this.username, this.password);
-        localStorage.setItem("token", response.token);
-        this.$store.dispatch("setToken", response.token);
+        response = await repo.login(this.username, this.password);
       } catch (error) {
         alert("Invalid credentials");
-        Cookies.remove("token");
       }
-      this.verify();
-      Cookies.set("token", this.$store.state.token);
-      Cookies.get("token");
-      if (this.$store.state.isAuthenticated === true) {
+      Cookies.set("token", response.token);
+      if (Cookies.get("token") && (await this.verify(response.token))) {
         this.$router.push("/ss");
       }
     },
-    async verify() {
-      const response = await repo.verify(this.$store.state.token);
+    async verify(token: string): Promise<boolean> {
+      const response = await repo.verify(token);
       if (response.isValid) {
-        this.$store.state.isAuthenticated = true;
+        return true;
       }
+      return false;
+    },
+    backToHome() {
+      this.$router.push("/games");
     },
   },
 });
 </script>
+<style lang="scss" scoped>
+.main-login-form {
+  width: 40%;
+  margin: 100px auto 0 auto;
+  position: relative;
+}
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+.create-Account {
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 10pt;
+}
+.back-home {
+  text-decoration: underline;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 15px 0 0 15px;
+  border: none;
+}
+.button:focus:not(:active),
+.button.is-focused:not(:active) {
+  box-shadow: none !important;
+}
+</style>
