@@ -1,6 +1,5 @@
 <template>
   <div class="betterSteam" :class="themeClass">
-    <user-modal v-if="showUser" @close="showUser = false" />
     <filter-modal
       v-if="showFilter"
       @close="showFilter = false"
@@ -85,7 +84,6 @@ import Vue from "vue";
 import axios from "axios";
 import { Game } from "../shared/interfaces/Game";
 import { SteamRepositoryAxios } from "../shared/axios/SteamRepositoryAxios";
-import UserModal from "./components/User-modal.vue";
 import FilterModal from "./components/Filter-modal.vue";
 import { GameFilter } from "../shared/interfaces/filters";
 import GameBox from "./components/GameBox.vue";
@@ -94,19 +92,15 @@ export default Vue.extend({
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Main",
   components: {
-    UserModal,
     FilterModal,
     GameBox,
   },
   data() {
     return {
       showFilter: false,
-      showUser: false,
       totalGamesCount: 0,
       showUpButton: false,
       gamesList: [] as Game[],
-      showUserOLD: false,
-      showFilterOLD: false,
       filter: {
         page: 1,
         name: "",

@@ -50,7 +50,7 @@ export default Vue.extend({
   methods: {
     async login() {
       var response = {} as Token;
-      // i shouldnt do this but i am doin this
+      // i shouldn't do this but i am doin this
       try {
         response = await repo.login(this.username, this.password);
       } catch (error) {

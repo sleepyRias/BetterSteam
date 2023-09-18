@@ -5,6 +5,7 @@
 import Vue from "vue";
 import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
 import axios from "axios";
+import Cookies from "js-cookie";
 const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({
   name: "SuperSecret",
@@ -13,7 +14,11 @@ export default Vue.extend({
   },
   methods: {
     async verify() {
-      const response = await repo.verify(this.$store.state.token);
+      const token = Cookies.get("token");
+      if (token === undefined) {
+        return false;
+      }
+      const response = await repo.verify(token);
       if (response.isValid) {
         return true;
       }
