@@ -39,6 +39,7 @@ export default Vue.extend({
         this.$store.dispatch("setToken", response.token);
       } catch (error) {
         alert("Invalid credentials");
+        Cookies.remove("token");
       }
       this.verify();
       Cookies.set("token", this.$store.state.token);

@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+import axios from "axios";
+import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
+const repo = new SteamRepositoryAxios(axios);
+
 interface State {
   theme: string;
-  isAuthenticated: boolean;
   token: string;
 }
 
 export const storeOptions = {
   state: {
     theme: "light-theme",
-    isAuthenticated: false,
     token: "",
   },
   mutations: {
     setTheme(state: State, theme: string) {
       state.theme = theme;
-    },
-    setAuthentication(state: State, authentication: boolean) {
-      state.isAuthenticated = authentication;
     },
     setToken(state: State, token: string) {
       state.token = token;
@@ -29,17 +29,10 @@ export const storeOptions = {
     setToken(context: any, token: string) {
       context.commit("setToken", token);
     },
-    setAuthentication(context: any, authentication: boolean) {
-      context.commit("setAuthentication", authentication);
-    },
-    async checkAuthentication() {
-      return;
-    },
   },
   getters: {
     getTheme(state: State) {
       return state.theme;
     },
-    isAuthenticated: (state: State) => state.isAuthenticated,
   },
 };

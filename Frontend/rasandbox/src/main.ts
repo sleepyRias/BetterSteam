@@ -5,6 +5,7 @@ import { storeOptions } from "./store/store";
 import VueRouter from "vue-router";
 import "./assets/main.scss";
 import routes from "./routes";
+import CookieValidation from "../shared/CookieValidation";
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
@@ -16,12 +17,11 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  console.log(storeOptions.state.isAuthenticated);
+router.beforeEach(async (to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (storeOptions.state.isAuthenticated === false) {
-      // Redirect to login page if not authenticated
+    if ((await CookieValidation()) === false) {
       next("/login");
+      // Redirect to login page if not authenticated
     } else {
       next();
     }
