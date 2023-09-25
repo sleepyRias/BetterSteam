@@ -1,7 +1,9 @@
-﻿
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Security.Claims;
 
 public class JwtHelper
 {
@@ -45,5 +47,20 @@ public class JwtHelper
             ValidAudience = _audience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key))
         };
+    }
+
+    public Claim GetClaim(string token, string claimType)
+    {
+        try
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+            var claim = jwtToken.Claims.FirstOrDefault(c => c.Type == claimType);
+            return claim;
+        }
+        catch
+        {
+            return null;
+        }
     }
 }
