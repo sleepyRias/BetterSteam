@@ -15,6 +15,7 @@ using backend.DataProvider;
 using backend.Model;
 using backend.Model.Account;
 using backend.Model.DTO;
+using Azure.Core;
 
 namespace backend.Controllers
 {
@@ -57,10 +58,13 @@ namespace backend.Controllers
                 return Unauthorized(new { message = "Falsches Passwort" });
             }
 
-            var claims = new[] {
-        new Claim(ClaimTypes.Name, user.Name)
-        // Sie können hier zusätzliche Claims hinzufügen, falls nötig
-    };
+            var claims = new[]
+                {
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())  // Annahme, dass user.Id ein integer oder eine andere Datenstruktur ist, die in eine Zeichenkette konvertiert werden muss
+                };
+
+            // Sie können hier zusätzliche Claims hinzufügen, falls nötig
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
@@ -191,5 +195,26 @@ namespace backend.Controllers
             }
             return Ok(new { IsValid = false });
         }
+
+        [HttpPost(Endpoints.AccountController.AddFavouriteGame, Name = "AddFavouriteGame")]
+        public IActionResult AddFavouriteGame([FromBody] TokenDTO dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest(); // Ungültige Anforderung
+            }
+
+            var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
+            var userId = jwtHelper.GetClaim(dto.Token, ClaimTypes.NameIdentifier).Value;
+            try
+            {
+                _dataProvider.FavouriteGames.Add(new FavouriteGame() { AccountId = int.Parse(userId), GameId = int.Parse(dto.Value1) });
+                _dataProvider.SaveChanges();
+            } catch
+            {
+                return BadRequest();
+            }
+            return Ok(); // Erfolgreiches Hinzufügen
+        }   
     }
 }
