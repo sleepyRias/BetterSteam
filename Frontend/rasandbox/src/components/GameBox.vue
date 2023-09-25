@@ -1,5 +1,5 @@
 <template>
-  <div class="gameBox" :class="(themeClass, { 'hover-effect': enableHover })">
+  <div class="gameBox" :class="[themeClass, { 'hover-effect': enableHover }]">
     <div class="columns">
       <div class="column is-one-third">
         <figure class="image is-128x128">
