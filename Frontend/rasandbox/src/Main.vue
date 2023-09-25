@@ -84,7 +84,7 @@ import Vue from "vue";
 import axios from "axios";
 import { Game } from "../shared/interfaces/Game";
 import { SteamRepositoryAxios } from "../shared/axios/SteamRepositoryAxios";
-import FilterModal from "./components/Filter-modal.vue";
+import FilterModal from "./components/FilterModal.vue";
 import { GameFilter } from "../shared/interfaces/filters";
 import GameBox from "./components/GameBox.vue";
 import Cookies from "js-cookie";
@@ -202,7 +202,7 @@ export default Vue.extend({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const response = await repo.verify(token!);
       if (response.isValid) {
-        this.$router.push("/ss");
+        this.$router.push("/user");
       } else {
         this.$router.push("/login");
       }

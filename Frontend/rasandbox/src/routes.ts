@@ -1,7 +1,8 @@
 import LoginWindowVue from "./components/LoginWindow.vue";
 import Main from "./Main.vue";
-import SuperSecretVue from "./components/SuperSecret.vue";
+import UserWindow from "./components/UserWindow.vue";
 import CreateNewUser from "./components/CreateNewUser.vue";
+import SuperSecret from "./components/SuperSecret.vue";
 
 const routes = [
   {
@@ -27,13 +28,17 @@ const routes = [
     component: LoginWindowVue,
   },
   {
-    path: "/ss",
-    component: SuperSecretVue,
+    path: "/user",
+    component: UserWindow,
     meta: { requiresAuth: true }, // This route requires authentication
   },
   {
-    path: "/newUser",
+    path: "/create",
     component: CreateNewUser,
+  },
+  {
+    path: "/robert",
+    component: SuperSecret,
   },
 ];
 
