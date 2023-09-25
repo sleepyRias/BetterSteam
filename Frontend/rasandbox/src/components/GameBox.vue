@@ -9,6 +9,14 @@
       <div class="column is-two-third gameinfo">
         <p class="gametitle">{{ Game.name }}</p>
         <p class="gamecompany">{{ Game.company }}</p>
+        <button
+          class="betterSteamButton--wishlist"
+          @click="isWishlisted = !isWishlisted"
+        >
+          <span class="icon" v-if="wishlistable">
+            <i :class="wishGameClass" class="fa-bookmark fa-xl" />
+          </span>
+        </button>
         <span class="gameprice">{{ `${Game.price.toFixed(2)}€` }} </span>
         <p class="gamedate">{{ formattedDate }}</p>
       </div>
@@ -17,8 +25,9 @@
       class="betterSteamButton--favorite"
       @click="isFavorited = !isFavorited"
     >
-      <span class="icon" v-if="Favoriteable">
-        <i :class="favGameClass" class="fa-star fa-lg" />
+      <!-- we need Backend functionality later for this -->
+      <span class="icon" v-if="favoriteable">
+        <i :class="favGameClass" class="fa-star fa-xl" />
       </span>
     </button>
   </div>
@@ -31,12 +40,14 @@ export default Vue.extend({
   props: {
     Game: { type: Object, default: undefined },
     enableHover: { type: Boolean, default: true },
-    Favoriteable: { type: Boolean, default: true },
+    favoriteable: { type: Boolean, default: true },
+    wishlistable: { type: Boolean, default: true },
   },
   data() {
     return {
       isFavorited: false,
       formattedDate: "",
+      isWishlisted: false,
     };
   },
   computed: {
@@ -45,6 +56,9 @@ export default Vue.extend({
     },
     favGameClass(): string {
       return this.isFavorited ? "fa-solid" : "fa-regular";
+    },
+    wishGameClass(): string {
+      return this.isWishlisted ? "fa-solid" : "fa-regular";
     },
   },
   mounted() {

@@ -269,6 +269,13 @@ body {
     margin: 4px 6px;
     color: #fcd303;
   }
+  &--wishlist {
+    @extend .betterSteamButton;
+    color: #ff0000;
+    padding: 0;
+    margin-top: 15px;
+    text-decoration: dashed;
+  }
 }
 .main-header {
   display: flex;
