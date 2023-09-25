@@ -21,10 +21,7 @@
         <p class="gamedate">{{ formattedDate }}</p>
       </div>
     </div>
-    <button
-      class="betterSteamButton--favorite"
-      @click="isFavorited = !isFavorited"
-    >
+    <button class="betterSteamButton--favorite" @click="handleFavorite">
       <!-- we need Backend functionality later for this -->
       <span class="icon" v-if="favoriteable">
         <i :class="favGameClass" class="fa-star fa-xl" />
@@ -49,6 +46,12 @@ export default Vue.extend({
       formattedDate: "",
       isWishlisted: false,
     };
+  },
+  methods: {
+    handleFavorite() {
+      this.isFavorited = !this.isFavorited;
+      this.$emit("favorite", this.Game.id);
+    },
   },
   computed: {
     themeClass(): string {

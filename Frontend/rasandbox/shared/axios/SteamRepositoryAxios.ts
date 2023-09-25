@@ -64,4 +64,14 @@ export class SteamRepositoryAxios
       query
     );
   }
+  public addFavoriteGame(token: string, gameId: number): Promise<string> {
+    const query = {
+      token: token,
+      value1: gameId,
+    };
+    return this.sendPost<string>(
+      `${this.basePath}/AccountController/AddFavoriteGame`,
+      query
+    );
+  }
 }

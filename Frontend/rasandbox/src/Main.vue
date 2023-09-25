@@ -72,7 +72,7 @@
         v-for="game in gamesList"
         :key="game.id"
       >
-        <game-box :Game="game" />
+        <game-box :Game="game" @favorite="handleFavorite(game.id)" />
       </div>
     </div>
     <button v-if="showUpButton" @click="scrollToTop" class="up-button">
@@ -216,6 +216,15 @@ export default Vue.extend({
       } else {
         this.$store.dispatch("setTheme", "light-theme");
       }
+    },
+    handleFavorite(id: number) {
+      const token = Cookies.get("token");
+      if (token === undefined) {
+        alert("To use this feature please Log in");
+        return;
+      }
+      const res = repo.addFavoriteGame(token, id);
+      console.log(res);
     },
   },
   computed: {
