@@ -15,6 +15,7 @@
             public const string DeleteGame = ControllerBase + "/Delete";
             public const string UpdateGame = ControllerBase + "/Update";
             public const string GameIdsRequest = ControllerBase + "/GamesById";
+            public const string GetGamesAutocomplete = ControllerBase + "/GetGamesAutocomplete";
 
         }
         public static class AccountController

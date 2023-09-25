@@ -168,26 +168,38 @@ namespace backend.Controllers
             return Ok(); // Erfolgreiche Aktualisierung
         }
 
-        // Get multiple games based on their ID
-        [HttpPost(Endpoints.GameController.GameIdsRequest, Name = "GetGamesById")]
-        public IActionResult GetGames([FromBody] GameIdsDto request)
+        [HttpGet(Endpoints.GameController.GetGamesAutocomplete, Name = "GetGamesAutocomplete")]
+        public GetGamesResult GetGamesAutocomplete(string filter = "")
         {
-            if (request == null || request.Ids == null || !request.Ids.Any())
+            var batchSize = 5;
+            var games = _dataProvider.Games.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filter))
             {
-                return BadRequest("No game IDs provided.");
+                games = games.Where(g => g.Name.StartsWith(filter)).OrderBy(g => g.Name);
+                games = games.Take(batchSize);
             }
 
-            var games = _dataProvider.Games.Where(g => request.Ids.Contains(g.Id)).ToList();
+            int totalItems = games.Count();
 
-            if (games == null || games.Count == 0)
+            // Hier wird die Genre-Id in einen Genre-String umgewandelt
+            games = games.Select(g => new Game
             {
-                return NotFound();
-            }
+                Id = g.Id,
+                Name = g.Name,
+                Genre = Helpers.GetGenreString(g.GenreId),
+                Company = g.Company,
+                Price = g.Price,
+                ReleaseDate = g.ReleaseDate
+            });
 
-            return Ok(games);
+            var result = new GetGamesResult
+            {
+                Games = games.ToList(),
+                TotalCount = totalItems
+            };
+
+            return result;
         }
-
-
-
     }
 }
