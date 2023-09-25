@@ -72,7 +72,7 @@ export default Vue.extend({
       this.$router.push("/games");
     },
     goToCreateNewUser() {
-      this.$router.push("/newUser");
+      this.$router.push("/create");
     },
   },
 });
