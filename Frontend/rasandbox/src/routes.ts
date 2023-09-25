@@ -1,5 +1,7 @@
-import GameBox from "./components/GameBox.vue";
-import FilterModalVue from "./components/Filter-modal.vue";
+import LoginWindowVue from "./components/LoginWindow.vue";
+import Main from "./Main.vue";
+import SuperSecretVue from "./components/SuperSecret.vue";
+import CreateNewUser from "./components/CreateNewUser.vue";
 
 const routes = [
   {
@@ -9,7 +11,7 @@ const routes = [
   {
     path: "/games",
     name: "GameBox",
-    component: GameBox,
+    component: Main,
     props: (route: any) => ({
       page: route.query.page || 1,
       company: route.query.company || "",
@@ -21,9 +23,17 @@ const routes = [
     }),
   },
   {
-    path: "/filter", // Add a route for the filter page
-    name: "FilterModal",
-    component: FilterModalVue, // Make sure to import the FilterModal component
+    path: "/login",
+    component: LoginWindowVue,
+  },
+  {
+    path: "/ss",
+    component: SuperSecretVue,
+    meta: { requiresAuth: true }, // This route requires authentication
+  },
+  {
+    path: "/newUser",
+    component: CreateNewUser,
   },
 ];
 
