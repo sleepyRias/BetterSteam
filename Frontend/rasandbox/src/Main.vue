@@ -219,6 +219,7 @@ export default Vue.extend({
     },
     handleFavorite(id: number) {
       const token = Cookies.get("token");
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       repo.addFavoriteGame(token!, id);
     },
   },
