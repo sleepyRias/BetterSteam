@@ -12,6 +12,7 @@
         <button
           class="betterSteamButton--wishlist"
           @click="isWishlisted = !isWishlisted"
+          v-if="isAllowedToFavAndWish"
         >
           <span class="icon" v-if="wishlistable">
             <i :class="wishGameClass" class="fa-bookmark fa-xl" />
@@ -21,7 +22,11 @@
         <p class="gamedate">{{ formattedDate }}</p>
       </div>
     </div>
-    <button class="betterSteamButton--favorite" @click="handleFavorite">
+    <button
+      v-if="isAllowedToFavAndWish"
+      class="betterSteamButton--favorite"
+      @click="handleFavorite"
+    >
       <!-- we need Backend functionality later for this -->
       <span class="icon" v-if="favoriteable">
         <i :class="favGameClass" class="fa-star fa-xl" />
@@ -46,6 +51,7 @@ export default Vue.extend({
       isFavorited: false,
       formattedDate: "",
       isWishlisted: false,
+      isAllowedToFavAndWish: false,
     };
   },
   methods: {
@@ -70,6 +76,7 @@ export default Vue.extend({
   },
   mounted() {
     this.formattedDate = moment(this.Game.releaseDate).format("DD.MM.YYYY");
+    this.isAllowedToFavAndWish = Cookies.get("token") ? true : false;
   },
 });
 </script>
