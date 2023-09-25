@@ -2,6 +2,7 @@
 using backend.Model.Account;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace backend.DataProvider
 {
@@ -26,19 +27,22 @@ namespace backend.DataProvider
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<FavouriteGame>()
-                .HasKey(fg => new { fg.AccountId, fg.GameId });
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.PasswordSalt).IsRequired();
+                entity.Property(e => e.PasswordHash).IsRequired();
+                entity.Property(e => e.Theme);
+            });
 
-            modelBuilder.Entity<FavouriteGame>()
-                .HasOne(fg => fg.Account) // Navigationseigenschaft zu Account
-                .WithMany(a => a.FavouriteGames) // Navigationseigenschaft zu FavouriteGames in Account
-                .HasForeignKey(fg => fg.AccountId);
+            modelBuilder.Entity<FavouriteGame>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.AccountId);
+                entity.Property(e => e.GameId);
+            });
 
-
-            modelBuilder.Entity<Account>()
-                .HasMany(a => a.FavouriteGames)
-                .WithOne()
-                .HasForeignKey(fg => fg.AccountId);
         }
     }
 }
