@@ -12,6 +12,9 @@
         <i class="fa-regular fa-user fa-2x" />
       </button>
     </div>
+    <button @click="switchTheme" class="betterSteamButton--theme">
+      <i :class="darkOrLightClass" class="fa-solid fa-2xl" />
+    </button>
     <div class="search-with-filters is-rounded">
       <div class="control has-icons-right">
         <input
@@ -207,10 +210,22 @@ export default Vue.extend({
         this.$router.push("/login");
       }
     },
+    switchTheme() {
+      if (this.$store.getters.getTheme === "light-theme") {
+        this.$store.dispatch("setTheme", "dark-theme");
+      } else {
+        this.$store.dispatch("setTheme", "light-theme");
+      }
+    },
   },
   computed: {
     themeClass(): string {
       return this.$store.getters.getTheme;
+    },
+    darkOrLightClass(): string {
+      return this.$store.getters.getTheme === "dark-theme"
+        ? "fa-sun"
+        : "fa-moon";
     },
   },
   watch: {
@@ -275,6 +290,13 @@ body {
     padding: 0;
     margin-top: 15px;
     text-decoration: dashed;
+  }
+  &--theme {
+    @extend .betterSteamButton;
+    margin: 7px 100px 0 0;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 }
 .main-header {
@@ -347,5 +369,8 @@ body {
 .search-with-filters {
   display: flex;
   justify-content: center;
+}
+.fa-sun {
+  color: white;
 }
 </style>
