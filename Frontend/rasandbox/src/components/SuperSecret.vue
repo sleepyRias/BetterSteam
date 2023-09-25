@@ -1,34 +1,6 @@
 <template>
-  <div>Super Secret Page</div>
+  <img
+    src="../assets/rn_image_picker_lib_temp_6f13a600-69c3-4009-8cfd-887f9b93909b.jpg"
+    style="width: 60%"
+  />
 </template>
-<script lang="ts">
-import Vue from "vue";
-import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
-import axios from "axios";
-import Cookies from "js-cookie";
-const repo = new SteamRepositoryAxios(axios);
-export default Vue.extend({
-  name: "SuperSecret",
-  data() {
-    return {};
-  },
-  methods: {
-    async verify() {
-      const token = Cookies.get("token");
-      if (token === undefined) {
-        return false;
-      }
-      const response = await repo.verify(token);
-      if (response.isValid) {
-        return true;
-      }
-      return false;
-    },
-  },
-  beforeMount() {
-    if (!this.verify()) {
-      this.$router.push("/login");
-    }
-  },
-});
-</script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="gameBox" :class="themeClass">
+  <div class="gameBox" :class="(themeClass, { 'hover-effect': enableHover })">
     <div class="columns">
       <div class="column is-one-third">
         <figure class="image is-128x128">
@@ -17,7 +17,7 @@
       class="betterSteamButton--favorite"
       @click="isFavorited = !isFavorited"
     >
-      <span class="icon">
+      <span class="icon" v-if="Favoriteable">
         <i :class="favGameClass" class="fa-star fa-lg" />
       </span>
     </button>
@@ -30,6 +30,8 @@ export default Vue.extend({
   name: "GameBox",
   props: {
     Game: { type: Object, default: undefined },
+    enableHover: { type: Boolean, default: true },
+    Favoriteable: { type: Boolean, default: true },
   },
   data() {
     return {
@@ -60,7 +62,7 @@ export default Vue.extend({
   padding: 6px;
   transition: transform 0.2s ease;
 
-  &:hover {
+  &.hover-effect:hover {
     box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.8);
     transform: scale(1.08);
     z-index: 500;

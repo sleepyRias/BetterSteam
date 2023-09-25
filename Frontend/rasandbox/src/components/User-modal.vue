@@ -9,7 +9,8 @@
             </figure>
           </div>
           <div class="column">
-            <span>Username: {{ username }}</span>
+            <span>Username:</span>
+            <input class="input" type="text" :placeholder="username" />
           </div>
           <div class="column">
             <span>Name: {{ name }}</span>

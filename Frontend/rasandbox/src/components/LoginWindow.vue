@@ -58,7 +58,7 @@ export default Vue.extend({
       }
       Cookies.set("token", response.token);
       if (Cookies.get("token") && (await this.verify(response.token))) {
-        this.$router.push("/ss");
+        this.$router.push("/user");
       }
     },
     async verify(token: string): Promise<boolean> {
