@@ -32,6 +32,7 @@
 <script lang="ts">
 import Vue from "vue";
 import moment from "moment";
+import Cookies from "js-cookie";
 export default Vue.extend({
   name: "GameBox",
   props: {
@@ -49,8 +50,11 @@ export default Vue.extend({
   },
   methods: {
     handleFavorite() {
-      this.isFavorited = !this.isFavorited;
-      this.$emit("favorite", this.Game.id);
+      const token = Cookies.get("token");
+      if (token !== undefined) {
+        this.isFavorited = !this.isFavorited;
+        this.$emit("favorite", this.Game.id);
+      }
     },
   },
   computed: {

@@ -67,10 +67,10 @@ export class SteamRepositoryAxios
   public addFavoriteGame(token: string, gameId: number): Promise<string> {
     const query = {
       token: token,
-      value1: gameId,
+      value1: gameId.toString(),
     };
     return this.sendPost<string>(
-      `${this.basePath}/AccountController/AddFavoriteGame`,
+      `${this.basePath}/AccountController/AddFavouriteGame`,
       query
     );
   }

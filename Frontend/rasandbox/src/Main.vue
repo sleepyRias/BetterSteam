@@ -219,12 +219,7 @@ export default Vue.extend({
     },
     handleFavorite(id: number) {
       const token = Cookies.get("token");
-      if (token === undefined) {
-        alert("To use this feature please Log in");
-        return;
-      }
-      const res = repo.addFavoriteGame(token, id);
-      console.log(res);
+      repo.addFavoriteGame(token!, id);
     },
   },
   computed: {
