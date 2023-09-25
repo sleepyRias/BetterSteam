@@ -9,6 +9,7 @@
         <div>Name: {{ name }}</div>
       </div>
     </div>
+    <div class="column is-1"></div>
     <div class="column is-3">
       <span>Favorite Games List:</span>
       <game-box
