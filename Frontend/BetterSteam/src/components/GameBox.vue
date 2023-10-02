@@ -13,10 +13,7 @@
         <p class="gamedate">{{ formattedDate }}</p>
       </div>
     </div>
-    <button
-      class="betterSteamButton--favorite"
-      @click="isFavorited = !isFavorited"
-    >
+    <button class="betterSteamButton--favorite" @click="getRandomPreview">
       <span class="icon" v-if="Favoriteable">
         <i :class="favGameClass" class="fa-star fa-lg" />
       </span>
@@ -24,7 +21,9 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue } from "./";
+import { Vue, axios } from "./";
+import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
+const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({
   name: "GameBox",
   props: {
@@ -36,6 +35,7 @@ export default Vue.extend({
     return {
       isFavorited: false,
       formattedDate: "",
+      idk: "",
     };
   },
   computed: {
@@ -51,6 +51,11 @@ export default Vue.extend({
       const parts = dateString.split("-");
       if (parts.length !== 3) return dateString;
       return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    },
+    async getRandomPreview() {
+      const response = await repo.GetRandomPreview();
+      // eslint-disable-next-line no-console
+      console.log(response);
     },
   },
   mounted() {
