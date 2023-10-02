@@ -16,7 +16,6 @@
             public const string UpdateGame = ControllerBase + "/Update";
             public const string GameIdsRequest = ControllerBase + "/GamesById";
             public const string GetGamesAutocomplete = ControllerBase + "/GetGamesAutocomplete";
-
         }
         public static class AccountController
         {
@@ -33,5 +32,13 @@
             public const string Verify = ControllerBase + "/Verify";
             public const string AddFavouriteGame = ControllerBase + "/AddFavouriteGame";
         }
+         public static class ImageController
+        {
+            private const string ControllerBase = Base + "/ImageController";
+
+            //Image Routes
+            public const string GetRandomPreview = ControllerBase + "/GetRandomPreview";
+        }
+
     }
 }
