@@ -5,7 +5,7 @@
 ## Beschreibung
 
 Die Game Management API ermöglicht die Verwaltung von Spielen, Benutzerkonten und mehr. Sie wurde entwickelt, um Entwicklern eine einfache Schnittstelle zur Verwaltung von Spielen und Benutzerdaten zu bieten.
-Sie wurde als Nebenprojekt der Autoren und Erkundung von C+ & Vue erstellt.
+Sie wurde als Nebenprojekt der Autoren und Erkundung von C# & Vue erstellt.
 
 ## Funktionen
 
