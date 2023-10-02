@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import App from "./App.vue";
 import { storeOptions } from "./store/store";
 import VueRouter from "vue-router";
-import "./assets/main.scss";
+import "./style/main.scss";
 import routes from "./routes";
 import CookieValidation from "../shared/CookieValidation";
 
