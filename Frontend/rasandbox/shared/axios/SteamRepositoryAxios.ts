@@ -5,7 +5,7 @@ import {
   isValid,
 } from "../interfaces/BetterSteamResponse";
 import { SteamRepository } from "../repos/SteamRepository";
-import { GameFilter } from "shared/interfaces/filters";
+import { GameFilter } from "shared/interfaces/Filters";
 
 export class SteamRepositoryAxios
   extends AxiosRepository

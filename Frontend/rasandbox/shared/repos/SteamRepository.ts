@@ -1,4 +1,4 @@
-import { GameFilter } from "shared/interfaces/filters";
+import { GameFilter } from "shared/interfaces/Filters";
 import {
   BetterSteamResponse,
   Token,

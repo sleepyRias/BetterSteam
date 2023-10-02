@@ -70,7 +70,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { GameFilter } from "../../shared/interfaces/filters";
+import { GameFilter } from "../../shared/interfaces/Filters";
 import ModalBert from "./ModalBert.vue";
 
 export default Vue.extend({
@@ -166,3 +166,4 @@ export default Vue.extend({
   width: auto;
 }
 </style>
+../../shared/interfaces/Filters
