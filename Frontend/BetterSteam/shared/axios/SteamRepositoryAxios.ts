@@ -13,31 +13,25 @@ export class SteamRepositoryAxios
 {
   private basePath = "https://localhost:7091/api";
   public getGames(filter: GameFilter) {
-    return this.sendGet<BetterSteamResponse>(
-      `${this.basePath}/Game/Games`,
-      {
-        params: {
-          page: filter.page,
-          filter: filter.name,
-          gFilter: filter.genre,
-          companyFilter: filter.company,
-          priceMinFilter: filter.minPrice,
-          priceMaxFilter: filter.maxPrice,
-          minRDFilter: filter.releaseDate,
-          pageSize: filter.pageSize,
-        },
-      }
-    );
+    return this.sendGet<BetterSteamResponse>(`${this.basePath}/Game/Games`, {
+      params: {
+        page: filter.page,
+        filter: filter.name,
+        gFilter: filter.genre,
+        companyFilter: filter.company,
+        priceMinFilter: filter.minPrice,
+        priceMaxFilter: filter.maxPrice,
+        minRDFilter: filter.releaseDate,
+        pageSize: filter.pageSize,
+      },
+    });
   }
   public login(username: string, password: string) {
     const query = {
       username: username,
       password: password,
     };
-    return this.sendPost<Token>(
-      `${this.basePath}/Account/Login`,
-      query
-    );
+    return this.sendPost<Token>(`${this.basePath}/Account/Login`, query);
   }
   public verify(token: string) {
     return this.sendPost<isValid>(`${this.basePath}/Account/Verify`, {

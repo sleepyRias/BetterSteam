@@ -18,8 +18,8 @@ export { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
 export { AxiosRepository } from "../../shared/axios/AxiosRepository";
 
 // Exporting components
-export { default as FilterModal } from "./components/FilterModal.vue";
-export { default as GameBox } from "./components/GameBox.vue";
+export { default as FilterModal } from "./FilterModal.vue";
+export { default as GameBox } from "./GameBox.vue";
 export { default as ModalBert } from "./ModalBert.vue";
 export { default as LoginWindow } from "./LoginWindow.vue";
 export { default as UserWindow } from "./UserWindow.vue";
