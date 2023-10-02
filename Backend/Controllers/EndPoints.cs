@@ -34,7 +34,7 @@
         }
          public static class ImageController
         {
-            private const string ControllerBase = Base + "/ImageController";
+            private const string ControllerBase = Base + "/Image";
 
             //Image Routes
             public const string GetRandomPreview = ControllerBase + "/GetRandomPreview";
