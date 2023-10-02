@@ -62,12 +62,12 @@
 import Vue from "vue";
 import { Game } from "../../shared/interfaces/Game";
 import { User } from "../../shared/interfaces/User";
-import modalBert from "./modalBert.vue";
+import ModalBert from "./ModalBert.vue";
 
 export default Vue.extend({
   name: "UserModal",
   components: {
-    modalBert,
+    ModalBert,
   },
   data() {
     return {

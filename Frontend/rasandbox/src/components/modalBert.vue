@@ -14,7 +14,7 @@
 <script lang="ts">
 import Vue from "vue";
 export default Vue.extend({
-  name: "modalBert",
+  name: "ModalBert",
   computed: {
     themeClass() {
       const theme = this.$store.getters.getTheme;
