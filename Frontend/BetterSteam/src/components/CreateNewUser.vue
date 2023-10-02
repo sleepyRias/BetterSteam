@@ -12,6 +12,7 @@
         type="text"
         placeholder="Username"
         class="input"
+        @change="checkUsernameAvailability(username)"
       />
       <span v-if="username !== ''" :class="usernameAvailable">{{
         usernameAvailability
@@ -42,9 +43,7 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import axios from "axios";
-import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
+import { Vue, axios, SteamRepositoryAxios } from "./index";
 const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({
   name: "CreateNewUser",
@@ -87,8 +86,7 @@ export default Vue.extend({
         alert("this Username has been taken");
         return;
       }
-      const response = await repo.CreateNewUser(this.username, this.password);
-      console.log(response);
+      await repo.CreateNewUser(this.username, this.password);
       this.$router.push("/login");
     },
     goToLogin() {
@@ -97,19 +95,9 @@ export default Vue.extend({
   },
   computed: {
     usernameAvailable(): string {
-      if (this.usernameAvailability) {
-        return "UsernameAvailable";
-      }
-      return "UsernameNotAvailable";
-    },
-  },
-  watch: {
-    username: {
-      deep: true,
-      immediate: false,
-      handler() {
-        this.checkUsernameAvailability(this.username);
-      },
+      return this.usernameAvailability
+        ? "UsernameAvailable"
+        : "UsernameNotAvailable";
     },
   },
 });

@@ -1,9 +1,10 @@
-import LoginWindowVue from "./components/LoginWindow.vue";
-import Main from "./Main.vue";
-import UserWindow from "./components/UserWindow.vue";
-import CreateNewUser from "./components/CreateNewUser.vue";
-import SuperSecret from "./components/SuperSecret.vue";
-
+import {
+  LoginWindow,
+  Main,
+  UserWindow,
+  CreateNewUser,
+  SuperSecret,
+} from "./components";
 const routes = [
   {
     path: "/",
@@ -25,7 +26,7 @@ const routes = [
   },
   {
     path: "/login",
-    component: LoginWindowVue,
+    component: LoginWindow,
   },
   {
     path: "/user",
