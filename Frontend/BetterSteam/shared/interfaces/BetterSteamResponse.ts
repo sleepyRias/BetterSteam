@@ -1,4 +1,4 @@
-import { Game } from "./Game";
+import { Game } from "../../src/components";
 export interface BetterSteamResponse {
   games: Game[];
   totalCount: number;

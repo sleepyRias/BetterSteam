@@ -1,11 +1,11 @@
-import { AxiosRepository } from "./AxiosRepository";
 import {
+  AxiosRepository,
   BetterSteamResponse,
   Token,
   isValid,
-} from "../interfaces/BetterSteamResponse";
-import { SteamRepository } from "../repos/SteamRepository";
-import { GameFilter } from "shared/interfaces/Filters";
+  SteamRepository,
+  GameFilter,
+} from "../../src/components";
 
 export class SteamRepositoryAxios
   extends AxiosRepository

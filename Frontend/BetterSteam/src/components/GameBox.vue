@@ -24,8 +24,7 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import moment from "moment";
+import { Vue, moment } from "./index";
 export default Vue.extend({
   name: "GameBox",
   props: {

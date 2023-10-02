@@ -43,9 +43,7 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import axios from "axios";
-import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
+import { Vue, axios, SteamRepositoryAxios } from "./index";
 const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({
   name: "CreateNewUser",

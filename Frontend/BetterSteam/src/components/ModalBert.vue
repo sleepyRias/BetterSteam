@@ -12,7 +12,7 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
+import { Vue } from "./index";
 export default Vue.extend({
   name: "ModalBert",
   computed: {
