@@ -3,7 +3,6 @@ export { default as Vue } from "vue";
 export { default as Vuex } from "vuex";
 export { default as axios } from "axios";
 export { default as Cookies } from "js-cookie";
-export { default as moment } from "moment";
 export { default as VueRouter } from "vue-router";
 
 // Exporting interfaces
