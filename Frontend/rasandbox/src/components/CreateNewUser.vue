@@ -88,7 +88,6 @@ export default Vue.extend({
         return;
       }
       const response = await repo.CreateNewUser(this.username, this.password);
-      console.log(response);
       this.$router.push("/login");
     },
     goToLogin() {

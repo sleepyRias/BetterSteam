@@ -10,7 +10,6 @@ export default async function CookieValidation(): Promise<boolean> {
     return false;
   } else {
     const response = await repo.verify(token);
-    console.log(response.isValid);
     return response.isValid;
   }
 }
