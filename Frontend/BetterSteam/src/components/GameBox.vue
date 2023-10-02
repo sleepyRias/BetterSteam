@@ -13,10 +13,7 @@
         <p class="gamedate">{{ formattedDate }}</p>
       </div>
     </div>
-    <button
-      class="betterSteamButton--favorite"
-      @click="isFavorited = !isFavorited"
-    >
+    <button class="betterSteamButton--favorite" @click="getRandomPreview">
       <span class="icon" v-if="Favoriteable">
         <i :class="favGameClass" class="fa-star fa-lg" />
       </span>
@@ -24,8 +21,9 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import moment from "moment";
+import { Vue, axios } from "./";
+import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
+const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({
   name: "GameBox",
   props: {
@@ -37,6 +35,7 @@ export default Vue.extend({
     return {
       isFavorited: false,
       formattedDate: "",
+      idk: "",
     };
   },
   computed: {
@@ -47,8 +46,20 @@ export default Vue.extend({
       return this.isFavorited ? "fa-solid" : "fa-regular";
     },
   },
+  methods: {
+    formatDate(dateString: string) {
+      const parts = dateString.split("-");
+      if (parts.length !== 3) return dateString;
+      return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    },
+    async getRandomPreview() {
+      const response = await repo.GetRandomPreview();
+      // eslint-disable-next-line no-console
+      console.log(response);
+    },
+  },
   mounted() {
-    this.formattedDate = moment(this.Game.releaseDate).format("DD.MM.YYYY");
+    this.formattedDate = this.formatDate(this.Game.releaseDate);
   },
 });
 </script>

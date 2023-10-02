@@ -1,4 +1,4 @@
-import { GameFilter } from "shared/interfaces/filters";
+import { GameFilter } from "shared/interfaces/Filters";
 import {
   BetterSteamResponse,
   Token,
@@ -12,4 +12,5 @@ export interface SteamRepository {
   CreateNewUser(username: string, password: string): Promise<string>;
   verify(token: string): Promise<isValid>;
   CheckUserNameAvailability(username: string): Promise<boolean>;
+  GetRandomPreview(): Promise<string>;
 }

@@ -6,7 +6,7 @@
 
         public static class GameController
         {
-            private const string ControllerBase = Base + "/GameController";
+            private const string ControllerBase = Base + "/Game";
 
             // Game Routes
             public const string GetGames = ControllerBase + "/Games";
@@ -19,7 +19,7 @@
         }
         public static class AccountController
         {
-            private const string ControllerBase = Base + "/AccountController";
+            private const string ControllerBase = Base + "/Account";
 
             //Account Routes
             public const string GetAccounts = ControllerBase + "/GetAccounts";
@@ -29,8 +29,10 @@
             public const string UpdateAccount = ControllerBase + "/UpdateAccount";
             //public const string DeleteAccount = ControllerBase + "/DeleteAccount";
             public const string CheckUserNameAvailability = ControllerBase + "/CheckUserNameAvailability";
-            public const string Verify = ControllerBase + "/Verify";
             public const string AddFavouriteGame = ControllerBase + "/AddFavouriteGame";
+            //Token Related
+            public const string Verify = ControllerBase + "/Verify";
+            public const string GetNameFromToken = ControllerBase + "/GetNameFromToken";
         }
          public static class ImageController
         {

@@ -80,7 +80,7 @@ namespace backend.Controllers
         }
 
 
-        // GET: /Account/5
+        // GET: /Account/Id
         [HttpGet(Endpoints.AccountController.GetAccountById, Name = "GetAccountById")]
         public IActionResult GetAccountById(int id)
         {
@@ -184,6 +184,7 @@ namespace backend.Controllers
             return true;
         }
 
+        //POST: /Account/Verify
         [HttpPost(Endpoints.AccountController.Verify, Name = "Verify")]
         public IActionResult VerifyToken([FromBody] TokenRequest request)
         {
@@ -196,6 +197,7 @@ namespace backend.Controllers
             return Ok(new { IsValid = false });
         }
 
+        //POST: /Account/GetNameFromToken
         [HttpPost(Endpoints.AccountController.AddFavouriteGame, Name = "AddFavouriteGame")]
         public IActionResult AddFavouriteGame([FromBody] TokenDTO dto)
         {
@@ -215,6 +217,15 @@ namespace backend.Controllers
                 return BadRequest();
             }
             return Ok(); // Erfolgreiches Hinzufügen
-        }   
+        }
+
+        //POST: /Account/GetNameFromToken
+        [HttpPost(Endpoints.AccountController.GetNameFromToken, Name = "GetNameFromToken")]
+        public IActionResult GetNameFromToken([FromBody] TokenRequest request)
+        {
+            var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
+            var name = jwtHelper.GetClaim(request.Token, ClaimTypes.Name).Value;
+            return Ok(new { Name = name });
+        }
     }
 }

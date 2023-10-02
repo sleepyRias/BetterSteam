@@ -79,15 +79,17 @@
 </template>
 
 <script lang="ts">
-const repo = new SteamRepositoryAxios(axios);
-import Vue from "vue";
-import axios from "axios";
-import { Game } from "../shared/interfaces/Game";
 import { SteamRepositoryAxios } from "../shared/axios/SteamRepositoryAxios";
-import FilterModal from "./components/FilterModal.vue";
-import { GameFilter } from "../shared/interfaces/filters";
-import GameBox from "./components/GameBox.vue";
-import Cookies from "js-cookie";
+const repo = new SteamRepositoryAxios(axios);
+import {
+  Vue,
+  axios,
+  Game,
+  FilterModal,
+  GameBox,
+  Cookies,
+  GameFilter,
+} from "./components/";
 export default Vue.extend({
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Main",
@@ -342,3 +344,4 @@ body {
   justify-content: center;
 }
 </style>
+../shared/interfaces/Filters

@@ -43,11 +43,8 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
+import { Vue, GameBox, axios, Cookies } from "./";
 import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
-import GameBox from "./GameBox.vue";
-import axios from "axios";
-import Cookies from "js-cookie";
 const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({
   name: "SuperSecret",
