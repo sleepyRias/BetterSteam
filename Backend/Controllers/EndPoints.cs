@@ -38,6 +38,7 @@
 
             //Image Routes
             public const string GetRandomPreview = ControllerBase + "/GetRandomPreview";
+            public const string GetPreviewByNum = ControllerBase + "/GetPreviewByNum";
         }
 
     }
