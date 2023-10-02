@@ -20,10 +20,19 @@ namespace backend.Controllers
         }
 
         [HttpGet(Endpoints.ImageController.GetRandomPreview , Name = "GetRandomPreview")]
-        public IActionResult GetImage()
+        public IActionResult GetRandomPreview()
         {
             int random = Random.Next(1, 100);
             string fileName = $"image_{random}.jpg";
+            var imagePath = Path.Combine("Resources\\Preview", fileName);
+            var imageFileStream = System.IO.File.OpenRead(imagePath);
+            return File(imageFileStream, "image/jpeg");
+        }
+
+        [HttpGet(Endpoints.ImageController.GetPreviewByNum, Name = "GetPreviewByNum")]
+        public IActionResult GetPreviewByNum(int num)
+        {
+            string fileName = $"image_{num}.jpg";
             var imagePath = Path.Combine("Resources\\Preview", fileName);
             var imageFileStream = System.IO.File.OpenRead(imagePath);
             return File(imageFileStream, "image/jpeg");
