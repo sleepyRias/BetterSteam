@@ -19,7 +19,7 @@ namespace backend.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        [HttpGet("GetRandomPreview", Name = "GetRandomPreview")]
+        [HttpGet(Endpoints.ImageController.GetRandomPreview , Name = "GetRandomPreview")]
         public IActionResult GetImage()
         {
             int random = Random.Next(1, 100);
