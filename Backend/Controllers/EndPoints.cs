@@ -6,7 +6,7 @@
 
         public static class GameController
         {
-            private const string ControllerBase = Base + "/GameController";
+            private const string ControllerBase = Base + "/Game";
 
             // Game Routes
             public const string GetGames = ControllerBase + "/Games";
@@ -20,7 +20,7 @@
         }
         public static class AccountController
         {
-            private const string ControllerBase = Base + "/AccountController";
+            private const string ControllerBase = Base + "/Account";
 
             //Account Routes
             public const string GetAccounts = ControllerBase + "/GetAccounts";

@@ -24,7 +24,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, moment } from "./index";
+import { Vue } from "./";
 export default Vue.extend({
   name: "GameBox",
   props: {
@@ -46,8 +46,15 @@ export default Vue.extend({
       return this.isFavorited ? "fa-solid" : "fa-regular";
     },
   },
+  methods: {
+    formatDate(dateString: string) {
+      const parts = dateString.split("-");
+      if (parts.length !== 3) return dateString;
+      return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    },
+  },
   mounted() {
-    this.formattedDate = moment(this.Game.releaseDate).format("DD.MM.YYYY");
+    this.formattedDate = this.formatDate(this.Game.releaseDate);
   },
 });
 </script>

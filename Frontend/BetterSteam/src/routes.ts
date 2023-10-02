@@ -1,9 +1,9 @@
 import {
   LoginWindow,
-  Main,
   UserWindow,
   CreateNewUser,
   SuperSecret,
+  Main,
 } from "./components";
 const routes = [
   {
@@ -13,7 +13,7 @@ const routes = [
   {
     path: "/games",
     name: "GameBox",
-    component: Main,
+    component: () => Main(),
     props: (route: any) => ({
       page: route.query.page || 1,
       company: route.query.company || "",
@@ -26,20 +26,20 @@ const routes = [
   },
   {
     path: "/login",
-    component: LoginWindow,
+    component: () => LoginWindow(),
   },
   {
     path: "/user",
-    component: UserWindow,
+    component: () => UserWindow(),
     meta: { requiresAuth: true }, // This route requires authentication
   },
   {
     path: "/create",
-    component: CreateNewUser,
+    component: () => CreateNewUser(),
   },
   {
     path: "/robert",
-    component: SuperSecret,
+    component: () => SuperSecret(),
   },
 ];
 

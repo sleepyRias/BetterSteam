@@ -7,7 +7,7 @@ import {
   VueRouter,
   routes,
   CookieValidation,
-} from "./components/index";
+} from "./components/";
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
