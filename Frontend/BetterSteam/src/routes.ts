@@ -1,9 +1,10 @@
-import LoginWindowVue from "./components/LoginWindow.vue";
-import Main from "./Main.vue";
-import UserWindow from "./components/UserWindow.vue";
-import CreateNewUser from "./components/CreateNewUser.vue";
-import SuperSecret from "./components/SuperSecret.vue";
-
+import {
+  LoginWindow,
+  UserWindow,
+  CreateNewUser,
+  SuperSecret,
+  Main,
+} from "./components";
 const routes = [
   {
     path: "/",
@@ -12,7 +13,7 @@ const routes = [
   {
     path: "/games",
     name: "GameBox",
-    component: Main,
+    component: () => Main(),
     props: (route: any) => ({
       page: route.query.page || 1,
       company: route.query.company || "",
@@ -25,20 +26,20 @@ const routes = [
   },
   {
     path: "/login",
-    component: LoginWindowVue,
+    component: () => LoginWindow(),
   },
   {
     path: "/user",
-    component: UserWindow,
+    component: () => UserWindow(),
     meta: { requiresAuth: true }, // This route requires authentication
   },
   {
     path: "/create",
-    component: CreateNewUser,
+    component: () => CreateNewUser(),
   },
   {
     path: "/robert",
-    component: SuperSecret,
+    component: () => SuperSecret(),
   },
 ];
 

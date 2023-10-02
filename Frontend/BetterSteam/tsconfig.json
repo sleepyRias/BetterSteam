@@ -40,7 +40,7 @@
     "shared/axios/AxiosRepository.ts",
     "shared/axios/SteamRepositoryAxios.ts",
     "shared/repos/SteamRepository.ts",
-    "shared/interfaces/filters.ts",
+    "shared/interfaces/Filters.ts",
     "shared/interfaces/Game.ts",
     "shared/interfaces/User.ts"
   ],

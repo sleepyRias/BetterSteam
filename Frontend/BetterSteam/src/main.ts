@@ -1,11 +1,13 @@
-import Vue from "vue";
-import Vuex from "vuex";
 import App from "./App.vue";
-import { storeOptions } from "./store/store";
-import VueRouter from "vue-router";
-import "./assets/main.scss";
-import routes from "./routes";
-import CookieValidation from "../shared/CookieValidation";
+import "./style/main.scss";
+import {
+  Vue,
+  Vuex,
+  storeOptions,
+  VueRouter,
+  routes,
+  CookieValidation,
+} from "./components/";
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
