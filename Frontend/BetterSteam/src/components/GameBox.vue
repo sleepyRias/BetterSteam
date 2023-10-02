@@ -24,9 +24,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, axios } from "./";
-import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
-const repo = new SteamRepositoryAxios(axios);
+import { Vue } from "./";
 export default Vue.extend({
   name: "GameBox",
   props: {
