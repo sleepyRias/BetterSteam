@@ -61,19 +61,6 @@ export default Vue.extend({
         this.$emit("favorite", this.Game.id);
       }
     },
-  },
-  computed: {
-    themeClass(): string {
-      return this.$store.getters.getTheme;
-    },
-    favGameClass(): string {
-      return this.isFavorited ? "fa-solid" : "fa-regular";
-    },
-    wishGameClass(): string {
-      return this.isWishlisted ? "fa-solid" : "fa-regular";
-    },
-  },
-  methods: {
     formatDate(dateString: string) {
       const parts = dateString.split("-");
       if (parts.length !== 3) return dateString;
@@ -94,6 +81,17 @@ export default Vue.extend({
       } catch (error) {
         return;
       }
+    },
+  },
+  computed: {
+    themeClass(): string {
+      return this.$store.getters.getTheme;
+    },
+    favGameClass(): string {
+      return this.isFavorited ? "fa-solid" : "fa-regular";
+    },
+    wishGameClass(): string {
+      return this.isWishlisted ? "fa-solid" : "fa-regular";
     },
   },
   mounted() {
