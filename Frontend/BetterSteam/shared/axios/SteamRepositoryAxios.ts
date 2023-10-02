@@ -61,4 +61,14 @@ export class SteamRepositoryAxios
   public GetRandomPreview(): Promise<string> {
     return this.sendGet<string>(`${this.basePath}/Image/GetRandomPreview`);
   }
+  public addFavoriteGame(token: string, gameId: number): Promise<string> {
+    const query = {
+      token: token,
+      value1: gameId,
+    };
+    return this.sendPost<string>(
+      `${this.basePath}/Account/AddFavouriteGame`,
+      query
+    );
+  }
 }
