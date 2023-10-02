@@ -43,7 +43,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, GameBox, axios, Cookies } from "./index";
+import { Vue, GameBox, axios, Cookies } from "./";
 import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
 const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({

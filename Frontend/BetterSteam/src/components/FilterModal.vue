@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, GameFilter, ModalBert } from "./index";
+import { Vue, GameFilter, ModalBert } from "./";
 export default Vue.extend({
   name: "FilterModal",
   components: {

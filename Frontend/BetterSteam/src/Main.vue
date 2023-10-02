@@ -89,7 +89,7 @@ import {
   GameBox,
   Cookies,
   GameFilter,
-} from "./components/index";
+} from "./components/";
 export default Vue.extend({
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Main",

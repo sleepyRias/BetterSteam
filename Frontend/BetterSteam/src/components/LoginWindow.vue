@@ -31,7 +31,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Cookies, axios, Token } from "./index";
+import { Vue, Cookies, axios, Token } from "./";
 import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
 const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({

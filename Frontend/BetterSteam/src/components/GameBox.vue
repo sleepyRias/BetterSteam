@@ -24,7 +24,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue } from "./index";
+import { Vue } from "./";
 export default Vue.extend({
   name: "GameBox",
   props: {
