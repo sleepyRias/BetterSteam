@@ -1,4 +1,5 @@
-import { axios, SteamRepositoryAxios, Cookies } from "../src/components";
+import { axios, Cookies } from "../src/components";
+import { SteamRepositoryAxios } from "./axios/SteamRepositoryAxios";
 
 const repo = new SteamRepositoryAxios(axios);
 

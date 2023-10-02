@@ -13,19 +13,15 @@ export * from "../../shared/interfaces/BetterSteamResponse";
 export { default as CookieValidation } from "../../shared/CookieValidation";
 export { default as routes } from "../routes";
 
-// Exporting axios repositories
-export { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
-export { AxiosRepository } from "../../shared/axios/AxiosRepository";
-
 // Exporting components
-export { default as FilterModal } from "./FilterModal.vue";
-export { default as GameBox } from "./GameBox.vue";
-export { default as ModalBert } from "./ModalBert.vue";
-export { default as LoginWindow } from "./LoginWindow.vue";
-export { default as UserWindow } from "./UserWindow.vue";
-export { default as CreateNewUser } from "./CreateNewUser.vue";
-export { default as SuperSecret } from "./SuperSecret.vue";
-export { default as Main } from "../Main.vue";
+export const FilterModal = () => import("./FilterModal.vue");
+export const GameBox = () => import("./GameBox.vue");
+export const ModalBert = () => import("./ModalBert.vue");
+export const LoginWindow = () => import("./LoginWindow.vue");
+export const UserWindow = () => import("./UserWindow.vue");
+export const CreateNewUser = () => import("./CreateNewUser.vue");
+export const SuperSecret = () => import("./SuperSecret.vue");
+export const Main = () => import("../Main.vue");
 
 // Exporting store
 export { storeOptions } from "../store/store";

@@ -79,6 +79,7 @@
 </template>
 
 <script lang="ts">
+import { SteamRepositoryAxios } from "../shared/axios/SteamRepositoryAxios";
 const repo = new SteamRepositoryAxios(axios);
 import {
   Vue,
@@ -87,7 +88,6 @@ import {
   FilterModal,
   GameBox,
   Cookies,
-  SteamRepositoryAxios,
   GameFilter,
 } from "./components/index";
 export default Vue.extend({
