@@ -1,6 +1,4 @@
-import axios from "axios";
-import { SteamRepositoryAxios } from "./axios/SteamRepositoryAxios";
-import Cookies from "js-cookie";
+import { axios, SteamRepositoryAxios, Cookies } from "../src/components";
 
 const repo = new SteamRepositoryAxios(axios);
 
@@ -10,7 +8,6 @@ export default async function CookieValidation(): Promise<boolean> {
     return false;
   } else {
     const response = await repo.verify(token);
-    console.log(response.isValid);
     return response.isValid;
   }
 }
