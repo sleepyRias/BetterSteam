@@ -30,8 +30,10 @@
             public const string UpdateAccount = ControllerBase + "/UpdateAccount";
             //public const string DeleteAccount = ControllerBase + "/DeleteAccount";
             public const string CheckUserNameAvailability = ControllerBase + "/CheckUserNameAvailability";
-            public const string Verify = ControllerBase + "/Verify";
             public const string AddFavouriteGame = ControllerBase + "/AddFavouriteGame";
+            //Token Related
+            public const string Verify = ControllerBase + "/Verify";
+            public const string GetNameFromToken = ControllerBase + "/GetNameFromToken";
         }
     }
 }
