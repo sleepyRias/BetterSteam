@@ -14,7 +14,7 @@ export class SteamRepositoryAxios
   private basePath = "https://localhost:7091/api";
   public getGames(filter: GameFilter) {
     return this.sendGet<BetterSteamResponse>(
-      `${this.basePath}/GameController/Games`,
+      `${this.basePath}/Game/Games`,
       {
         params: {
           page: filter.page,
@@ -35,18 +35,18 @@ export class SteamRepositoryAxios
       password: password,
     };
     return this.sendPost<Token>(
-      `${this.basePath}/AccountController/Login`,
+      `${this.basePath}/Account/Login`,
       query
     );
   }
   public verify(token: string) {
-    return this.sendPost<isValid>(`${this.basePath}/AccountController/Verify`, {
+    return this.sendPost<isValid>(`${this.basePath}/Account/Verify`, {
       token: token,
     });
   }
   public CheckUserNameAvailability(username: string) {
     return this.sendGet<boolean>(
-      `${this.basePath}/AccountController/CheckUserNameAvailability`,
+      `${this.basePath}/Account/CheckUserNameAvailability`,
       {
         params: {
           username: username,
@@ -60,7 +60,7 @@ export class SteamRepositoryAxios
       password: password,
     };
     return this.sendPost<string>(
-      `${this.basePath}/AccountController/CreateAccount`,
+      `${this.basePath}/Account/CreateAccount`,
       query
     );
   }
