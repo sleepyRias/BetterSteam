@@ -58,4 +58,7 @@ export class SteamRepositoryAxios
       query
     );
   }
+  public GetRandomPreview(): Promise<string> {
+    return this.sendGet<string>(`${this.basePath}/Image/GetRandomPreview`);
+  }
 }

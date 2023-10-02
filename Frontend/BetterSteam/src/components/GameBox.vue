@@ -3,7 +3,7 @@
     <div class="columns">
       <div class="column is-one-third">
         <figure class="image is-128x128">
-          <img src="https://bulma.io/images/placeholders/128x128.png" />
+          <img :src="imageUrl" />
         </figure>
       </div>
       <div class="column is-two-third gameinfo">
@@ -36,6 +36,7 @@ export default Vue.extend({
     return {
       isFavorited: false,
       formattedDate: "",
+      imageUrl: "",
     };
   },
   computed: {
@@ -52,9 +53,26 @@ export default Vue.extend({
       if (parts.length !== 3) return dateString;
       return `${parts[2]}.${parts[1]}.${parts[0]}`;
     },
+    async getRandomPreview() {
+      try {
+        const response = await fetch(
+          "https://localhost:7091/api/image/GetRandomPreview"
+        );
+        if (!response.ok) {
+          throw new Error(
+            "Netzwerkantwort war nicht ok " + response.statusText
+          );
+        }
+        const blob = await response.blob();
+        this.imageUrl = URL.createObjectURL(blob);
+      } catch (error) {
+        return;
+      }
+    },
   },
   mounted() {
     this.formattedDate = this.formatDate(this.Game.releaseDate);
+    this.getRandomPreview();
   },
 });
 </script>
