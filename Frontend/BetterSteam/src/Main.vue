@@ -12,6 +12,9 @@
         <i class="fa-regular fa-user fa-2x" />
       </button>
     </div>
+    <button @click="switchTheme" class="betterSteamButton--theme">
+      <i :class="darkOrLightClass" class="fa-solid fa-2xl" />
+    </button>
     <div class="search-with-filters is-rounded">
       <div class="control has-icons-right">
         <input
@@ -69,7 +72,7 @@
         v-for="game in gamesList"
         :key="game.id"
       >
-        <game-box :Game="game" />
+        <game-box :Game="game" @favorite="handleFavorite(game.id)" />
       </div>
     </div>
     <button v-if="showUpButton" @click="scrollToTop" class="up-button">
@@ -209,10 +212,27 @@ export default Vue.extend({
         this.$router.push("/login");
       }
     },
+    switchTheme() {
+      if (this.$store.getters.getTheme === "light-theme") {
+        this.$store.dispatch("setTheme", "dark-theme");
+      } else {
+        this.$store.dispatch("setTheme", "light-theme");
+      }
+    },
+    handleFavorite(id: number) {
+      const token = Cookies.get("token");
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      repo.addFavoriteGame(token!, id);
+    },
   },
   computed: {
     themeClass(): string {
       return this.$store.getters.getTheme;
+    },
+    darkOrLightClass(): string {
+      return this.$store.getters.getTheme === "dark-theme"
+        ? "fa-sun"
+        : "fa-moon";
     },
   },
   watch: {
@@ -270,6 +290,20 @@ body {
     padding: 0;
     margin: 4px 6px;
     color: #fcd303;
+  }
+  &--wishlist {
+    @extend .betterSteamButton;
+    color: #ff0000;
+    padding: 0;
+    margin-top: 15px;
+    text-decoration: dashed;
+  }
+  &--theme {
+    @extend .betterSteamButton;
+    margin: 7px 100px 0 0;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 }
 .main-header {
@@ -342,6 +376,9 @@ body {
 .search-with-filters {
   display: flex;
   justify-content: center;
+}
+.fa-sun {
+  color: white;
 }
 </style>
 ../shared/interfaces/Filters
