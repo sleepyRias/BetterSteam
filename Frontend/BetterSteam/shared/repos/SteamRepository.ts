@@ -9,8 +9,9 @@ import {
 export interface SteamRepository {
   getGames(filter: GameFilter): Promise<BetterSteamResponse>;
   login(username: string, password: string): Promise<Token>;
-  CreateNewUser(username: string, password: string): Promise<string>;
+  createNewUser(username: string, password: string): Promise<string>;
   verify(token: string): Promise<isValid>;
-  CheckUserNameAvailability(username: string): Promise<boolean>;
+  checkUserNameAvailability(username: string): Promise<boolean>;
   addFavoriteGame(token: string, gameId: number): Promise<string>;
+  getNameFromToken(token: string): Promise<string>;
 }
