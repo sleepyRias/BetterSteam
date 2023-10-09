@@ -98,7 +98,7 @@ export class SteamRepositoryAxios
       value1: gameId,
     };
     return this.sendPost<string>(
-      `${this.basePath}/Account/AddWishListGame`,
+      `${this.basePath}/Account/AddToWishlist`,
       query
     );
   }
@@ -108,7 +108,7 @@ export class SteamRepositoryAxios
       value1: gameId,
     };
     return this.sendDelete<string>(
-      `${this.basePath}/Account/RemoveWishListGame`,
+      `${this.basePath}/Account/RemoveFromWishlist`,
       query
     );
   }
