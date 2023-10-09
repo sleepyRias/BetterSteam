@@ -5,6 +5,7 @@ import {
   SteamRepository,
   GameFilter,
   User,
+  WishlistResponse,
 } from "../../src/components";
 import { AxiosRepository } from "./AxiosRepository";
 
@@ -109,6 +110,16 @@ export class SteamRepositoryAxios
     };
     return this.sendDelete<string>(
       `${this.basePath}/Wishlist/RemoveFromWishlist`,
+      query
+    );
+  }
+  public getWishlist(token: string): Promise<WishlistResponse[]> {
+    const query = {
+      token: token,
+      value1: "", //idk GPT sagt hier muss einer hin ich bin kein backendler und niklas antwortet net lol
+    };
+    return this.sendPost<WishlistResponse[]>(
+      `${this.basePath}/Wishlist/GetWishlist`,
       query
     );
   }

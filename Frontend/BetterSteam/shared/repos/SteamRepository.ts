@@ -1,4 +1,9 @@
-import { User, GameFilter, Token } from "../../src/components";
+import {
+  User,
+  GameFilter,
+  Token,
+  WishlistResponse,
+} from "../../src/components";
 import {
   BetterSteamResponse,
   isValid,
@@ -16,4 +21,5 @@ export interface SteamRepository {
   getNameFromToken(token: string): Promise<User>;
   addToWishlist(token: string, gameId: string): Promise<string>;
   removeFromWishlist(token: string, gameId: string): Promise<string>;
+  getWishlist(token: string): Promise<WishlistResponse[]>;
 }

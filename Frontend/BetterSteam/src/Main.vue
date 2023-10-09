@@ -245,6 +245,14 @@ export default Vue.extend({
     removeWishlist(id: number, token: string) {
       repo.removeFromWishlist(token, id.toString());
     },
+    async getWishlist() {
+      const token = Cookies.get("token");
+      if (token !== undefined) {
+        const response = await repo.getWishlist(token);
+        // eslint-disable-next-line no-console
+        console.log(response);
+      }
+    },
   },
   computed: {
     themeClass(): string {

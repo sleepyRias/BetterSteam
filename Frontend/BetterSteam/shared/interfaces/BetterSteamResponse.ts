@@ -9,3 +9,8 @@ export interface Token {
 export interface isValid {
   isValid: boolean;
 }
+export interface WishlistResponse {
+  accountId: number;
+  gameId: number;
+  id: number;
+}
