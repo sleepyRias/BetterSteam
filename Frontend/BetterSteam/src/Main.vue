@@ -78,6 +78,8 @@
           @removeFavourite="removeFavourite"
           @addWishlist="addWishlist"
           @removeWishlist="removeWishlist"
+          :wishlistable="isLoggedIn"
+          :favoritable="isLoggedIn"
         />
       </div>
     </div>
@@ -96,7 +98,6 @@ import {
   Game,
   FilterModal,
   GameBox,
-  Cookies,
   GameFilter,
   Themes,
 } from "./components/";
@@ -207,7 +208,7 @@ export default Vue.extend({
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
     async goToProfile() {
-      const token = Cookies.get("token");
+      const token = this.$store.getters.getToken;
       if (token === undefined) {
         this.$router.push("/login");
       }
@@ -263,6 +264,13 @@ export default Vue.extend({
       return this.$store.getters.getTheme === "dark-theme"
         ? "fa-sun"
         : "fa-moon";
+    },
+    isLoggedIn(): boolean {
+      if (this.$store.getters.getToken === undefined) {
+        return false;
+      } else {
+        return true;
+      }
     },
   },
   watch: {
