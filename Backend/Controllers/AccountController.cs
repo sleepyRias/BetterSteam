@@ -223,14 +223,25 @@ namespace backend.Controllers
 
             var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
             var userId = jwtHelper.GetClaim(dto.Token, ClaimTypes.NameIdentifier).Value;
-            try
+            
+            //check if already favourited
+            var favGame = _dataProvider.FavouriteGames
+                    .Where(f => f.AccountId == int.Parse(userId) && f.GameId == int.Parse(dto.Value1))
+                    .FirstOrDefault();
+            if (favGame == null)
             {
-                _dataProvider.FavouriteGames.Add(new FavouriteGame() { AccountId = int.Parse(userId), GameId = int.Parse(dto.Value1) });
-                _dataProvider.SaveChanges();
-            }
-            catch
+                try
+                {
+                    _dataProvider.FavouriteGames.Add(new FavouriteGame() { AccountId = int.Parse(userId), GameId = int.Parse(dto.Value1) });
+                    _dataProvider.SaveChanges();
+                }
+                catch
+                {
+                    return BadRequest();
+                }
+            } else
             {
-                return BadRequest();
+                return BadRequest("Game is already favourited.");
             }
             return Ok(); // Erfolgreiches Hinzufügen
         }
@@ -296,19 +307,29 @@ namespace backend.Controllers
 
             var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
             var userId = jwtHelper.GetClaim(dto.Token, ClaimTypes.NameIdentifier).Value;
-            try
+            
+            //check if already in wishlist
+            
+            if (
+                _dataProvider.Wishlists
+                    .Where(w => w.AccountId == int.Parse(userId) && w.GameId == int.Parse(dto.Value1))
+                    .FirstOrDefault() 
+                    == null)
             {
-                _dataProvider.Wishlists.Add(new Wishlist() { AccountId = int.Parse(userId), GameId = int.Parse(dto.Value1) });
-                _dataProvider.SaveChanges();
-            }
-            catch (System.Exception e)
-            {
-                return StatusCode(500, new
+                try
                 {
-                    ErrorMessage = e.Message,
-                    StackTrace = e.StackTrace
-                });
+                    _dataProvider.Wishlists.Add(new Wishlist() { AccountId = int.Parse(userId), GameId = int.Parse(dto.Value1) });
+                    _dataProvider.SaveChanges();
+                }
+                catch
+                {
+                    return BadRequest();
+                }
+            } else
+            {
+                return BadRequest("Game is already in wishlist.");
             }
+            
             return Ok(); // Erfolgreiches Hinzufügen
         }
 
