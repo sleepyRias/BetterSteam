@@ -5,14 +5,14 @@ const api = new SteamRepositoryAxios(axios);
 interface State {
   theme: string;
   wishlist: WishlistResponse[];
-  token: string;
+  token: string | undefined;
 }
 
 export const storeOptions = {
   state: {
     theme: "light-theme",
     wishlist: [],
-    token: "",
+    token: undefined,
   },
   mutations: {
     setTheme(state: State, theme: string) {

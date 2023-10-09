@@ -53,7 +53,7 @@ export default Vue.extend({
       }
       Cookies.set("token", response.token);
       this.$store.dispatch("setToken", response.token);
-      if (Cookies.get("token") && (await this.verify(response.token))) {
+      if (this.$store.getters.getToken && (await this.verify(response.token))) {
         this.$router.push("/user");
       }
     },

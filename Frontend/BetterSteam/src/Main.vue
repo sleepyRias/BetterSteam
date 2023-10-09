@@ -96,7 +96,6 @@ import {
   Game,
   FilterModal,
   GameBox,
-  Cookies,
   GameFilter,
   Themes,
 } from "./components/";
@@ -126,6 +125,7 @@ export default Vue.extend({
       } as GameFilter,
       isFavorited: false,
       isGamesLoading: false,
+      token: undefined as string | undefined,
     };
   },
   methods: {
@@ -207,7 +207,7 @@ export default Vue.extend({
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
     async goToProfile() {
-      const token = Cookies.get("token");
+      const token = this.$store.getters.getToken;
       if (token === undefined) {
         this.$router.push("/login");
       }
@@ -244,14 +244,6 @@ export default Vue.extend({
     },
     removeWishlist(id: number, token: string) {
       repo.removeFromWishlist(token, id.toString());
-    },
-    async getWishlist() {
-      const token = Cookies.get("token");
-      if (token !== undefined) {
-        const response = await repo.getWishlist(token);
-        // eslint-disable-next-line no-console
-        console.log(response);
-      }
     },
   },
   computed: {

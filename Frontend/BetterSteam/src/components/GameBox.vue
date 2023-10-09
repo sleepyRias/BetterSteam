@@ -34,7 +34,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Cookies, WishlistResponse } from "./";
+import { Vue, WishlistResponse } from "./";
 export default Vue.extend({
   name: "GameBox",
   props: {
@@ -55,7 +55,7 @@ export default Vue.extend({
   },
   methods: {
     handleFavorite() {
-      const token = Cookies.get("token");
+      const token = this.$store.getters.getToken;
       if (token !== undefined) {
         if (this.isFavorited) {
           this.$emit("removeFavourite", this.Game.id, token);
@@ -87,7 +87,7 @@ export default Vue.extend({
       }
     },
     handleWishlist() {
-      const token = Cookies.get("token");
+      const token = this.$store.getters.getToken;
       if (token !== undefined) {
         if (this.isWishlisted) {
           this.$emit("removeWishlist", this.Game.id, token);
@@ -118,7 +118,7 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.isAllowedToFavAndWish = Cookies.get("token") ? true : false;
+    this.isAllowedToFavAndWish = this.$store.getters.getToken ? true : false;
     this.formattedDate = this.formatDate(this.Game.releaseDate);
     this.getRandomPreview();
   },

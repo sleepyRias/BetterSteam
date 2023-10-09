@@ -43,7 +43,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, GameBox, axios, Cookies } from "./";
+import { Vue, GameBox, axios } from "./";
 import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
 const repo = new SteamRepositoryAxios(axios);
 export default Vue.extend({
@@ -60,7 +60,7 @@ export default Vue.extend({
   },
   methods: {
     async verify() {
-      const token = Cookies.get("token");
+      const token = this.$store.getters.getToken;
       if (token === undefined) {
         return false;
       }
@@ -71,7 +71,7 @@ export default Vue.extend({
       return false;
     },
     async getUsername() {
-      const token = Cookies.get("token");
+      const token = this.$store.getters.getToken;
       if (token === undefined) return;
       this.username = (await repo.getNameFromToken(token)).name;
     },
