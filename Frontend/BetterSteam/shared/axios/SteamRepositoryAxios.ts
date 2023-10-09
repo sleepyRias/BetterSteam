@@ -81,4 +81,15 @@ export class SteamRepositoryAxios
       query
     );
   }
+  public removeFavouriteGame(token: string, gameId: number): Promise<string> {
+    return this.sendDelete<string>(
+      `${this.basePath}/Account/RemoveFavouriteGames`,
+      {
+        params: {
+          token: token,
+          gameId: gameId,
+        },
+      }
+    );
+  }
 }
