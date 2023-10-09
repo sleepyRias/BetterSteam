@@ -415,3 +415,4 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,visualstudio
 /Backend/Data/Accounts.db-shm
 /Backend/Data/Accounts.db-wal
+Backend/Data/Accounts.db

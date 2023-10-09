@@ -57,8 +57,13 @@ export default Vue.extend({
     handleFavorite() {
       const token = Cookies.get("token");
       if (token !== undefined) {
-        this.isFavorited = !this.isFavorited;
-        this.$emit("favorite", this.Game.id);
+        if (this.isFavorited) {
+          this.isFavorited = !this.isFavorited;
+          this.$emit("removeFavourite", this.Game.id, token);
+        } else {
+          this.isFavorited = !this.isFavorited;
+          this.$emit("addFavourite", this.Game.id, token);
+        }
       }
     },
     formatDate(dateString: string) {

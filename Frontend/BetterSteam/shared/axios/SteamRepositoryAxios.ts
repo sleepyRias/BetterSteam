@@ -62,10 +62,11 @@ export class SteamRepositoryAxios
   public GetRandomPreview(): Promise<string> {
     return this.sendGet<string>(`${this.basePath}/Image/GetRandomPreview`);
   }
-  public addFavoriteGame(token: string, gameId: number): Promise<string> {
+  public addFavoriteGame(token: string, gameId: string): Promise<string> {
     const query = {
       token: token,
-      gameId: gameId,
+      value1: gameId,
+      // @Robert das hat niklas so gemacht und da must du mit ihm reden ich werde dafür net bezahlt
     };
     return this.sendPost<string>(
       `${this.basePath}/Account/AddFavouriteGame`,
@@ -81,15 +82,14 @@ export class SteamRepositoryAxios
       query
     );
   }
-  public removeFavouriteGame(token: string, gameId: number): Promise<string> {
+  public removeFavouriteGame(token: string, gameId: string): Promise<string> {
+    const query = {
+      token: token,
+      value1: gameId,
+    };
     return this.sendDelete<string>(
-      `${this.basePath}/Account/RemoveFavouriteGames`,
-      {
-        params: {
-          token: token,
-          gameId: gameId,
-        },
-      }
+      `${this.basePath}/Account/RemoveFavouriteGame`,
+      query
     );
   }
 }
