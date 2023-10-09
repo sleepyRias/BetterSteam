@@ -76,6 +76,8 @@
           :Game="game"
           @addFavourite="addFavourite"
           @removeFavourite="removeFavourite"
+          @addWishlist="addWishlist"
+          @removeWishlist="removeWishlist"
         />
       </div>
     </div>
@@ -98,6 +100,7 @@ import {
   GameFilter,
   Themes,
 } from "./components/";
+import { mapState } from "vuex";
 export default Vue.extend({
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Main",
@@ -156,7 +159,6 @@ export default Vue.extend({
       this.updateRoute();
     },
     updateRoute() {
-      // basically stfu eslint and dont worry i dont know what im doings
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const queryParameters: any = {};
 
@@ -237,8 +239,23 @@ export default Vue.extend({
     removeFavourite(id: number, token: string) {
       repo.removeFavouriteGame(token, id.toString());
     },
+    addWishlist(id: number, token: string) {
+      repo.addToWishlist(token, id.toString());
+    },
+    removeWishlist(id: number, token: string) {
+      repo.removeFromWishlist(token, id.toString());
+    },
+    async getWishlist() {
+      const token = Cookies.get("token");
+      if (token !== undefined) {
+        const response = await repo.getWishlist(token);
+        // eslint-disable-next-line no-console
+        console.log(response);
+      }
+    },
   },
   computed: {
+    ...mapState(["theme", "wishlist"]),
     themeClass(): string {
       return this.$store.getters.getTheme;
     },
@@ -265,6 +282,7 @@ export default Vue.extend({
     this.filter.releaseDate = String(this.$route.query.releaseDate || "");
     this.filter.minPrice = Number(this.$route.query.minPrice || 0);
     this.filter.maxPrice = Number(this.$route.query.maxPrice || 100);
+    this.$store.dispatch("fetchWishlist");
   },
   mounted() {
     window.addEventListener("scroll", this.checkScroll);

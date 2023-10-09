@@ -11,7 +11,7 @@
         <p class="game-company">{{ Game.company }}</p>
         <button
           class="better-steam-button--wishlist"
-          @click="isWishlisted = !isWishlisted"
+          @click="handleWishlist"
           v-if="isAllowedToFavAndWish"
         >
           <span class="icon" v-if="wishlistable">
@@ -27,7 +27,6 @@
       class="better-steam-button--favorite"
       @click="handleFavorite"
     >
-      <!-- we need Backend functionality later for this -->
       <span class="icon" v-if="favoriteable">
         <i :class="[favGameClass, 'fa-star', 'fa-xl']" />
       </span>
@@ -35,7 +34,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Cookies } from "./";
+import { Vue, Cookies, WishlistResponse } from "./";
 export default Vue.extend({
   name: "GameBox",
   props: {
@@ -51,6 +50,7 @@ export default Vue.extend({
       isWishlisted: false,
       isAllowedToFavAndWish: false,
       imageUrl: "",
+      wishlist: [] as WishlistResponse[],
     };
   },
   methods: {
@@ -58,12 +58,11 @@ export default Vue.extend({
       const token = Cookies.get("token");
       if (token !== undefined) {
         if (this.isFavorited) {
-          this.isFavorited = !this.isFavorited;
           this.$emit("removeFavourite", this.Game.id, token);
         } else {
-          this.isFavorited = !this.isFavorited;
           this.$emit("addFavourite", this.Game.id, token);
         }
+        this.isFavorited = !this.isFavorited;
       }
     },
     formatDate(dateString: string) {
@@ -87,6 +86,25 @@ export default Vue.extend({
         return;
       }
     },
+    handleWishlist() {
+      const token = Cookies.get("token");
+      if (token !== undefined) {
+        if (this.isWishlisted) {
+          this.$emit("removeWishlist", this.Game.id, token);
+        } else {
+          this.$emit("addWishlist", this.Game.id, token);
+        }
+        this.isWishlisted = !this.isWishlisted;
+      }
+    },
+    fetchWishlist() {
+      this.wishlist = this.$store.getters.getWishlist;
+      for (var gameID of this.wishlist) {
+        if (gameID.gameId === this.Game.id) {
+          this.isWishlisted = true;
+        }
+      }
+    },
   },
   computed: {
     themeClass(): string {
@@ -103,6 +121,9 @@ export default Vue.extend({
     this.isAllowedToFavAndWish = Cookies.get("token") ? true : false;
     this.formattedDate = this.formatDate(this.Game.releaseDate);
     this.getRandomPreview();
+  },
+  created() {
+    this.fetchWishlist();
   },
 });
 </script>
