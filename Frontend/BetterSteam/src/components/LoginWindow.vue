@@ -52,6 +52,7 @@ export default Vue.extend({
         alert("Invalid credentials");
       }
       Cookies.set("token", response.token);
+      this.$store.dispatch("setToken", response.token);
       if (Cookies.get("token") && (await this.verify(response.token))) {
         this.$router.push("/user");
       }
