@@ -16,6 +16,7 @@ using backend.Model;
 using backend.Model.Account;
 using backend.Model.DTO;
 using Azure.Core;
+using Microsoft.Identity.Client;
 
 namespace backend.Controllers
 {
@@ -87,7 +88,7 @@ namespace backend.Controllers
             var account = _dataProvider.Accounts.FirstOrDefault(a => a.Id == id);
             if (account == null)
             {
-                return NotFound(); // Falls der Account mit der angegebenen ID nicht gefunden wurde
+                return NotFound();
             }
 
             return Ok(account);
@@ -110,8 +111,7 @@ namespace backend.Controllers
             }
             string salt = Convert.ToBase64String(saltBytes);
 
-            //Erstelle Account für die DB
-            Account account = new() { Name = dto.Username};
+            Account account = new() { Name = dto.Username };
 
             // Hash das Passwort unter Verwendung des Salts
             var passwordHasher = new PasswordHasher<Account>();
@@ -123,8 +123,8 @@ namespace backend.Controllers
 
             // Entferne
 
-            _dataProvider.Accounts.Add(account); // Account der Datenquelle hinzufügen
-            _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
+            _dataProvider.Accounts.Add(account);
+            _dataProvider.SaveChanges();
 
             return CreatedAtRoute("GetAccountById", new { id = account.Id }, account); // Erfolgreiches Erstellen mit 201 Created-Status und dem erstellten Account als Antwort
         }
@@ -150,7 +150,6 @@ namespace backend.Controllers
                 account.PasswordHash = _passwordHasher.HashPassword(account, updatedAccount.Password + account.PasswordSalt);
             }
 
-            // Speichere die Änderungen in der Datenbank
             _dataProvider.SaveChanges();
 
             return Ok(); // Erfolgreiche Aktualisierung
@@ -197,13 +196,13 @@ namespace backend.Controllers
             return Ok(new { IsValid = false });
         }
 
-        //POST: /Account/GetNameFromToken
+        //POST: /Account/AddFavouriteGame
         [HttpPost(Endpoints.AccountController.AddFavouriteGame, Name = "AddFavouriteGame")]
         public IActionResult AddFavouriteGame([FromBody] TokenDTO dto)
         {
             if (dto == null)
             {
-                return BadRequest(); // Ungültige Anforderung
+                return BadRequest();
             }
 
             var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
@@ -212,11 +211,37 @@ namespace backend.Controllers
             {
                 _dataProvider.FavouriteGames.Add(new FavouriteGame() { AccountId = int.Parse(userId), GameId = int.Parse(dto.Value1) });
                 _dataProvider.SaveChanges();
-            } catch
+            }
+            catch
             {
                 return BadRequest();
             }
             return Ok(); // Erfolgreiches Hinzufügen
+        }
+
+        //DELETE: /Account/RemoveFavouriteGame
+        [HttpDelete(Endpoints.AccountController.RemoveFavouriteGame, Name = "RemoveFavouriteGame")]
+        public IActionResult RemoveFavouriteGame([FromBody] TokenDTO dto)
+        {
+            if (dto == null)
+            {
+                return NotFound(); // Ungültige Anforderung
+            }
+
+            var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
+            var userId = jwtHelper.GetClaim(dto.Token, ClaimTypes.NameIdentifier).Value;
+            
+            var favGame = _dataProvider.FavouriteGames
+                    .Where(f => f.AccountId == int.Parse(userId) && f.GameId == int.Parse(dto.Value1))
+                    .FirstOrDefault();
+            if (favGame == null)
+            {
+                return NotFound();
+            }
+            _dataProvider.FavouriteGames.Remove(favGame);
+            _dataProvider.SaveChanges();
+            
+            return Ok(); // Erfolgreiches Löschen
         }
 
         //POST: /Account/GetNameFromToken
@@ -228,4 +253,4 @@ namespace backend.Controllers
             return Ok(new { Name = name });
         }
     }
-}
+} 
