@@ -294,49 +294,14 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../shared/themes.scss";
-html,
-body {
-  height: 100vh;
-}
+@import "./style/main.scss";
 .better-steam {
   height: 100%;
   padding: 0 20px 0 20px;
 }
-.better-steam-button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  &--user {
-    @extend .better-steam-button;
-    color: #1b1d9e;
-    margin: 5px 5px 0 0;
-  }
-  &--favorite {
-    @extend .better-steam-button;
-    position: absolute !important;
-    top: 0;
-    right: 0;
-    padding: 0;
-    margin: 4px 6px;
-    color: #fcd303;
-  }
-  &--wishlist {
-    @extend .better-steam-button;
-    color: #ff0000;
-    padding: 0;
-    margin-top: 15px;
-    text-decoration: dashed;
-  }
-  &--theme {
-    @extend .better-steam-button;
-    margin: 7px 100px 0 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-}
+
 .main-header {
   display: flex;
   justify-content: space-between;
@@ -382,28 +347,6 @@ body {
     transform: rotate(360deg);
   }
 }
-.up-button {
-  position: fixed;
-  bottom: 35px; /* Adjust the distance from the bottom as needed */
-  right: 20px; /* Adjust the distance from the right as needed */
-  z-index: 9999; /* Make sure it's above other elements */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background-color: #fff;
-  color: #333;
-  border: 1px solid #333;
-  border-radius: 50%;
-  cursor: pointer;
-
-  &:hover {
-    transform: scale(1.1);
-    background-color: #333;
-    color: #fff;
-  }
-}
 .search-with-filters {
   display: flex;
   justify-content: center;
@@ -412,4 +355,3 @@ body {
   color: white;
 }
 </style>
-../shared/interfaces/Filters

@@ -159,8 +159,5 @@ export default Vue.extend({
 });
 </script>
 <style scoped>
-.modal-content {
-  width: auto;
-}
+@import "../style/main.scss";
 </style>
-../../shared/interfaces/Filters

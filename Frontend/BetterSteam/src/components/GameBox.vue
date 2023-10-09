@@ -129,6 +129,7 @@ export default Vue.extend({
 </script>
 <style lang="scss" scoped>
 @import "../../shared/themes.scss";
+@import "../style/main.scss";
 .game-box {
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   margin: 10px 5px 0px 5px;
@@ -164,11 +165,5 @@ export default Vue.extend({
 .game-date {
   position: absolute;
   bottom: 0;
-}
-.light-theme {
-  background-color: $secondary-light-theme-color;
-}
-.dark-theme {
-  background-color: $secondary-dark-theme-color;
 }
 </style>

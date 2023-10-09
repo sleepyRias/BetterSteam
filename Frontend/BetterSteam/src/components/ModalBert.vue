@@ -33,9 +33,7 @@ export default Vue.extend({
 });
 </script>
 <style scoped>
-.modal-content {
-  width: auto;
-}
+@import "../style/main.scss";
 .close-modal-button {
   position: absolute;
   top: 0;
