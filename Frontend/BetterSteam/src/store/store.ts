@@ -29,14 +29,19 @@ export const storeOptions = {
     setTheme(context: any, theme: string) {
       context.commit("setTheme", theme);
     },
-    async fetchWishlist(context: any) {
-      const token = Cookies.get("token");
-      if (token === undefined) return;
+    async fetchWishlist(context: any, token: string) {
       const response = await api.getWishlist(token);
       context.commit("setWishlist", response);
     },
+    async verifyToken(_: any, token: string): Promise<boolean> {
+      const data = (await api.verify(token)).isValid;
+      return data;
+    },
     setToken(context: any, token: string) {
       context.commit("setToken", token);
+    },
+    fetchToken(_: any) {
+      return Cookies.get("token");
     },
   },
   getters: {

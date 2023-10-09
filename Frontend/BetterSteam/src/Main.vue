@@ -246,12 +246,12 @@ export default Vue.extend({
       repo.removeFromWishlist(token, id.toString());
     },
     async getWishlist() {
-      const token = Cookies.get("token");
-      if (token !== undefined) {
-        const response = await repo.getWishlist(token);
-        // eslint-disable-next-line no-console
-        console.log(response);
-      }
+      const token = this.$store.getters.getToken;
+      this.$store.dispatch("verifyToken", token).then((data) => {
+        if (data === true) {
+          this.$store.dispatch("fetchWishlist", token);
+        }
+      });
     },
   },
   computed: {
@@ -282,7 +282,7 @@ export default Vue.extend({
     this.filter.releaseDate = String(this.$route.query.releaseDate || "");
     this.filter.minPrice = Number(this.$route.query.minPrice || 0);
     this.filter.maxPrice = Number(this.$route.query.maxPrice || 100);
-    this.$store.dispatch("fetchWishlist");
+    this.getWishlist();
   },
   mounted() {
     window.addEventListener("scroll", this.checkScroll);
