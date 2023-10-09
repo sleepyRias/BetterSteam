@@ -34,7 +34,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Cookies } from "./";
+import { Vue, Cookies, WishlistResponse } from "./";
 export default Vue.extend({
   name: "GameBox",
   props: {
@@ -50,6 +50,7 @@ export default Vue.extend({
       isWishlisted: false,
       isAllowedToFavAndWish: false,
       imageUrl: "",
+      wishlist: [] as WishlistResponse[],
     };
   },
   methods: {
@@ -96,6 +97,14 @@ export default Vue.extend({
         this.isWishlisted = !this.isWishlisted;
       }
     },
+    fetchWishlist() {
+      this.wishlist = this.$store.getters.getWishlist;
+      for (var gameID of this.wishlist) {
+        if (gameID.gameId === this.Game.id) {
+          this.isWishlisted = true;
+        }
+      }
+    },
   },
   computed: {
     themeClass(): string {
@@ -112,6 +121,9 @@ export default Vue.extend({
     this.isAllowedToFavAndWish = Cookies.get("token") ? true : false;
     this.formattedDate = this.formatDate(this.Game.releaseDate);
     this.getRandomPreview();
+  },
+  created() {
+    this.fetchWishlist();
   },
 });
 </script>

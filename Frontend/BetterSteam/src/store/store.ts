@@ -46,5 +46,8 @@ export const storeOptions = {
     getToken(state: State) {
       return state.token;
     },
+    getWishlist(state: State) {
+      return state.wishlist;
+    },
   },
 };
