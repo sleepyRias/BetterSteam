@@ -100,6 +100,7 @@ import {
   GameFilter,
   Themes,
 } from "./components/";
+import { mapState, mapActions } from "vuex";
 export default Vue.extend({
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Main",
@@ -128,6 +129,7 @@ export default Vue.extend({
     };
   },
   methods: {
+    ...mapActions(["fetchWishlist"]),
     updateFilter(filter: GameFilter) {
       this.filter = { ...this.filter, ...filter };
       this.updateRoute();
@@ -255,6 +257,7 @@ export default Vue.extend({
     },
   },
   computed: {
+    ...mapState(["theme", "wishlist"]),
     themeClass(): string {
       return this.$store.getters.getTheme;
     },
@@ -281,6 +284,7 @@ export default Vue.extend({
     this.filter.releaseDate = String(this.$route.query.releaseDate || "");
     this.filter.minPrice = Number(this.$route.query.minPrice || 0);
     this.filter.maxPrice = Number(this.$route.query.maxPrice || 100);
+    this.$store.dispatch("fetchWishlist");
   },
   mounted() {
     window.addEventListener("scroll", this.checkScroll);
