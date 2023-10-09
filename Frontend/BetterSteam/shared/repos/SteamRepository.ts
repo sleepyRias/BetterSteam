@@ -14,4 +14,6 @@ export interface SteamRepository {
   addFavoriteGame(token: string, gameId: string): Promise<string>;
   removeFavouriteGame(token: string, gameId: string): Promise<string>;
   getNameFromToken(token: string): Promise<User>;
+  addToWishlist(token: string, gameId: string): Promise<string>;
+  removeFromWishlist(token: string, gameId: string): Promise<string>;
 }

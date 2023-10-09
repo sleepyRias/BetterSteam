@@ -92,4 +92,24 @@ export class SteamRepositoryAxios
       query
     );
   }
+  public addToWishlist(token: string, gameId: string): Promise<string> {
+    const query = {
+      token: token,
+      value1: gameId,
+    };
+    return this.sendPost<string>(
+      `${this.basePath}/Account/AddWishListGame`,
+      query
+    );
+  }
+  public removeFromWishlist(token: string, gameId: string): Promise<string> {
+    const query = {
+      token: token,
+      value1: gameId,
+    };
+    return this.sendDelete<string>(
+      `${this.basePath}/Account/RemoveWishListGame`,
+      query
+    );
+  }
 }
