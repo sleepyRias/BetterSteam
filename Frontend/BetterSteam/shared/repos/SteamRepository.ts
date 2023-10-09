@@ -11,6 +11,7 @@ export interface SteamRepository {
   createNewUser(username: string, password: string): Promise<string>;
   verify(token: string): Promise<isValid>;
   checkUserNameAvailability(username: string): Promise<boolean>;
-  addFavoriteGame(token: string, gameId: number): Promise<string>;
+  addFavoriteGame(token: string, gameId: string): Promise<string>;
+  removeFavouriteGame(token: string, gameId: string): Promise<string>;
   getNameFromToken(token: string): Promise<User>;
 }

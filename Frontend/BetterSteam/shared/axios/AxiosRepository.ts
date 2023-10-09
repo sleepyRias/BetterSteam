@@ -21,13 +21,15 @@ export class AxiosRepository {
 
   protected async sendDelete<T = void>(
     url: string,
+    data?: any,
     config?: AxiosRequestConfig,
     mappingFn: ResponseMapper<T> = (r) => this.transformResponse(r)
   ): Promise<T extends void ? void : T> {
-    const response = await this.axios.delete(url, config);
+    const response = await this.axios.delete(url, { ...config, data });
     // @ts-ignore
     return response ? mappingFn(response) : Promise.resolve();
   }
+  
 
   protected async sendPost<T>(
     url: string,
