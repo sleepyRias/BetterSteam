@@ -1,5 +1,5 @@
 <template>
-  <div class="betterSteam" :class="themeClass">
+  <div class="better-steam" :class="themeClass">
     <filter-modal
       v-if="showFilter"
       @close="showFilter = false"
@@ -8,11 +8,11 @@
     />
     <div class="main-header">
       <h1 class="main-title">Sandbox Project</h1>
-      <button @click="goToProfile" class="betterSteamButton--user">
+      <button @click="goToProfile" class="better-steam-button--user">
         <i class="fa-regular fa-user fa-2x" />
       </button>
     </div>
-    <button @click="switchTheme" class="betterSteamButton--theme">
+    <button @click="toggleDarkmode" class="better-steam-button--theme">
       <i :class="darkOrLightClass" class="fa-solid fa-2xl" />
     </button>
     <div class="search-with-filters is-rounded">
@@ -92,6 +92,7 @@ import {
   GameBox,
   Cookies,
   GameFilter,
+  Themes,
 } from "./components/";
 export default Vue.extend({
   // eslint-disable-next-line vue/multi-word-component-names
@@ -212,11 +213,18 @@ export default Vue.extend({
         this.$router.push("/login");
       }
     },
-    switchTheme() {
-      if (this.$store.getters.getTheme === "light-theme") {
-        this.$store.dispatch("setTheme", "dark-theme");
-      } else {
-        this.$store.dispatch("setTheme", "light-theme");
+    toggleDarkmode() {
+      switch (this.$store.getters.getTheme) {
+        case Themes.light:
+          this.$store.dispatch("setTheme", Themes.dark);
+          break;
+        case Themes.dark:
+          this.$store.dispatch("setTheme", Themes.light);
+          break;
+        case Themes.red:
+          break;
+        default:
+          this.$store.dispatch("setTheme", Themes.light);
       }
     },
     handleFavorite(id: number) {
@@ -269,21 +277,21 @@ html,
 body {
   height: 100vh;
 }
-.betterSteam {
+.better-steam {
   height: 100%;
   padding: 0 20px 0 20px;
 }
-.betterSteamButton {
+.better-steam-button {
   border: none;
   background: none;
   cursor: pointer;
   &--user {
-    @extend .betterSteamButton;
+    @extend .better-steam-button;
     color: #1b1d9e;
     margin: 5px 5px 0 0;
   }
   &--favorite {
-    @extend .betterSteamButton;
+    @extend .better-steam-button;
     position: absolute !important;
     top: 0;
     right: 0;
@@ -292,14 +300,14 @@ body {
     color: #fcd303;
   }
   &--wishlist {
-    @extend .betterSteamButton;
+    @extend .better-steam-button;
     color: #ff0000;
     padding: 0;
     margin-top: 15px;
     text-decoration: dashed;
   }
   &--theme {
-    @extend .betterSteamButton;
+    @extend .better-steam-button;
     margin: 7px 100px 0 0;
     position: absolute;
     top: 0;
