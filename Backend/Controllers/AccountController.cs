@@ -155,24 +155,32 @@ namespace backend.Controllers
             return Ok(); // Erfolgreiche Aktualisierung
         }
 
-        // DELETE: /Account/5
-        //[HttpDelete(Endpoints.AccountController.DeleteAccount, Name = "Delete Account")]
-        //public IActionResult DeleteAccount(int id)
-        //{
-        //    var account = _dataProvider.Accounts.Include(a => a.FavouriteGames).FirstOrDefault(a => a.Id == id);
-        //    if (account == null)
-        //    {
-        //        return NotFound(); // Falls der Account mit der angegebenen ID nicht gefunden wurde
-        //    }
+        //DELETE: /Account/5
+        [HttpDelete(Endpoints.AccountController.DeleteAccount, Name = "Delete Account")]
+        public IActionResult DeleteAccount([FromBody] TokenDTO dto)
+        {
+            var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
+            var userId = int.Parse(jwtHelper.GetClaim(dto.Token, ClaimTypes.NameIdentifier).Value);
 
-        //    // Lösche zuerst die FavouriteGames-Einträge, die mit diesem Account verknüpft sind
-        //    _dataProvider.FavouriteGames.RemoveRange(account.FavouriteGames);
+            var account = _dataProvider.Accounts.Where(a => a.Id == userId).FirstOrDefault();
+            if (account == null)
+            {
+                return NotFound(); // Falls der Account mit der angegebenen ID nicht gefunden wurde
+            }
+            
+            //cascade delete
+            var favGames = _dataProvider.FavouriteGames.Where(f => f.AccountId == userId).ToList();
+            foreach (var favGame in favGames)
+            {
+                _dataProvider.FavouriteGames.Remove(favGame);
+            }
 
-        //    _dataProvider.Accounts.Remove(account); // Account aus der Datenquelle entfernen
-        //    _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
+            //account delete
+            _dataProvider.Accounts.Remove(account); // Account aus der Datenquelle entfernen
+            _dataProvider.SaveChanges(); // Speichere die Änderungen in der Datenbank
 
-        //    return NoContent(); // Erfolgreiches Löschen (kein Inhalt zurückgegeben)
-        //}
+            return Ok(); // Erfolgreiches Löschen (kein Inhalt zurückgegeben)
+        }
 
         // True -> Available
         [HttpGet(Endpoints.AccountController.CheckUserNameAvailability, Name = "CheckUserNameAvailability")]
