@@ -1,5 +1,5 @@
 <template>
-  <div class="game-box" :class="[themeClass, { 'hover-effect': enableHover }]">
+  <div :class="[themeClass, { 'hover-effect': enableHover }, 'game-box']">
     <div class="columns">
       <div class="column is-one-third">
         <figure class="image is-128x128">
@@ -15,7 +15,7 @@
           v-if="isAllowedToFavAndWish"
         >
           <span class="icon" v-if="wishlistable">
-            <i :class="wishGameClass" class="fa-bookmark fa-xl" />
+            <i :class="[wishGameClass, 'fa-bookmark', 'fa-xl']" />
           </span>
         </button>
         <span class="game-price">{{ `${Game.price.toFixed(2)}€` }} </span>
@@ -24,12 +24,12 @@
     </div>
     <button
       v-if="isAllowedToFavAndWish"
-      class="betterSteamButton--favorite"
+      class="better-steam-button--favorite"
       @click="handleFavorite"
     >
       <!-- we need Backend functionality later for this -->
       <span class="icon" v-if="favoriteable">
-        <i :class="favGameClass" class="fa-star fa-xl" />
+        <i :class="[favGameClass, 'fa-star', 'fa-xl']" />
       </span>
     </button>
   </div>
