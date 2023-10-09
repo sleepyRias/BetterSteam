@@ -209,14 +209,10 @@ export default Vue.extend({
     },
     async goToProfile() {
       const token = this.$store.getters.getToken;
-      if (token === undefined) {
-        this.$router.push("/login");
-      }
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const response = await repo.verify(token!);
-      if (response.isValid) {
+      try {
+        await this.$store.dispatch("verifyToken", token);
         this.$router.push("/user");
-      } else {
+      } catch (error) {
         this.$router.push("/login");
       }
     },
