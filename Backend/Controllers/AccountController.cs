@@ -168,12 +168,20 @@ namespace backend.Controllers
                 return NotFound(); // Falls der Account mit der angegebenen ID nicht gefunden wurde
             }
             
-            //cascade delete
+            //cascade delete favourite games
             var favGames = _dataProvider.FavouriteGames.Where(f => f.AccountId == userId).ToList();
             foreach (var favGame in favGames)
             {
                 _dataProvider.FavouriteGames.Remove(favGame);
             }
+
+            //cascade delete wishlist
+            var wishlist = _dataProvider.Wishlists.Where(f => f.AccountId == userId).ToList();
+            foreach (var wish in wishlist)
+            {
+                _dataProvider.Wishlists.Remove(wish);
+            }
+
 
             //account delete
             _dataProvider.Accounts.Remove(account); // Account aus der Datenquelle entfernen
@@ -259,6 +267,74 @@ namespace backend.Controllers
             var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
             var name = jwtHelper.GetClaim(request.Token, ClaimTypes.Name).Value;
             return Ok(new { Name = name });
+        }
+
+        //POST: /Wishlist/GetWishlist
+        [HttpPost(Endpoints.WishlistController.GetWishlist, Name = "GetWishlist")]
+        public IActionResult GetWishlist([FromBody] TokenDTO dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest();
+            }
+
+            var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
+            var userId = jwtHelper.GetClaim(dto.Token, ClaimTypes.NameIdentifier).Value;
+
+            var wishlist = _dataProvider.Wishlists.Where(w => w.AccountId == int.Parse(userId)).ToList();
+            return Ok(wishlist);
+        }
+
+        //POST: /Wishlist/AddToWishlist
+        [HttpPost(Endpoints.WishlistController.AddToWishlist, Name = "AddToWishlist")]
+        public IActionResult AddToWishlist([FromBody] TokenDTO dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest();
+            }
+
+            var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
+            var userId = jwtHelper.GetClaim(dto.Token, ClaimTypes.NameIdentifier).Value;
+            try
+            {
+                _dataProvider.Wishlists.Add(new Wishlist() { AccountId = int.Parse(userId), GameId = int.Parse(dto.Value1) });
+                _dataProvider.SaveChanges();
+            }
+            catch (System.Exception e)
+            {
+                return StatusCode(500, new
+                {
+                    ErrorMessage = e.Message,
+                    StackTrace = e.StackTrace
+                });
+            }
+            return Ok(); // Erfolgreiches Hinzufügen
+        }
+
+        //DELETE: /Wishlist/RemoveFromWishlist
+        [HttpDelete(Endpoints.WishlistController.RemoveFromWishlist, Name = "RemoveFromWishlist")]
+        public IActionResult RemoveFromWishlist([FromBody] TokenDTO dto)
+        {
+            if (dto == null)
+            {
+                return NotFound(); // Ungültige Anforderung
+            }
+
+            var jwtHelper = new JwtHelper(_configuration["Jwt:Key"], _configuration["Jwt:Issuer"], _configuration["Jwt:Audience"]);
+            var userId = jwtHelper.GetClaim(dto.Token, ClaimTypes.NameIdentifier).Value;
+
+            var wishlist = _dataProvider.Wishlists
+                    .Where(w => w.AccountId == int.Parse(userId) && w.GameId == int.Parse(dto.Value1))
+                    .FirstOrDefault();
+            if (wishlist == null)
+            {
+                return NotFound();
+            }
+            _dataProvider.Wishlists.Remove(wishlist);
+            _dataProvider.SaveChanges();
+
+            return Ok(); // Erfolgreiches Löschen
         }
     }
 } 

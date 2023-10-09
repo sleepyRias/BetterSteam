@@ -35,13 +35,22 @@
             public const string Verify = ControllerBase + "/Verify";
             public const string GetNameFromToken = ControllerBase + "/GetNameFromToken";
         }
-         public static class ImageController
+        public static class ImageController
         {
             private const string ControllerBase = Base + "/Image";
 
             //Image Routes
             public const string GetRandomPreview = ControllerBase + "/GetRandomPreview";
             public const string GetPreviewByNum = ControllerBase + "/GetPreviewByNum";
+        }
+        public static class WishlistController
+        {
+            private const string ControllerBase = Base + "/Wishlist";
+
+            //Wishlist Routes
+            public const string GetWishlist = ControllerBase + "/GetWishlist";
+            public const string AddToWishlist = ControllerBase + "/AddToWishlist";
+            public const string RemoveFromWishlist = ControllerBase + "/RemoveFromWishlist";
         }
 
     }
