@@ -11,7 +11,7 @@
         <p class="game-company">{{ Game.company }}</p>
         <button
           class="better-steam-button--wishlist"
-          @click="isWishlisted = !isWishlisted"
+          @click="handleWishlist"
           v-if="isAllowedToFavAndWish"
         >
           <span class="icon" v-if="wishlistable">
@@ -27,7 +27,6 @@
       class="better-steam-button--favorite"
       @click="handleFavorite"
     >
-      <!-- we need Backend functionality later for this -->
       <span class="icon" v-if="favoriteable">
         <i :class="[favGameClass, 'fa-star', 'fa-xl']" />
       </span>
@@ -58,12 +57,11 @@ export default Vue.extend({
       const token = Cookies.get("token");
       if (token !== undefined) {
         if (this.isFavorited) {
-          this.isFavorited = !this.isFavorited;
           this.$emit("removeFavourite", this.Game.id, token);
         } else {
-          this.isFavorited = !this.isFavorited;
           this.$emit("addFavourite", this.Game.id, token);
         }
+        this.isFavorited = !this.isFavorited;
       }
     },
     formatDate(dateString: string) {
@@ -85,6 +83,17 @@ export default Vue.extend({
         this.imageUrl = URL.createObjectURL(blob);
       } catch (error) {
         return;
+      }
+    },
+    handleWishlist() {
+      const token = Cookies.get("token");
+      if (token !== undefined) {
+        if (this.isWishlisted) {
+          this.$emit("removeWishlist", this.Game.id, token);
+        } else {
+          this.$emit("addWishlist", this.Game.id, token);
+        }
+        this.isWishlisted = !this.isWishlisted;
       }
     },
   },

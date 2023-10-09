@@ -76,6 +76,8 @@
           :Game="game"
           @addFavourite="addFavourite"
           @removeFavourite="removeFavourite"
+          @addWishlist="addWishlist"
+          @removeWishlist="removeWishlist"
         />
       </div>
     </div>
@@ -236,6 +238,12 @@ export default Vue.extend({
     },
     removeFavourite(id: number, token: string) {
       repo.removeFavouriteGame(token, id.toString());
+    },
+    addWishlist(id: number, token: string) {
+      repo.addToWishlist(token, id.toString());
+    },
+    removeWishlist(id: number, token: string) {
+      repo.removeFromWishlist(token, id.toString());
     },
   },
   computed: {
