@@ -63,7 +63,7 @@ export default Vue.extend({
     async checkUsernameAvailability(username: string) {
       var response = false;
       try {
-        response = await repo.CheckUserNameAvailability(username);
+        response = await repo.checkUserNameAvailability(username);
       } catch (error) {
         this.usernameAvailability = false;
         return false;
@@ -87,7 +87,7 @@ export default Vue.extend({
         alert("this Username has been taken");
         return;
       }
-      await repo.CreateNewUser(this.username, this.password);
+      await repo.createNewUser(this.username, this.password);
       this.$router.push("/login");
     },
     goToLogin() {

@@ -4,6 +4,7 @@ import {
   isValid,
   SteamRepository,
   GameFilter,
+  User,
 } from "../../src/components";
 import { AxiosRepository } from "./AxiosRepository";
 
@@ -38,7 +39,7 @@ export class SteamRepositoryAxios
       token: token,
     });
   }
-  public CheckUserNameAvailability(username: string) {
+  public checkUserNameAvailability(username: string) {
     return this.sendGet<boolean>(
       `${this.basePath}/Account/CheckUserNameAvailability`,
       {
@@ -48,7 +49,7 @@ export class SteamRepositoryAxios
       }
     );
   }
-  public CreateNewUser(username: string, password: string) {
+  public createNewUser(username: string, password: string) {
     const query = {
       username: username,
       password: password,
@@ -68,6 +69,15 @@ export class SteamRepositoryAxios
     };
     return this.sendPost<string>(
       `${this.basePath}/Account/AddFavouriteGame`,
+      query
+    );
+  }
+  public getNameFromToken(token: string): Promise<User> {
+    const query = {
+      token: token,
+    };
+    return this.sendPost<User>(
+      `${this.basePath}/Account/GetNameFromToken`,
       query
     );
   }

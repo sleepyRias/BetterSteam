@@ -9,6 +9,7 @@ export { default as VueRouter } from "vue-router";
 export { Game } from "../../shared/interfaces/Game";
 export { GameFilter } from "../../shared/interfaces/Filters";
 export { Themes } from "../../shared/interfaces/Themes";
+export { User } from "../../shared/interfaces/User";
 export * from "../../shared/interfaces/BetterSteamResponse";
 export { default as CookieValidation } from "../../shared/CookieValidation";
 export { default as routes } from "../routes";
