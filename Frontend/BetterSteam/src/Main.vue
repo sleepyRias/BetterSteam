@@ -100,7 +100,7 @@ import {
   GameFilter,
   Themes,
 } from "./components/";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 export default Vue.extend({
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Main",
@@ -129,7 +129,6 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapActions(["fetchWishlist"]),
     updateFilter(filter: GameFilter) {
       this.filter = { ...this.filter, ...filter };
       this.updateRoute();
@@ -160,7 +159,6 @@ export default Vue.extend({
       this.updateRoute();
     },
     updateRoute() {
-      // basically stfu eslint and dont worry i dont know what im doings
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const queryParameters: any = {};
 
