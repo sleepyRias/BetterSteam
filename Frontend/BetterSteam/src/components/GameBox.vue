@@ -34,7 +34,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Cookies, WishlistResponse } from "./";
+import { Vue, WishlistResponse } from "./";
 export default Vue.extend({
   name: "GameBox",
   props: {
@@ -54,16 +54,20 @@ export default Vue.extend({
     };
   },
   methods: {
-    handleFavorite() {
-      const token = Cookies.get("token");
-      if (token !== undefined) {
+    async handleFavorite() {
+      const token = this.$store.getters.getToken;
+      try {
+        await this.$store.dispatch("verifyToken", token);
         if (this.isFavorited) {
           this.$emit("removeFavourite", this.Game.id, token);
         } else {
           this.$emit("addFavourite", this.Game.id, token);
         }
-        this.isFavorited = !this.isFavorited;
+      } catch (error) {
+        // eigentlich müsste wenn der token nicht valid ist was anders passieren
+        alert(error);
       }
+      this.isFavorited = !this.isFavorited;
     },
     formatDate(dateString: string) {
       const parts = dateString.split("-");
@@ -86,15 +90,20 @@ export default Vue.extend({
         return;
       }
     },
-    handleWishlist() {
-      const token = Cookies.get("token");
-      if (token !== undefined) {
+    async handleWishlist() {
+      const token = this.$store.getters.getToken;
+      try {
+        await this.$store.dispatch("verifyToken", token);
         if (this.isWishlisted) {
+          this.isWishlisted = !this.isWishlisted;
           this.$emit("removeWishlist", this.Game.id, token);
         } else {
+          this.isWishlisted = !this.isWishlisted;
           this.$emit("addWishlist", this.Game.id, token);
         }
-        this.isWishlisted = !this.isWishlisted;
+      } catch (error) {
+        // eigentlich müsste wenn der token nicht valid ist was anders passieren
+        alert(error);
       }
     },
     fetchWishlist() {
@@ -104,6 +113,15 @@ export default Vue.extend({
           this.isWishlisted = true;
         }
       }
+    },
+    async toggleFavAndWishButton() {
+      await this.$store
+        .dispatch("verifyToken", this.$store.getters.getToken)
+        .then((data: boolean) => {
+          if (data === true) {
+            this.isAllowedToFavAndWish = true;
+          }
+        });
     },
   },
   computed: {
@@ -118,7 +136,7 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.isAllowedToFavAndWish = Cookies.get("token") ? true : false;
+    this.toggleFavAndWishButton();
     this.formattedDate = this.formatDate(this.Game.releaseDate);
     this.getRandomPreview();
   },

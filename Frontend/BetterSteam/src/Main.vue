@@ -78,8 +78,6 @@
           @removeFavourite="removeFavourite"
           @addWishlist="addWishlist"
           @removeWishlist="removeWishlist"
-          :wishlistable="isLoggedIn"
-          :favoritable="isLoggedIn"
         />
       </div>
     </div>
@@ -100,6 +98,7 @@ import {
   GameBox,
   GameFilter,
   Themes,
+  Cookies,
 } from "./components/";
 import { mapState } from "vuex";
 export default Vue.extend({
@@ -261,13 +260,6 @@ export default Vue.extend({
         ? "fa-sun"
         : "fa-moon";
     },
-    isLoggedIn(): boolean {
-      if (this.$store.getters.getToken === undefined) {
-        return false;
-      } else {
-        return true;
-      }
-    },
   },
   watch: {
     filter: {
@@ -279,6 +271,7 @@ export default Vue.extend({
     },
   },
   created() {
+    this.$store.dispatch("setToken", Cookies.get("token"));
     this.filter.page = Number(this.$route.query.page || 1);
     this.filter.company = String(this.$route.query.company || "");
     this.filter.genre = String(this.$route.query.genre || "");

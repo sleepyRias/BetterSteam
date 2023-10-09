@@ -5,14 +5,14 @@ const api = new SteamRepositoryAxios(axios);
 interface State {
   theme: string;
   wishlist: WishlistResponse[];
-  token: string;
+  token: string | undefined;
 }
 
 export const storeOptions = {
   state: {
     theme: "light-theme",
     wishlist: [],
-    token: "",
+    token: undefined,
   },
   mutations: {
     setTheme(state: State, theme: string) {
@@ -34,8 +34,12 @@ export const storeOptions = {
       context.commit("setWishlist", response);
     },
     async verifyToken(_: any, token: string): Promise<boolean> {
-      const data = (await api.verify(token)).isValid;
-      return data;
+      try {
+        const data = (await api.verify(token)).isValid;
+        return data;
+      } catch (error) {
+        return false;
+      }
     },
     setToken(context: any, token: string) {
       context.commit("setToken", token);
