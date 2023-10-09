@@ -10,6 +10,7 @@ namespace backend.DataProvider
     {
         public DbSet<Account> Accounts { get; set; }
         public DbSet<FavouriteGame> FavouriteGames { get; set; }
+        public DbSet<Wishlist> Wishlists { get; set; }
 
         public IConfiguration Configuration { get; }
 
@@ -43,6 +44,13 @@ namespace backend.DataProvider
                 entity.Property(e => e.GameId);
             });
 
+            modelBuilder.Entity<Wishlist>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.AccountId);
+                entity.Property(e => e.GameId);
+                entity.ToTable("Wishlist");
+            });
         }
     }
 }
