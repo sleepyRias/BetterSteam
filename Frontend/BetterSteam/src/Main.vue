@@ -12,7 +12,7 @@
         <i class="fa-regular fa-user fa-2x" />
       </button>
     </div>
-    <button @click="switchTheme" class="betterSteamButton--theme">
+    <button @click="getThemeClass" class="betterSteamButton--theme">
       <i :class="darkOrLightClass" class="fa-solid fa-2xl" />
     </button>
     <div class="search-with-filters is-rounded">
@@ -212,7 +212,7 @@ export default Vue.extend({
         this.$router.push("/login");
       }
     },
-    switchTheme() {
+    getThemeClass() {
       if (this.$store.getters.getTheme === "light-theme") {
         this.$store.dispatch("setTheme", "dark-theme");
       } else {
