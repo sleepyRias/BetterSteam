@@ -4,6 +4,7 @@ import {
   isValid,
   SteamRepository,
   GameFilter,
+  User,
 } from "../../src/components";
 import { AxiosRepository } from "./AxiosRepository";
 
@@ -71,11 +72,11 @@ export class SteamRepositoryAxios
       query
     );
   }
-  public getNameFromToken(token: string): Promise<string> {
+  public getNameFromToken(token: string): Promise<User> {
     const query = {
       token: token,
     };
-    return this.sendPost<string>(
+    return this.sendPost<User>(
       `${this.basePath}/Account/GetNameFromToken`,
       query
     );

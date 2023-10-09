@@ -70,11 +70,19 @@ export default Vue.extend({
       }
       return false;
     },
+    async getUsername() {
+      const token = Cookies.get("token");
+      if (token === undefined) return;
+      this.username = (await repo.getNameFromToken(token)).name;
+    },
   },
   beforeMount() {
     if (!this.verify()) {
       this.$router.push("/login");
     }
+  },
+  mounted() {
+    this.getUsername();
   },
 });
 </script>

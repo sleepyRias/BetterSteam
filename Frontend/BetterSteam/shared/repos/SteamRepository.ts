@@ -1,7 +1,6 @@
-import { GameFilter } from "shared/interfaces/Filters";
+import { User, GameFilter, Token } from "../../src/components";
 import {
   BetterSteamResponse,
-  Token,
   isValid,
 } from "../interfaces/BetterSteamResponse";
 
@@ -13,5 +12,5 @@ export interface SteamRepository {
   verify(token: string): Promise<isValid>;
   checkUserNameAvailability(username: string): Promise<boolean>;
   addFavoriteGame(token: string, gameId: number): Promise<string>;
-  getNameFromToken(token: string): Promise<string>;
+  getNameFromToken(token: string): Promise<User>;
 }
