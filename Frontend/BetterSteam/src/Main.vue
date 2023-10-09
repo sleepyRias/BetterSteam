@@ -78,6 +78,8 @@
           @removeFavourite="removeFavourite"
           @addWishlist="addWishlist"
           @removeWishlist="removeWishlist"
+          :wishlistable="isLoggedIn"
+          :favoritable="isLoggedIn"
         />
       </div>
     </div>
@@ -125,7 +127,6 @@ export default Vue.extend({
       } as GameFilter,
       isFavorited: false,
       isGamesLoading: false,
-      token: undefined as string | undefined,
     };
   },
   methods: {
@@ -255,6 +256,13 @@ export default Vue.extend({
       return this.$store.getters.getTheme === "dark-theme"
         ? "fa-sun"
         : "fa-moon";
+    },
+    isLoggedIn(): boolean {
+      if (this.$store.getters.getToken === undefined) {
+        return false;
+      } else {
+        return true;
+      }
     },
   },
   watch: {

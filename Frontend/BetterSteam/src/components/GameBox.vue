@@ -118,7 +118,6 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.isAllowedToFavAndWish = this.$store.getters.getToken ? true : false;
     this.formattedDate = this.formatDate(this.Game.releaseDate);
     this.getRandomPreview();
   },
