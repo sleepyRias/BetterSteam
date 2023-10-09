@@ -1,16 +1,16 @@
 <template>
-  <div class="gameBox" :class="[themeClass, { 'hover-effect': enableHover }]">
+  <div class="game-box" :class="[themeClass, { 'hover-effect': enableHover }]">
     <div class="columns">
       <div class="column is-one-third">
         <figure class="image is-128x128">
           <img :src="imageUrl" />
         </figure>
       </div>
-      <div class="column is-two-third gameinfo">
-        <p class="gametitle">{{ Game.name }}</p>
-        <p class="gamecompany">{{ Game.company }}</p>
+      <div class="column is-two-third game-info">
+        <p class="game-title">{{ Game.name }}</p>
+        <p class="game-company">{{ Game.company }}</p>
         <button
-          class="betterSteamButton--wishlist"
+          class="better-steam-button--wishlist"
           @click="isWishlisted = !isWishlisted"
           v-if="isAllowedToFavAndWish"
         >
@@ -18,8 +18,8 @@
             <i :class="wishGameClass" class="fa-bookmark fa-xl" />
           </span>
         </button>
-        <span class="gameprice">{{ `${Game.price.toFixed(2)}€` }} </span>
-        <p class="gamedate">{{ formattedDate }}</p>
+        <span class="game-price">{{ `${Game.price.toFixed(2)}€` }} </span>
+        <p class="game-date">{{ formattedDate }}</p>
       </div>
     </div>
     <button
@@ -103,7 +103,7 @@ export default Vue.extend({
 </script>
 <style lang="scss" scoped>
 @import "../../shared/themes.scss";
-.gameBox {
+.game-box {
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   margin: 10px 5px 0px 5px;
   position: relative;
@@ -117,7 +117,7 @@ export default Vue.extend({
     z-index: 500;
   }
 }
-.gameprice {
+.game-price {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -125,17 +125,17 @@ export default Vue.extend({
   font-size: 18pt;
   font-weight: 600;
 }
-.gametitle {
+.game-title {
   font-size: 15pt;
   font-family: Avenir, Helvetica, Arial, sans-serif;
 }
-.gamecompany {
+.game-company {
   font-size: small;
 }
-.gameinfo {
+.game-info {
   position: relative;
 }
-.gamedate {
+.game-date {
   position: absolute;
   bottom: 0;
 }
