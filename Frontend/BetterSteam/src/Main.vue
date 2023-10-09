@@ -92,6 +92,7 @@ import {
   GameBox,
   Cookies,
   GameFilter,
+  Themes,
 } from "./components/";
 export default Vue.extend({
   // eslint-disable-next-line vue/multi-word-component-names
@@ -213,10 +214,17 @@ export default Vue.extend({
       }
     },
     toggleDarkmode() {
-      if (this.$store.getters.getTheme === "light-theme") {
-        this.$store.dispatch("setTheme", "dark-theme");
-      } else {
-        this.$store.dispatch("setTheme", "light-theme");
+      switch (this.$store.getters.getTheme) {
+        case Themes.light:
+          this.$store.dispatch("setTheme", Themes.dark);
+          break;
+        case Themes.dark:
+          this.$store.dispatch("setTheme", Themes.light);
+          break;
+        case Themes.red:
+          break;
+        default:
+          this.$store.dispatch("setTheme", Themes.light);
       }
     },
     handleFavorite(id: number) {
