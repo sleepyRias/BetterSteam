@@ -40,9 +40,7 @@
     "public/shared/axios/AxiosRepository.ts",
     "public/shared/axios/SteamRepositoryAxios.ts",
     "public/shared/repos/SteamRepository.ts",
-    "public/shared/interfaces/Filters.ts",
-    "public/shared/interfaces/Game.ts",
-    "public/shared/interfaces/User.ts"
+    "public/shared/interfaces/*.ts"
   ],
   "exclude": [
     "node_modules"
