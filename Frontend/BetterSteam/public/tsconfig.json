@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": [
-        "src/*"
+        "public/src/*"
       ]
     },
     "lib": [
@@ -36,7 +36,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx",
-    "src/**/*.json",
+    "public/src/**/*.json",
     "shared/axios/AxiosRepository.ts",
     "shared/axios/SteamRepositoryAxios.ts",
     "shared/repos/SteamRepository.ts",

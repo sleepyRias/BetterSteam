@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { WishlistResponse, axios, Cookies } from "@/components";
+import { WishlistResponse, axios, Cookies } from "../components";
 import { SteamRepositoryAxios } from "../../shared/axios/SteamRepositoryAxios";
 const api = new SteamRepositoryAxios(axios);
 interface State {
