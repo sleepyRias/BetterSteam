@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@vue/cli": "^5.0.6",
     "axios": "^1.4.0",
     "http-status-codes": "^2.2.0",
     "js-cookie": "^3.0.5",
