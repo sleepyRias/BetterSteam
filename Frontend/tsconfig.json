@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": [
-        "public/src/*"
+        "/*"
       ]
     },
     "lib": [
@@ -31,16 +31,14 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx",
-    "src/**/*.json",
-    "public/shared/axios/AxiosRepository.ts",
-    "public/shared/axios/SteamRepositoryAxios.ts",
-    "public/shared/repos/SteamRepository.ts",
-    "public/shared/interfaces/*.ts"
+    "/**/*.ts",
+    "/**/*.tsx",
+    "/**/*.vue",
+    "/**/*.json",
+    "/shared/axios/AxiosRepository.ts",
+    "/shared/axios/SteamRepositoryAxios.ts",
+    "/shared/repos/SteamRepository.ts",
+    "/shared/interfaces/*.ts"
   ],
   "exclude": [
     "node_modules"

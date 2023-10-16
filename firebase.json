@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "Frontend/BetterSteam/public",
+    "public": "Frontend/BetterSteam/dist",
     "ignore": [
       "firebase.json",
       "**/.*",
