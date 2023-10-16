@@ -1,6 +1,13 @@
 {
   "hosting": {
-    "public": "Frontend/BetterSteam/dist",
+    "headers": [ {
+      "source" : "/*.js",
+      "headers" : [ {
+        "key" : "Content-Type",
+        "value" : "text/javascript"
+      } ]
+    } ],
+    "public": "Frontend/dist",
     "ignore": [
       "firebase.json",
       "**/.*",
