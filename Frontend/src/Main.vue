@@ -88,7 +88,7 @@
 </template>
 
 <script lang="ts">
-import { SteamRepositoryAxios } from "../shared/axios/SteamRepositoryAxios";
+import { SteamRepositoryAxios } from "../public/axios/SteamRepositoryAxios";
 const repo = new SteamRepositoryAxios(axios);
 import {
   Vue,
@@ -295,7 +295,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "../shared/themes.scss";
+@import "../public/themes.scss";
 html,
 body {
   height: 100vh;
@@ -412,4 +412,3 @@ body {
   color: white;
 }
 </style>
-../shared/interfaces/Filters

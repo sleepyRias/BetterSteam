@@ -6,12 +6,12 @@ export { default as Cookies } from "js-cookie";
 export { default as VueRouter } from "vue-router";
 
 // Exporting interfaces
-export { Game } from "../../shared/interfaces/Game";
-export { GameFilter } from "../../shared/interfaces/Filters";
-export { Themes } from "../../shared/interfaces/Themes";
-export { User } from "../../shared/interfaces/User";
-export * from "../../shared/interfaces/BetterSteamResponse";
-export { default as CookieValidation } from "../../shared/CookieValidation";
+export { Game } from "../../public/interfaces/Game";
+export { GameFilter } from "../../public/interfaces/Filters";
+export { Themes } from "../../public/interfaces/Themes";
+export { User } from "../../public/interfaces/User";
+export * from "../../public/interfaces/BetterSteamResponse";
+export { default as CookieValidation } from "../../public/CookieValidation";
 export { default as routes } from "../routes";
 
 // Exporting components
@@ -28,4 +28,4 @@ export const Main = () => import("../Main.vue");
 export { storeOptions } from "../store/store";
 
 // Exporting repos
-export { SteamRepository } from "../../shared/repos/SteamRepository";
+export { SteamRepository } from "../../public/repos/SteamRepository";

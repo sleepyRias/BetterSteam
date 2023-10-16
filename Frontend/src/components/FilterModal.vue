@@ -163,4 +163,3 @@ export default Vue.extend({
   width: auto;
 }
 </style>
-../../shared/interfaces/Filters
