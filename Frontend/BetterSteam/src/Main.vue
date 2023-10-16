@@ -96,9 +96,9 @@ import {
   Game,
   FilterModal,
   GameBox,
-  Cookies,
   GameFilter,
   Themes,
+  Cookies,
 } from "./components/";
 import { mapState } from "vuex";
 export default Vue.extend({
@@ -207,15 +207,11 @@ export default Vue.extend({
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
     async goToProfile() {
-      const token = Cookies.get("token");
-      if (token === undefined) {
-        this.$router.push("/login");
-      }
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const response = await repo.verify(token!);
-      if (response.isValid) {
+      const token = this.$store.getters.getToken;
+      try {
+        await this.$store.dispatch("verifyToken", token);
         this.$router.push("/user");
-      } else {
+      } catch (error) {
         this.$router.push("/login");
       }
     },
@@ -246,12 +242,12 @@ export default Vue.extend({
       repo.removeFromWishlist(token, id.toString());
     },
     async getWishlist() {
-      const token = Cookies.get("token");
-      if (token !== undefined) {
-        const response = await repo.getWishlist(token);
-        // eslint-disable-next-line no-console
-        console.log(response);
-      }
+      const token = this.$store.getters.getToken;
+      this.$store.dispatch("verifyToken", token).then((data) => {
+        if (data === true) {
+          this.$store.dispatch("fetchWishlist", token);
+        }
+      });
     },
   },
   computed: {
@@ -275,6 +271,7 @@ export default Vue.extend({
     },
   },
   created() {
+    this.$store.dispatch("setToken", Cookies.get("token"));
     this.filter.page = Number(this.$route.query.page || 1);
     this.filter.company = String(this.$route.query.company || "");
     this.filter.genre = String(this.$route.query.genre || "");
@@ -282,7 +279,7 @@ export default Vue.extend({
     this.filter.releaseDate = String(this.$route.query.releaseDate || "");
     this.filter.minPrice = Number(this.$route.query.minPrice || 0);
     this.filter.maxPrice = Number(this.$route.query.maxPrice || 100);
-    this.$store.dispatch("fetchWishlist");
+    this.getWishlist();
   },
   mounted() {
     window.addEventListener("scroll", this.checkScroll);
@@ -294,49 +291,14 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../shared/themes.scss";
-html,
-body {
-  height: 100vh;
-}
+@import "./style/main.scss";
 .better-steam {
   height: 100%;
   padding: 0 20px 0 20px;
 }
-.better-steam-button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  &--user {
-    @extend .better-steam-button;
-    color: #1b1d9e;
-    margin: 5px 5px 0 0;
-  }
-  &--favorite {
-    @extend .better-steam-button;
-    position: absolute !important;
-    top: 0;
-    right: 0;
-    padding: 0;
-    margin: 4px 6px;
-    color: #fcd303;
-  }
-  &--wishlist {
-    @extend .better-steam-button;
-    color: #ff0000;
-    padding: 0;
-    margin-top: 15px;
-    text-decoration: dashed;
-  }
-  &--theme {
-    @extend .better-steam-button;
-    margin: 7px 100px 0 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-}
+
 .main-header {
   display: flex;
   justify-content: space-between;
@@ -382,28 +344,6 @@ body {
     transform: rotate(360deg);
   }
 }
-.up-button {
-  position: fixed;
-  bottom: 35px; /* Adjust the distance from the bottom as needed */
-  right: 20px; /* Adjust the distance from the right as needed */
-  z-index: 9999; /* Make sure it's above other elements */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background-color: #fff;
-  color: #333;
-  border: 1px solid #333;
-  border-radius: 50%;
-  cursor: pointer;
-
-  &:hover {
-    transform: scale(1.1);
-    background-color: #333;
-    color: #fff;
-  }
-}
 .search-with-filters {
   display: flex;
   justify-content: center;
@@ -412,4 +352,3 @@ body {
   color: white;
 }
 </style>
-../shared/interfaces/Filters

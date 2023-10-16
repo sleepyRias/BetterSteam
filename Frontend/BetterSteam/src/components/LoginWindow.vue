@@ -74,6 +74,7 @@ export default Vue.extend({
 });
 </script>
 <style lang="scss" scoped>
+@import "../style/main.scss";
 .main-login-form {
   width: 40%;
   margin: 100px auto 0 auto;
@@ -87,14 +88,6 @@ export default Vue.extend({
   text-decoration: underline;
   cursor: pointer;
   font-size: 10pt;
-}
-.back-home {
-  text-decoration: underline;
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 15px 0 0 15px;
-  border: none;
 }
 .button:focus:not(:active),
 .button.is-focused:not(:active) {

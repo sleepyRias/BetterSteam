@@ -38,5 +38,6 @@ node_modules/**
 dist/
 npm-debug.log
 yarn-error.log
+Backend/Data/Accounts.db
 
 # End of https://www.toptal.com/developers/gitignore/api/vuejs,vue,visualstudiocode

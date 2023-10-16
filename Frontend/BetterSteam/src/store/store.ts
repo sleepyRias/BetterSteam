@@ -5,14 +5,14 @@ const api = new SteamRepositoryAxios(axios);
 interface State {
   theme: string;
   wishlist: WishlistResponse[];
-  token: string;
+  token: string | undefined;
 }
 
 export const storeOptions = {
   state: {
     theme: "light-theme",
     wishlist: [],
-    token: "",
+    token: undefined,
   },
   mutations: {
     setTheme(state: State, theme: string) {
@@ -29,14 +29,23 @@ export const storeOptions = {
     setTheme(context: any, theme: string) {
       context.commit("setTheme", theme);
     },
-    async fetchWishlist(context: any) {
-      const token = Cookies.get("token");
-      if (token === undefined) return;
+    async fetchWishlist(context: any, token: string) {
       const response = await api.getWishlist(token);
       context.commit("setWishlist", response);
     },
+    async verifyToken(_: any, token: string): Promise<boolean> {
+      try {
+        const data = (await api.verify(token)).isValid;
+        return data;
+      } catch (error) {
+        return false;
+      }
+    },
     setToken(context: any, token: string) {
       context.commit("setToken", token);
+    },
+    fetchToken(_: any) {
+      return Cookies.get("token");
     },
   },
   getters: {
