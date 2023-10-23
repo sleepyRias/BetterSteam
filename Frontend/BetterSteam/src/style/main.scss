@@ -11,7 +11,13 @@ body {
 }
 
 .columns {
-    margin: 0 !important;
+    margin: 0px 100px !important;
+}
+
+@media only screen and (max-width: 768px) {
+    .columns {
+        margin: 0px !important;
+    }
 }
 
 .light-theme {

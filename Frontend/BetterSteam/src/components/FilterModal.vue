@@ -143,7 +143,7 @@ export default Vue.extend({
         minPrice: 0,
         maxPrice: 100,
         releaseDate: "",
-        pageSize: 20,
+        pageSize: 30,
       };
       this.filter = { ...defaultFilter };
       this.$router.push({ path: "/games", query: {} }); // Clear URL parameters

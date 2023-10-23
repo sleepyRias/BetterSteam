@@ -1,8 +1,8 @@
 <template>
   <div :class="[themeClass, { 'hover-effect': enableHover }, 'game-box']">
-    <div class="columns">
+    <div class="columns is-mobile">
       <div class="column is-one-third">
-        <figure class="image is-128x128">
+        <figure class="image is-256x256">
           <img :src="imageUrl" />
         </figure>
       </div>
@@ -179,9 +179,13 @@ export default Vue.extend({
 }
 .game-info {
   position: relative;
+  margin-left: 6px;
 }
 .game-date {
   position: absolute;
   bottom: 0;
+}
+.columns {
+  margin: 0px !important;
 }
 </style>
