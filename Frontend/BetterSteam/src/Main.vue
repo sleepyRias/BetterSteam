@@ -7,11 +7,14 @@
       @clearFilter="clearFilter"
     />
     <div class="main-header">
-      <h1 class="main-title">Sandbox Project</h1>
+      <h1 class="main-title">{{ $t("greeting") }}</h1>
       <button @click="goToProfile" class="better-steam-button--user">
         <i class="fa-regular fa-user fa-2x" />
       </button>
     </div>
+    <button @click="changeLocale('en')" class="better-steam-button--theme">
+      <i class="fa-solid fa-2xl fa-language" />
+    </button>
     <button @click="toggleDarkmode" class="better-steam-button--theme">
       <i :class="darkOrLightClass" class="fa-solid fa-2xl" />
     </button>
@@ -251,6 +254,9 @@ export default Vue.extend({
           this.$store.dispatch("fetchWishlist", token);
         }
       });
+    },
+    changeLocale(locale: any) {
+      this.$i18n.locale = locale;
     },
   },
   computed: {

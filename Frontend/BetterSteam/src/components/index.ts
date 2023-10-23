@@ -4,6 +4,7 @@ export { default as Vuex } from "vuex";
 export { default as axios } from "axios";
 export { default as Cookies } from "js-cookie";
 export { default as VueRouter } from "vue-router";
+export { default as VueI18n } from "vue-i18n";
 
 // Exporting interfaces
 export { Game } from "../../shared/interfaces/Game";
@@ -29,3 +30,6 @@ export { storeOptions } from "../store/store";
 
 // Exporting repos
 export { SteamRepository } from "../../shared/repos/SteamRepository";
+
+// Exporting languages
+export { i18n } from "../../shared/internationalization/i18n";
