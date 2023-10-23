@@ -39,9 +39,9 @@
       show
       <div class="select-container">
         <select v-model="filter.pageSize" class="selecter">
-          <option value="20">20 items</option>
-          <option value="40">40 items</option>
+          <option value="30">30 items</option>
           <option value="60">60 items</option>
+          <option value="90">90 items</option>
         </select>
       </div>
       items per page
@@ -66,9 +66,12 @@
       v-if="isGamesLoading"
       class="fa-solid fa-spinner fa-4x loading-spinner"
     />
-    <div v-if="!isGamesLoading" class="columns is-gapless is-multiline">
+    <div
+      v-if="!isGamesLoading"
+      class="columns is-gapless is-multiline is-tablet"
+    >
       <div
-        class="column is-one-quarter"
+        class="column is-one-quarter-fullhd is-one-third-widescreen is-half-desktop is-half-tablet"
         v-for="game in gamesList"
         :key="game.id"
       >
@@ -122,7 +125,7 @@ export default Vue.extend({
         minPrice: 0,
         maxPrice: 100,
         releaseDate: "",
-        pageSize: 20,
+        pageSize: 30,
       } as GameFilter,
       isFavorited: false,
       isGamesLoading: false,
@@ -195,7 +198,7 @@ export default Vue.extend({
         minPrice: 0,
         maxPrice: 100,
         releaseDate: "",
-        pageSize: 20,
+        pageSize: 30,
       };
       this.filter = { ...defaultFilter };
     },
