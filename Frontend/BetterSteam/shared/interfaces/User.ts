@@ -6,4 +6,8 @@ export interface User {
   username: string;
   favoriteGamesList: Game[];
   colorScheme: string;
+  country: string;
+  emailAdress: string;
+  phoneNumber: string;
+  priceThreshold: number;
 }
